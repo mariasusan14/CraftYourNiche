@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Background from "./components/Background/Background";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero"; // Add this import statement
+import { Routes,Route } from "react-router-dom";
 
 const App = () => {
   let herodata = [
@@ -31,6 +32,7 @@ const App = () => {
         playStatus={playStatus}
       />
     </div>
+    <Routes></Routes>
   );
 };
 
