@@ -31,8 +31,9 @@ const App = () => {
         setHeroCount={setHeroCount}
         playStatus={playStatus}
       />
+      <Routes></Routes>
     </div>
-    <Routes></Routes>
+    
   );
 };
 
