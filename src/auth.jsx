@@ -2,9 +2,7 @@ import { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import {createUserWithEmailAndPassword,signOut,signInWithEmailAndPassword} from "firebase/auth"
 import { collection,addDoc } from "@firebase/firestore";
-//import { Dashboard } from "./dashboard";
-import { auth,db } from "../src/config/firebase"
-import '../src/Auth.css'
+import { auth,db } from "../config/firebase"
 export const Auth=()=>{
     const[email,setEmail]=useState("")
     const[password,setPassword]=useState("")
@@ -52,9 +50,9 @@ export const Auth=()=>{
 
             // Additional actions after successful login
             console.log("User logged in successfully!");
-            console.log(auth.currentUser.uid);
+            //console.log(auth.currentUser.uid);
            
-            navigate(`/dashboard/${auth.currentUser.uid}`)
+           navigate(`/dashboard/${auth.currentUser.uid}`)
         
         } catch (e) {
             console.error(e);
@@ -72,7 +70,7 @@ export const Auth=()=>{
                 onChange={(e)=>setPassword(e.target.value)}
                 type="password"
                 />
-            <button onClick={submitUser}>Sign up</button>
+             <button onClick={submitUser}>Sign up</button> 
             <button onClick={login}>Login</button>
             <button onClick={logout}>Sign out</button>
         </div>
