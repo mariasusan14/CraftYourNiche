@@ -7,7 +7,7 @@ import './Navbar.css';
 export const Navbar = () => {
   return (
     <div className="nav">
-      <div className="nav-logo">CapCraft</div>
+      <div className="nav-logo">Craft-Your-Niche</div>
       <ul className="nav-menu">
         <li>Home</li>
         <li>Explore</li>
