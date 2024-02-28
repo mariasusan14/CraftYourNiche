@@ -2,6 +2,7 @@ import'./Hero.css'
 import arrow_btn from '../../assets/arrow_btn.png'
 import play_icon from '../../assets/play_icon.png'
 import pause_icon from '../../assets/pause_icon.png'
+import { Link } from 'react-router-dom'
 
 const Hero = ({herodata,setHeroCount,heroCount,setPlayStatus,playStatus}) => {
   return (
@@ -11,10 +12,12 @@ const Hero = ({herodata,setHeroCount,heroCount,setPlayStatus,playStatus}) => {
          <p>{herodata.text1}</p>
          <p>{herodata.text2} </p>
       </div>
+      <Link to={'/auth'}>
       <div className='hero-explore'>
-        <p>Explore The features</p>
+           <p>Explore The features</p>      
         <img src={arrow_btn} alt=""/>
       </div>
+      </Link>
       <div className="hero-dot-play">
         <ul className="hero-dots">
           <li onClick={()=>setHeroCount(0)} className={heroCount==0?"hero-dot orange":"hero-dot"}></li>
