@@ -29,6 +29,7 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
     color: #8B4513;
+    
 }
 
 .auth-label svg {
@@ -43,7 +44,7 @@ body {
     width: calc(100% - 34px);
     padding: 8px;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    height: 34px;
     border: 1px solid #ccc;
     border-radius: 3px;
     color: #333;
