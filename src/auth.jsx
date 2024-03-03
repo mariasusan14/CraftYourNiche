@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 import { collection, addDoc } from '@firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { useNavigate } from 'react-router-dom';
+import { FaUser, FaLock,FaEnvelope,FaCheck,FaUserTag } from 'react-icons/fa';
 import './auth.css'
 
 const Auth = () => {
@@ -44,12 +45,12 @@ const Auth = () => {
             <div>
                 {mode === 'signup' && (
                     <label className="auth-label">
-                        Full Name:
+                    <FaUser />
                         <input className="auth-input" placeholder="full name..." />
                     </label>
                 )}
                 <label className="auth-label">
-                    Email:
+                <FaEnvelope />
                     <input
                         className="auth-input"
                         placeholder="email..."
@@ -57,7 +58,7 @@ const Auth = () => {
                     />
                 </label>
                 <label className="auth-label">
-                    Password:
+                <FaLock />
                     <input
                         className="auth-input"
                         placeholder="password..."
@@ -67,13 +68,13 @@ const Auth = () => {
                 </label>
                 {mode === 'signup' && (
                     <label className="auth-label">
-                        Confirm Password:
+                    <FaLock />
                         <input className="auth-input" placeholder="repeat password..." type="password" />
                     </label>
                 )}
                 {mode === 'signup' && (
                     <label className="auth-label">
-                        User Type:
+                    <FaUserTag />
                         <select className="auth-input">
                             <option value="customer">Customer</option>
                             <option value="shop">Shop</option>

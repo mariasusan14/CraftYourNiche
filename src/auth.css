@@ -4,6 +4,9 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
+    background-image: url('https://www.textures4photoshop.com/tex/thumbs/vintage-sketch-texture-background-thumb33.jpg'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    background-size: cover; /* Ensure the background image covers the entire viewport */
+    background-position: center;
 }
 
 .auth-container {
@@ -14,12 +17,19 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.8); /* Light background color with some transparency */
 }
 
 .auth-label {
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
     font-size: 14px;
+    color: #8B4513; /* Saddle Brown */
+}
+
+.auth-label svg {
+    margin-right: 10px; 
 }
 
 .auth-input {
@@ -29,22 +39,25 @@ body {
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    color: #333; /* Dark text color */
 }
 
 .auth-button {
-    background-color: #4caf50;
-    color: white;
+    background-color: #6B8E23; /* Olive Drab */
+    color: #fff; /* White text color */
     padding: 10px 15px;
     font-size: 16px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Add smooth transition */
 }
 
 .auth-button:hover {
-    background-color: #45a049;
+    background-color: #7f9d37; /* Slightly lighter shade on hover */
 }
 
 .auth-checkbox {
     margin-right: 5px;
+    color: #6B8E23; /* Olive Drab */
 }
