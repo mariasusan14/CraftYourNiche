@@ -1,6 +1,6 @@
 import { auth } from "../config/firebase";
 import { Routes,Route } from "react-router-dom";
-import {Auth} from './auth'
+import Auth from './auth'
 import { Dashboard } from "./dashboard";
 import { Landing } from "./landing";
 import Hero from "./components/Hero/Hero";
