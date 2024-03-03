@@ -41,7 +41,8 @@ const Auth = () => {
     };
 
     return (
-        <div className="auth-container">
+        <div className="login-container">
+            <div className="auth-container">
             <div>
                 {mode === 'signup' && (
                     <label className="auth-label">
@@ -84,9 +85,9 @@ const Auth = () => {
                 )}
             </div>
             <div>
-                <button className="auth-button" onClick={mode === 'login' ? login : submitUser}>
-                    {mode === 'login' ? 'Login' : 'Sign Up'}
-                </button>
+                    <button className="auth-button " onClick={mode === 'login' ? login : submitUser}>
+                        {mode === 'login' ? 'Login' : 'Sign Up'}
+                    </button>
             </div>
             <div>
             {mode === 'login' && (
@@ -97,6 +98,8 @@ const Auth = () => {
                 )}
                 
             </div>
+            </div>
+            
         </div>
     );
 };
