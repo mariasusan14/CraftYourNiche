@@ -40,14 +40,15 @@ const Auth = () => {
 
     return (
         <div>
+            
             <div>
-                <label>
-                    Don't have an account:
-                    <input type="checkbox" onChange={handleToggleMode} />
-                    {mode === 'login' ? 'Login' : 'Sign Up'}
-                </label>
-            </div>
-            <div>
+                {mode === 'signup' && (
+                        <label>
+                        Full Name :
+                            <input placeholder="full name..." />                       
+                            
+                        </label>
+                    )}
                 <label>
                 Email :
                     <input
@@ -64,13 +65,7 @@ const Auth = () => {
                     />
                 </label>                          
                 
-                {mode === 'signup' && (
-                    <label>
-                    Full Name :
-                        <input placeholder="full name..." />                       
-                        
-                    </label>
-                )}
+                
                 {mode === 'signup' && (
                     <label>  
                     Confirm Password :                      
@@ -79,14 +74,28 @@ const Auth = () => {
                     </label>
                 )}
                 {mode === 'signup' && (
-                    <label> 
-                    User Type :                      
-                        <input placeholder="user type"  />
-                    </label>
+                    <label>
+                            User Type:
+                            <select>
+                                <option value="customer">Customer</option>
+                                <option value="shop">Shop</option>
+                                <option value="collab">Collaborator</option>
+                            </select>
+                        </label>
                 )}
+                
+            </div>
+            <div>
                 <button onClick={mode === 'login' ? login : submitUser}>
-                    {mode === 'login' ? 'Login' : 'Sign Up'}
+                        {mode === 'login' ? 'Login' : 'Sign Up'}
                 </button>
+            </div>
+            <div>
+                <label>
+                    Don't have an account:
+                    <input type="checkbox" onChange={handleToggleMode} />
+                    
+                </label>
             </div>
         </div>
     );
