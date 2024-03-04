@@ -70,7 +70,7 @@ const Auth = () => {
                 {mode === 'signup' && (
                     <label className="auth-label">
                     <FaLock />
-                        <input className="auth-input" placeholder="repeat password..." type="password" />
+                        <input className="auth-input" placeholder="confirm password..." type="password" />
                     </label>
                 )}
                 {mode === 'signup' && (
@@ -92,7 +92,7 @@ const Auth = () => {
             <div>
             {mode === 'login' && (
                 <label className="auth-label">
-                    Don't have an account:
+                    Create new account
                     <input className="auth-checkbox" type="checkbox" onChange={handleToggleMode} />
                 </label>
                 )}
