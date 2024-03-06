@@ -7,6 +7,7 @@ import { FaUser, FaLock, FaEnvelope, FaCheck, FaUserTag } from 'react-icons/fa';
 import './auth.css';
 
 const Auth = () => {
+  const [fullName,setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -42,9 +43,9 @@ const Auth = () => {
       } else if (!validateSignUpFields()) {
         setError('Please fill in all fields and ensure passwords match.');
       } else {
-        const userDocRef = await addDoc(userRef, { email, password, userType });
+        const userDocRef = await addDoc(userRef, { fullName, email, password, userType });
         await createUserWithEmailAndPassword(auth, email, password);
-
+        
         console.log('User document created in Firestore:', userDocRef.id);
         console.log('User signed up successfully!');
         navigate(`/dashboard/${auth.currentUser.uid}`);
@@ -72,7 +73,10 @@ const Auth = () => {
           {mode === 'signup' && (
             <label className="auth-label">
               <FaUser />
-              <input className="auth-input" placeholder="full name..." />
+              <input className="auth-input" 
+              placeholder="full name..."
+              onChange={(e) => setFullName(e.target.value)}  
+              />
             </label>
           )}
           <label className="auth-label">
