@@ -31,7 +31,7 @@ const Auth = () => {
   };
 
   const validateSignUpFields = () => {
-    return email && password && confirmPassword === password;
+    return fullName &&email && password && confirmPassword === password;
   };
 
   const submitUser = async () => {
