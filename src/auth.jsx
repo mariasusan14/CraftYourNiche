@@ -31,7 +31,7 @@ const Auth = () => {
   };
 
   const validateSignUpFields = () => {
-    return fullName &&email && password && confirmPassword === password;
+    return fullName&&email && password && confirmPassword === password;
   };
 
   const submitUser = async () => {
@@ -101,6 +101,7 @@ const Auth = () => {
             <input
               className="auth-input"
               placeholder="email..."
+              type='email'
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
