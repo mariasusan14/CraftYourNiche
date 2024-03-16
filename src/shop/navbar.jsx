@@ -1,18 +1,20 @@
 import React from 'react';
-
+import { FaShoppingBag,FaHome, FaClipboardList, FaBoxOpen, FaChartLine, FaUsers, FaHandsHelping, FaPaintBrush, FaIdCard, FaSignOutAlt } from 'react-icons/fa';
+import './styles/navbar.css'
 const Navbar = () => {
   return (
     <nav className="navbar">
       <ul>
-        <li>Dashboard</li>
-        <li>Products</li>
-        <li>Orders</li>
-        <li>Inventory</li>
-        <li>Analytics</li>
-        <li>Customers</li>
-        <li>Collaborations</li>
-        <li>Customization</li>
-        <li>Verification</li>
+        <li><FaHome /> Dashboard</li>
+        <li><FaShoppingBag /> Products</li>
+        <li><FaClipboardList /> Orders</li>
+        <li><FaBoxOpen /> Inventory</li>
+        <li><FaChartLine /> Analytics</li>
+        <li><FaUsers /> Customers</li>
+        <li><FaHandsHelping /> Collaborations</li>
+        <li><FaPaintBrush /> Customization</li>
+        <li><FaIdCard /> Verification</li>
+        <li><FaSignOutAlt /> Logout</li>
       </ul>
     </nav>
   );

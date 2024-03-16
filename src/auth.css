@@ -1,8 +1,6 @@
 body {
     margin: 0;
-    background-image: url('https://www.textures4photoshop.com/tex/thumbs/vintage-sketch-texture-background-thumb33.jpg');
-    background-size: cover;
-    background-position: center;
+    
 }
 
 .login-container {
@@ -10,6 +8,9 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background-image: url('https://www.textures4photoshop.com/tex/thumbs/vintage-sketch-texture-background-thumb33.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .auth-container {

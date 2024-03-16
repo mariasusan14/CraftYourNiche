@@ -11,21 +11,21 @@ import CustomizationAcceptReject from './CustomizationAcceptReject';
 import ProfileCompletion from './ProfileCompletion';
 import Navbar from './navbar';
 
-const Dashboard = () => {
+const ShopDashboard = () => {
   return (
     <div className="dashboard-container">
       <Header />
       
       <div className="content">
         <Navbar/>
-        <ProductManagement />
+        {/* <ProductManagement />
         <OrderManagement />
         <InventoryManagement />
         <Analytics />
         <CustomerManagement />
         <CollaborationPlatform />
         <CustomizationAcceptReject />
-        <ProfileCompletion />
+        <ProfileCompletion /> */}
         {/* Add more sections for other functionalities */}
       </div>
       
@@ -34,4 +34,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ShopDashboard;
