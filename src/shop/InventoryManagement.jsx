@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import './styles/InventoryManagement.css'; // Import CSS file for styling
+import './styles/InventoryManagement.css'; 
 import Navbar from './navbar';
 
 const InventoryManagement = () => {
@@ -13,30 +13,30 @@ const InventoryManagement = () => {
     { id: 5, name: 'Product E', quantity: 25 },
     { id: 6, name: 'Product F', quantity: 0 },
     { id: 7, name: 'Product G', quantity: 4 },
-    // Add more products as needed
+    
   ]);
 
-  // State for form inputs
+  
   const [selectedProductId, setSelectedProductId] = useState('');
   const [quantityToUpdate, setQuantityToUpdate] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(5); // Number of products per page
 
-  // Calculate indexes for pagination
+  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   let currentProducts = stockData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Function to handle form submission
+  
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    // Find the selected product by its ID
+    
     const selectedProduct = stockData.find(product => product.id === parseInt(selectedProductId));
 
     if (selectedProduct) {
-      // Update the quantity of the selected product
+      
       const updatedStockData = stockData.map(product => {
         if (product.id === selectedProduct.id) {
           return { ...product, quantity: parseInt(quantityToUpdate) };
@@ -44,22 +44,22 @@ const InventoryManagement = () => {
         return product;
       });
 
-      // Update state with the new stock data
+      
       setStockData(updatedStockData);
 
-      // Clear form inputs
+      
       setSelectedProductId('');
       setQuantityToUpdate('');
     }
   };
 
-  // Function to handle search query
+  
   const handleSearch = () => {
     if (searchQuery.trim() === '') {
-      // If search query is empty, display all products
+      
       setStockData(stockData);
     } else {
-      // Filter stock data based on search query
+      
       const filteredData = stockData.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
@@ -68,7 +68,7 @@ const InventoryManagement = () => {
     setSearchQuery('');
   };
 
-  // Function to handle page change
+  
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -120,12 +120,12 @@ const InventoryManagement = () => {
 
       <div className="update-stock">
         <h3>Update Stock Quantities</h3>
-        {/* Form for updating stock quantities */}
+        
         <form onSubmit={handleFormSubmit} className="update-form">
           <label className="update-label" htmlFor="product">Product:</label>
           <select className="update-input" id="product" value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)}>
             <option value="">Select Product</option>
-            {/* Map through stockData array to generate options */}
+            
             {stockData.map(product => (
               <option key={product.id} value={product.id}>{product.name}</option>
             ))}
