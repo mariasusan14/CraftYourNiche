@@ -1,7 +1,7 @@
 
 .navbar{
-    background-color: #fff; 
-    color: #4d2800; 
+    background-color: #4d2800; 
+    color: #fff; 
     padding: 20px;
     
 }
@@ -22,11 +22,11 @@ li {
 
 li svg {
   margin-right: 10px;
-  color: #4d2800; 
+  color:  #fff; 
 }
 
 
 li:hover {
-  background-color: #f5f5f5; 
-  font-weight: bold; 
+  background-color: #382006; 
+  font-weight:550; 
 }
