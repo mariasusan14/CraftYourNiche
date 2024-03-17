@@ -1,0 +1,60 @@
+/* AddProduct.css */
+
+.container {
+  display: flex; 
+  height: 100vh;
+}
+
+.addprod {
+  flex: 1; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+ 
+}
+
+.addprod h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.addprod form label {
+  font-weight: bold;
+}
+
+.addprod form input[type="text"],
+.addprod form input[type="number"],
+.addprod form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.addprod form .btn {
+  padding: 10px 20px;
+}
+
+.success-msg,
+.error-msg {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.success-msg {
+  color: green;
+  background-color: #d3f7d5;
+}
+
+.error-msg {
+  color: red;
+  background-color: #f7d3d3;
+}
+
+.btn {
+background-color: #4d2800;
+}

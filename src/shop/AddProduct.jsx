@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { storage, db ,auth} from '../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
+import Navbar from './navbar';
+import './styles/AddProduct.css'
 
 export const AddProducts = () => {
     const [title, setTitle] = useState('');
@@ -68,7 +70,12 @@ export const AddProducts = () => {
     };
 
     return (
+        
         <div className="container">
+            
+            <Navbar/>
+            
+            <div className="addprod">
             <br />
             <br />
             <h1>Add Products</h1>
@@ -122,6 +129,7 @@ export const AddProducts = () => {
                     <div className="error-msg">{uploadError}</div>
                 </>
             )}
+            </div>
         </div>
     );
 };
