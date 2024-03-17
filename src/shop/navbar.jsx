@@ -1,12 +1,16 @@
 import React from 'react';
 import { FaShoppingBag,FaHome, FaClipboardList, FaBoxOpen, FaChartLine, FaUsers, FaHandsHelping, FaPaintBrush, FaIdCard, FaSignOutAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import './styles/navbar.css'
 const Navbar = () => {
   return (
     <nav className="navbar">
       <ul>
         <li><FaHome /> Dashboard</li>
+        <Link to="/addproduct" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaShoppingBag /> Products</li>
+        </Link>
+        
         <li><FaClipboardList /> Orders</li>
         <li><FaBoxOpen /> Inventory</li>
         <li><FaChartLine /> Analytics</li>

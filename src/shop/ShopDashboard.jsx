@@ -9,16 +9,17 @@ import Footer from './footer';
 // import CollaborationPlatform from './CollaborationPlatform';
 // import CustomizationAcceptReject from './CustomizationAcceptReject';
 // import ProfileCompletion from './ProfileCompletion';
-// import Navbar from './navbar';
-import { AddProducts } from '../shop/AddProduct';
+ import Navbar from './navbar';
+import { AddProducts } from './AddProduct';
 
-export const DashboardShop = () => {
+export const ShopDashboard = () => {
   return (
     <div className="dashboard-container">
       <Header />
       
       <div className="content">
-        {/* <Navbar/>
+      <Navbar/>
+        {/* 
         <ProductManagement />
         <OrderManagement />
         <InventoryManagement />
@@ -28,7 +29,7 @@ export const DashboardShop = () => {
         <CustomizationAcceptReject />
         <ProfileCompletion /> */}
         {/* Add more sections for other functionalities */}
-        <AddProducts/>
+        
       </div>
       
       <Footer />

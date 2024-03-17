@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from './config/firebase';
-import './dashboard.css'
+import { auth } from '../config/firebase';
+import './UserDashboard.css'
 
-export const Dashboard = () => {
+export const UserDashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
