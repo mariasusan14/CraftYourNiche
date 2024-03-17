@@ -1,0 +1,32 @@
+
+.navbar{
+    background-color: #4d2800; 
+    color: #fff; 
+    padding: 20px;
+    
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+
+li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+
+li svg {
+  margin-right: 10px;
+  color:  #fff; 
+}
+
+
+li:hover {
+  background-color: #382006; 
+  font-weight:550; 
+}
