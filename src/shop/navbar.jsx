@@ -10,9 +10,14 @@ const Navbar = () => {
         <Link to="/addproduct" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaShoppingBag /> Products</li>
         </Link>
-        
+        <Link to="/orders" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaClipboardList /> Orders</li>
+        </Link>
+        <Link to="/inventory" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaBoxOpen /> Inventory</li>
+        </Link>        
+        
+        
         <li><FaChartLine /> Analytics</li>
         <li><FaUsers /> Customers</li>
         <li><FaHandsHelping /> Collaborations</li>

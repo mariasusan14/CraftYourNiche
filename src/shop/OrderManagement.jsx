@@ -17,7 +17,6 @@ const OrderManagement = () => {
     { id: 10, invoiceNo: 'INV010', orderTime: '2024-03-19 07:00 PM', customerName: 'James White', method: 'Credit Card', amount: 140, status: 'Pending' },
   ]);
   
-
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5; // Number of orders per page
@@ -39,6 +38,17 @@ const OrderManagement = () => {
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Handle activity change
+  const handleActivityChange = (orderId, newStatus) => {
+    const updatedOrders = orders.map(order => {
+      if (order.id === orderId) {
+        return { ...order, status: newStatus };
+      }
+      return order;
+    });
+    setOrders(updatedOrders);
+  };
 
   return (
     <section className="order-management">
@@ -89,8 +99,7 @@ const OrderManagement = () => {
                   <td>{order.amount}</td>
                   <td>{order.status}</td>
                   <td>
-                    <select>
-                      <option value =''>Change Status</option>
+                    <select onChange={(e) => handleActivityChange(order.id, e.target.value)}>
                       <option value="Pending">Pending</option>
                       <option value="Processing">Processing</option>
                       <option value="Delivered">Delivered</option>

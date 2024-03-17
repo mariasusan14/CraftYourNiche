@@ -2,11 +2,15 @@
 
 .order-management {
     display: flex;
+    background-color: #f3f3f3;
+    
   }
   
   .order-management-body {
     flex-grow: 1;
-    padding-left: 20px; 
+    
+    padding: 10px; 
+    padding-left: 20px;
   }
   
   .heading {
@@ -55,7 +59,13 @@
     color: #fff; /* White text color */
   }
   
-  
+  h2 {
+    color: #4d2800;
+    margin: 5px;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
   .orders td button {
     background-color: #4d2800; /* Brown background color for buttons */
     color: #fff; /* White text color */
