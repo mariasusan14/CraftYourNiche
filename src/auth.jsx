@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc, doc, setDoc, getDocs, query, where } from '@firebase/firestore';
+import { collection, addDoc, doc, setDoc, getDocs, query, where,getDoc } from '@firebase/firestore';
 import { auth, db } from './config/firebase';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEnvelope, FaUserTag } from 'react-icons/fa';
@@ -85,15 +85,23 @@ const Auth = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       // Get the user's UID from the authentication result
       const userId = userCredential.user.uid;
-
+  
+      // Get user data to determine userType
+      const userDoc = await getDoc(doc(collection(db, 'user'), userId));
+      const userData = userDoc.data();
+      const userType = userData.userType;
+  
+      // Navigate to the respective dashboard based on userType
+      const destination = userType === 'customer' ? '/userdash' : '/shopdash';
+      navigate(destination);
+  
       console.log('User logged in successfully!');
-      navigate(`/dashboardshop/${userId}`);
     } catch (error) {
       setError('Invalid email or password. Please try again.'); // Set login error message
       console.error(error);
     }
   };
-
+  
   return (
     <div className="login-container">
       <div className="auth-container">

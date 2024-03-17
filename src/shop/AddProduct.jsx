@@ -9,6 +9,7 @@ export const AddProducts = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
+    const [quantity, setQuantity] = useState('');
     const [image, setImage] = useState(null);
 
     const [imageError, setImageError] = useState('');
@@ -50,6 +51,7 @@ export const AddProducts = () => {
                 title,
                 description,
                 price: Number(price),
+                quantity: Number(quantity), // Added quantity
                 url
             });
 
@@ -57,6 +59,7 @@ export const AddProducts = () => {
             setTitle('');
             setDescription('');
             setPrice('');
+            setQuantity(''); // Clear quantity field
             document.getElementById('file').value = '';
             setImageError('');
             setUploadError('');
@@ -102,6 +105,15 @@ export const AddProducts = () => {
                         required
                         onChange={(e) => setPrice(e.target.value)}
                         value={price}
+                    />
+                    <br />
+                    <label>Product Quantity</label> {/* Added quantity input field */}
+                    <input
+                        type="number"
+                        className="form-control"
+                        required
+                        onChange={(e) => setQuantity(e.target.value)}
+                        value={quantity}
                     />
                     <br />
                     <label>Upload Product Image</label>
