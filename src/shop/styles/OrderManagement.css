@@ -1,0 +1,96 @@
+/* OrderManagement.css */
+
+.order-management {
+    display: flex;
+  }
+  
+  .order-management-body {
+    flex-grow: 1;
+    padding-left: 20px; 
+  }
+  
+  .heading {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4d2800; /* Brown text color */
+    margin-bottom: 20px;
+  }
+  
+  /* Search and Filter */
+  .search-filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-filter input[type="text"],
+  .search-filter select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    width: auto;
+  }
+  
+  .search-filter input[type="text"]::placeholder {
+    color: #ccc;
+  }
+  
+  /* Orders Table */
+  .orders table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .orders th,
+  .orders td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .orders th {
+    background-color: #4d2800; /* Brown background color for table header */
+    color: #fff; /* White text color */
+  }
+  
+  
+  .orders td button {
+    background-color: #4d2800; /* Brown background color for buttons */
+    color: #fff; /* White text color */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+  }
+  
+  /* Pagination */
+  .pagination {
+    margin-top: 20px;
+  }
+  
+  .pagination ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  }
+  
+  .pagination li {
+    margin-right: 10px;
+  }
+  
+  .pagination button {
+    background-color: #4d2800; /* Brown background color for buttons */
+    color: #fff; /* White text color */
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    font-weight: bold;
+  }
+  

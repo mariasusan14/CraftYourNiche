@@ -82,9 +82,15 @@
     border: 1px solid #ccc;
   }
   
-  .table-row.heading .table-cell {
-    font-weight: bold;
+  .table-row.heading {
+    background-color: #4d2800; 
+    color: #fff;
+    font-size: small; 
   }
+
+  /* .table-row.heading .table-cell {
+    font-weight: bold;
+  } */
   
   .pagination {
     list-style-type: none;
