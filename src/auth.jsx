@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc, getDocs, query, where } from '@firebase/firestore';
-import { auth, db } from '../config/firebase';
+import { auth, db } from './config/firebase';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEnvelope, FaCheck, FaUserTag } from 'react-icons/fa';
 import './auth.css';
@@ -54,13 +54,12 @@ const Auth = () => {
           userId,
           fullName,
           email,
-          password,
           userType,
         });
 
         console.log('User document created in Firestore:', userDocRef.id);
         console.log('User signed up successfully!');
-        navigate(`/dashboard/${userId}`);
+        navigate(`/dashboardshop/${userId}`);
       }
     } catch (error) {
       console.error(error);
@@ -75,7 +74,7 @@ const Auth = () => {
       const userId = userCredential.user.uid;
 
       console.log('User logged in successfully!');
-      navigate(`/dashboard/${userId}`);
+      navigate(`/dashboardshop/${userId}`);
     } catch (error) {
       setError('Invalid email or password. Please try again.'); // Set login error message
       console.error(error);
