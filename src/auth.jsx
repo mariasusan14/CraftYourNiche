@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc, getDocs, query, where } from '@firebase/firestore';
+import { collection, addDoc, doc, setDoc, getDocs, query, where } from '@firebase/firestore';
 import { auth, db } from './config/firebase';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock, FaEnvelope, FaCheck, FaUserTag } from 'react-icons/fa';
+import { FaUser, FaLock, FaEnvelope, FaUserTag } from 'react-icons/fa';
 import './auth.css';
 
 const Auth = () => {
@@ -26,12 +26,11 @@ const Auth = () => {
   const checkExistingAccount = async () => {
     const userQuery = query(userRef, where('email', '==', email));
     const querySnapshot = await getDocs(userQuery);
-
     return !querySnapshot.empty;
   };
 
   const validateSignUpFields = () => {
-    return fullName&&email && password && confirmPassword === password;
+    return fullName && email && password && confirmPassword === password;
   };
 
   const submitUser = async () => {
@@ -45,13 +44,12 @@ const Auth = () => {
       } else {
         // Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
         // Get the user's UID from the authentication result
         const userId = userCredential.user.uid;
-
-        // Create user in Firestore with additional fields
-        const userDocRef = await addDoc(userRef, {
-          userId,
+        
+        // Create user document in Firestore with additional fields
+        const userDocRef = doc(userRef, userId);
+        await setDoc(userDocRef, {
           fullName,
           email,
           userType,
@@ -59,7 +57,23 @@ const Auth = () => {
 
         console.log('User document created in Firestore:', userDocRef.id);
         console.log('User signed up successfully!');
-        navigate(`/dashboardshop/${userId}`);
+        
+        // Store user data in additional collection based on userType
+        if (userType === 'customer') {
+          const customerRef = collection(db, 'customers');
+          await setDoc(doc(customerRef, userId), {
+            userId
+          });
+        } else if (userType === 'shop') {
+          const shopRef = collection(db, 'shops');
+          await setDoc(doc(shopRef, userId), {
+           userId
+          });
+        }
+
+        // Navigate to the respective dashboard based on userType
+        const destination = userType === 'customer' ? '/userdash' : '/shopdash';
+        navigate(destination);
       }
     } catch (error) {
       console.error(error);
@@ -69,7 +83,6 @@ const Auth = () => {
   const login = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
       // Get the user's UID from the authentication result
       const userId = userCredential.user.uid;
 
