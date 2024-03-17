@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../config/firebase';
+import { auth } from './config/firebase';
 import './dashboard.css'
 
 export const Dashboard = () => {
