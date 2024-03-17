@@ -2,8 +2,8 @@
 
 .order-management {
     display: flex;
-    background-color: #f3f3f3;
     
+    height: 100vh;
   }
   
   .order-management-body {

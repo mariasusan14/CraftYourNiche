@@ -1,7 +1,7 @@
 .inventory-management-container {
     font-family: Arial, sans-serif;
-    background-color: #f3f3f3;
     
+    height: 100vh;
     border-radius: 8px;
     display: flex;
   }
