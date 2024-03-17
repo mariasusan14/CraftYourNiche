@@ -55,8 +55,11 @@ const OrderManagement = () => {
       <Navbar />
       <div className="order-management-body">
         {/* Heading */}
+        <br />
+        <br />
         <div className="heading">Orders</div>
-
+        <hr />
+        <br />
         {/* Search and Filter */}
         <div className="search-filter">
           <input

@@ -77,7 +77,11 @@ const InventoryManagement = () => {
     <section className="inventory-management-container">
       <Navbar/>
       <div className="inventory-management-body">
+      <br />
+      <br />
       <h2>Inventory Management</h2>
+      <hr />
+      <br />
       <div className="search">
         <input
           type="text"

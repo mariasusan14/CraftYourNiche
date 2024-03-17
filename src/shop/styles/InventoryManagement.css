@@ -9,6 +9,7 @@
   .navbar {
     width: 200px;
     flex-shrink: 0; 
+    height: 100%;
   }
   
   .inventory-management-body {
