@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { storage, db, auth } from '../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, Timestamp, doc, setDoc } from 'firebase/firestore';
 import Navbar from './navbar';
 import './styles/AddProduct.css';
 
@@ -45,16 +45,21 @@ export const AddProducts = () => {
 
         const storageRef = ref(storage, `product-images/${image.name}`);
         const userId = auth.currentUser.uid;
+
         try {
+            // Upload image to storage
             await uploadBytes(storageRef, image);
             const url = await getDownloadURL(storageRef);
 
-            await addDoc(collection(db, `shops/${userId}/products`), {
+            // Add product to Firestore
+            const productRef = doc(collection(db, `shops/${userId}/products`)); // Reference to new document
+            await setDoc(productRef, {
+                productId: productRef.id, // Assigning product ID as document ID
                 title,
                 description,
                 price: Number(price),
-                quantity: Number(quantity), 
-                category: category === 'Other' ? otherCategory : category, // Assign custom category if "Other" is chosen
+                quantity: Number(quantity),
+                category: category === 'Other' ? otherCategory : category,
                 url
             });
 
@@ -62,7 +67,7 @@ export const AddProducts = () => {
             setTitle('');
             setDescription('');
             setPrice('');
-            setQuantity(''); 
+            setQuantity('');
             setCategory('');
             setOtherCategory('');
             document.getElementById('file').value = '';
