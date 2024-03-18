@@ -11,6 +11,8 @@ export const AddProducts = () => {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
     const [image, setImage] = useState(null);
+    const [category, setCategory] = useState('');
+    const [otherCategory, setOtherCategory] = useState('');
 
     const [imageError, setImageError] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -51,7 +53,8 @@ export const AddProducts = () => {
                 title,
                 description,
                 price: Number(price),
-                quantity: Number(quantity), // Added quantity
+                quantity: Number(quantity), 
+                category: category === 'Other' ? otherCategory : category, // Assign custom category if "Other" is chosen
                 url
             });
 
@@ -59,7 +62,9 @@ export const AddProducts = () => {
             setTitle('');
             setDescription('');
             setPrice('');
-            setQuantity(''); // Clear quantity field
+            setQuantity(''); 
+            setCategory('');
+            setOtherCategory('');
             document.getElementById('file').value = '';
             setImageError('');
             setUploadError('');
@@ -107,7 +112,7 @@ export const AddProducts = () => {
                         value={price}
                     />
                     <br />
-                    <label>Product Quantity</label> {/* Added quantity input field */}
+                    <label>Product Quantity</label> 
                     <input
                         type="number"
                         className="form-control"
@@ -115,6 +120,45 @@ export const AddProducts = () => {
                         onChange={(e) => setQuantity(e.target.value)}
                         value={quantity}
                     />
+                    <br />
+                    <label>Product Category</label>
+                    <select
+                        className="form-control"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                    >
+                        <option value="">Select Category</option>
+                        <option value="Handmade Jewelry">Handmade Jewelry</option>
+                        <option value="Phone Cases">Phone Cases</option>
+                        <option value="Embroidery Art">Embroidery Art</option>
+                        <option value="Paintings">Paintings</option>
+                        <option value="Pot Art">Pot Art</option>
+                        <option value="Pottery">Pottery</option>
+                        <option value="Handmade Soaps">Handmade Soaps</option>
+                        <option value="Handmade Candles">Handmade Candles</option>
+                        <option value="Handmade Clothing">Handmade Clothing</option>
+                        <option value="Woodwork">Woodwork</option>
+                        <option value="Metalwork">Metalwork</option>
+                        <option value="Glass Art">Glass Art</option>
+                        <option value="Leather Goods">Leather Goods</option>
+                        <option value="Paper Crafts">Paper Crafts</option>
+                        <option value="Textile Crafts">Textile Crafts</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    {category === 'Other' && (
+                        <>
+                            <br />
+                            <label>Custom Category</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                required
+                                value={otherCategory}
+                                onChange={(e) => setOtherCategory(e.target.value)}
+                            />
+                        </>
+                    )}
                     <br />
                     <label>Upload Product Image</label>
                     <input type="file" id="file" className="form-control" required onChange={handleProductImg} />

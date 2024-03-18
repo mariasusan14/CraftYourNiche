@@ -1,22 +1,24 @@
 /* AddProduct.css */
 
 .container {
-  display: flex; 
+  display: flex;
   height: 100vh;
 }
 
 .addprod {
-  flex: 1; 
-  padding: 20px;
+  flex: 1;
+  padding: 15px;
+  padding-top: 0px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: white;
- 
+  margin-top: 0px;
 }
 
 .addprod h1 {
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+margin-top: 0px;
 }
 
 .addprod form label {
@@ -25,8 +27,9 @@
 
 .addprod form input[type="text"],
 .addprod form input[type="number"],
-.addprod form input[type="file"] {
-  width: 100%;
+.addprod form input[type="file"],
+.addprod form select {
+  width: 99%;
   padding: 10px;
   margin-top: 5px;
   margin-bottom: 15px;
@@ -36,6 +39,14 @@
 
 .addprod form .btn {
   padding: 10px 20px;
+  background-color: #4d2800;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.addprod form .btn:hover {
+  background-color: #915617;
 }
 
 .success-msg,
@@ -53,12 +64,4 @@
 .error-msg {
   color: red;
   background-color: #f7d3d3;
-}
-
-.btn {
-background-color: #4d2800;
-}
-
-.btn:hover{
-  background-color: #915617;
 }
