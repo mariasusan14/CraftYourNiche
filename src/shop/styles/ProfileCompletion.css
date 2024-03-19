@@ -1,0 +1,71 @@
+/* ProfileCompletion.css */
+
+.container {
+  display: flex;
+  padding-right: 20px;
+}
+
+.profile-completion {
+  flex: 1;
+  padding: 20px;
+}
+
+h2 {
+  color: #4d2800; /* Brown text color */
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #f5f5f5; /* Light grey background color */
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.progress {
+  height: 100%;
+  background-color: #38bb34; /* Brown color */
+  border-radius: 5px;
+}
+
+.verification-steps {
+  margin-bottom: 20px;
+}
+
+.verification-step {
+  margin-bottom: 15px;
+}
+
+label {
+  color: #4d2800; /* Brown text color */
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type='text'],
+input[type='file'] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type='submit'] {
+  background-color: #4d2800; /* Brown color */
+  color: #fff; /* White text color */
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type='submit']:disabled {
+  background-color: #ccc; /* Grey color for disabled button */
+  cursor: not-allowed;
+}
+
+button[type='submit']:hover:not([disabled]) {
+  background-color: #634a00; /* Darker brown color on hover */
+}
