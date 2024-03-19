@@ -72,7 +72,7 @@ const Auth = () => {
         }
 
         // Navigate to the respective dashboard based on userType
-        const destination = userType === 'customer' ? '/userdash' : '/shopdash';
+        const destination = userType === 'customer' ? '/userdash' : '/verification';
         navigate(destination);
       }
     } catch (error) {
