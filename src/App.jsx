@@ -8,6 +8,7 @@ import { ShopDashboard } from "./shop/ShopDashboard";
 import { AddProducts } from "./shop/AddProduct";
 import OrderManagement from "./shop/OrderManagement";
 import ProfileCompletion from "./shop/ProfileCompletion";
+import { Customization } from "./shop/Customization";
 
 const App = () => {
   return(
@@ -20,8 +21,9 @@ const App = () => {
         <Route path="/userdash" element={<UserDashboard/>}/>
         <Route path="/inventory" element={<InventoryManagement/>}/>
         <Route path="/orders" element={<OrderManagement/>}/>
-        <Route path="/addproduct" element={<AddProducts />}/>
-        <Route path="/verification" element={<ProfileCompletion />}/>        
+        <Route path="/addproduct" element={<AddProducts/>}/>
+        <Route path="/verification" element={<ProfileCompletion/>}/>   
+        <Route path="/customization" element={<Customization/>}/>     
       </Routes> 
       
     </div>

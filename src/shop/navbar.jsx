@@ -21,7 +21,10 @@ const Navbar = () => {
         <li><FaChartLine /> Analytics</li>
         <li><FaUsers /> Customers</li>
         <li><FaHandsHelping /> Collaborations</li>
+        <Link to="/customization" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaPaintBrush /> Customization</li>
+        </Link>
+     
         <li><FaIdCard /> Verification</li>
         <li><FaSignOutAlt /> Logout</li>
       </ul>
