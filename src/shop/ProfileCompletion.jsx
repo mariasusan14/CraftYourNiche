@@ -12,16 +12,17 @@ const ProfileCompletion = () => {
   const [isComplete, setIsComplete] = useState(false);
 
   // Function to update profile completion progress
+  
   const updateProfileCompletion = () => {
-    const fieldsFilled = shopName !== '' && tagline !== '' && logo !== null && shopAddress !== '';
-    setIsComplete(fieldsFilled);
-    if (fieldsFilled) {
-      setProfileCompletion(100);
-    } else {
-      setProfileCompletion(0);
-    }
+    let filledFields = 0;
+    if (shopName !== '') filledFields++;
+    if (tagline !== '') filledFields++;
+    if (logo !== null) filledFields++;
+    if (shopAddress !== '') filledFields++;
+    const progress = filledFields * 25;
+    setIsComplete(filledFields === 4);
+    setProfileCompletion(progress);
   };
-
   // useEffect hook to update profile completion whenever any field changes
   useEffect(() => {
     updateProfileCompletion();
@@ -55,9 +56,9 @@ const ProfileCompletion = () => {
       <br />
       <h2>Profile Completion</h2>
       <hr />
-      {/* <div className="progress-bar">
+      <div className="progress-bar">
         <div className="progress" style={{ width: `${profileCompletion}%` }}></div>
-      </div> */}
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="verification-steps">
           {/* Shop Name */}

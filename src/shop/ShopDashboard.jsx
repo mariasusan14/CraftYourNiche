@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './header';
+
 import Footer from './footer';
 // import ProductManagement from './ProductManagement';
 // import OrderManagement from './OrderManagement';
@@ -9,13 +9,14 @@ import Footer from './footer';
 // import CollaborationPlatform from './CollaborationPlatform';
 // import CustomizationAcceptReject from './CustomizationAcceptReject';
 // import ProfileCompletion from './ProfileCompletion';
+// import { AddProducts } from './AddProduct';
  import Navbar from './navbar';
-import { AddProducts } from './AddProduct';
+
 
 export const ShopDashboard = () => {
   return (
     <div className="dashboard-container">
-      <Header />
+      
       
       <div className="content">
       <Navbar/>

@@ -5,6 +5,11 @@ import './styles/navbar.css'
 const Navbar = () => {
   return (
     <nav className="navbar">
+    <header>
+      <div className="logo">Your Shop Logo</div>
+      <div className="shop-name">Your Shop Name</div>
+    </header>
+    <br />
       <ul>
         <li><FaHome /> Dashboard</li>
         <Link to="/addproduct" style={{textDecoration: 'none', color: 'white'}}>

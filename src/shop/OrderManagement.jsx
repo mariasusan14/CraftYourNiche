@@ -5,18 +5,14 @@ import './styles/OrderManagement.css'; // Import CSS file for styling
 const OrderManagement = () => {
   // Dummy data for orders
   const [orders, setOrders] = useState([
-    { id: 1, invoiceNo: 'INV001', orderTime: '2024-03-10 10:00 AM', customerName: 'John Doe', method: 'Credit Card', amount: 100, status: 'Pending' },
-    { id: 2, invoiceNo: 'INV002', orderTime: '2024-03-11 11:00 AM', customerName: 'Jane Smith', method: 'PayPal', amount: 150, status: 'Delivered' },
-    { id: 3, invoiceNo: 'INV003', orderTime: '2024-03-12 12:00 PM', customerName: 'Alice Johnson', method: 'Cash on Delivery', amount: 200, status: 'Processing' },
-    { id: 4, invoiceNo: 'INV004', orderTime: '2024-03-13 01:00 PM', customerName: 'Bob Brown', method: 'Credit Card', amount: 120, status: 'Pending' },
-    { id: 5, invoiceNo: 'INV005', orderTime: '2024-03-14 02:00 PM', customerName: 'Emily Davis', method: 'PayPal', amount: 180, status: 'Delivered' },
-    { id: 6, invoiceNo: 'INV006', orderTime: '2024-03-15 03:00 PM', customerName: 'David Wilson', method: 'Cash on Delivery', amount: 220, status: 'Processing' },
-    { id: 7, invoiceNo: 'INV007', orderTime: '2024-03-16 04:00 PM', customerName: 'Sarah Martinez', method: 'Credit Card', amount: 130, status: 'Pending' },
-    { id: 8, invoiceNo: 'INV008', orderTime: '2024-03-17 05:00 PM', customerName: 'Michael Anderson', method: 'PayPal', amount: 190, status: 'Delivered' },
-    { id: 9, invoiceNo: 'INV009', orderTime: '2024-03-18 06:00 PM', customerName: 'Olivia Taylor', method: 'Cash on Delivery', amount: 240, status: 'Processing' },
-    { id: 10, invoiceNo: 'INV010', orderTime: '2024-03-19 07:00 PM', customerName: 'James White', method: 'Credit Card', amount: 140, status: 'Pending' },
+    { id: 1, invoiceNo: 'INV001', address: 'Kochi, India', orderTime: '2024-03-10 10:00 AM', customerName: 'John Doe', method: 'Credit Card', amount: 100, status: 'Pending', products: [{ name: 'Product 1', quantity: 2, price: 50 }, { name: 'Product 2', quantity: 1, price: 50 }] },
+    { id: 2, invoiceNo: 'INV002', address: 'Thrissur, India', orderTime: '2024-03-11 11:00 AM', customerName: 'Jane Smith', method: 'PayPal', amount: 150, status: 'Delivered', products: [{ name: 'Product 3', quantity: 3, price: 50 }, { name: 'Product 4', quantity: 1, price: 100 }] },
+    // Add more orders as needed
   ]);
-  
+
+  // State to track which order's invoice is being viewed
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5; // Number of orders per page
@@ -48,6 +44,17 @@ const OrderManagement = () => {
       return order;
     });
     setOrders(updatedOrders);
+  };
+
+  // Function to handle viewing invoice
+  const viewInvoice = (orderId) => {
+    const order = orders.find(order => order.id === orderId);
+    setSelectedOrder(order);
+  };
+
+  // Function to close the invoice modal
+  const closeInvoiceModal = () => {
+    setSelectedOrder(null);
   };
 
   return (
@@ -109,7 +116,9 @@ const OrderManagement = () => {
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </td>
-                  <td><button >View Invoice</button></td>
+                  <td>
+                    <button onClick={() => viewInvoice(order.id)}>View Invoice</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -127,6 +136,48 @@ const OrderManagement = () => {
           </ul>
         </div>
       </div>
+      {/* Invoice Modal */}
+      {selectedOrder && (
+        <div className="invoice-modal">
+          <div className="invoice-content">
+            <span className="close" onClick={closeInvoiceModal}>&times;</span>
+            <h2 className="invoice-title">Invoice</h2>
+            <div className="invoice-details">
+              <p><strong>Invoice No:</strong> {selectedOrder.invoiceNo}</p>
+              <p><strong>Order Time:</strong> {selectedOrder.orderTime}</p>
+              <p><strong>Customer Name:</strong> {selectedOrder.customerName}</p>
+              <p><strong>Address:</strong> {selectedOrder.address}</p>
+              <p><strong>Payment Method:</strong> {selectedOrder.method}</p>
+            </div>
+            <table className="invoice-table">
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedOrder.products.map((product, index) => (
+                  <tr key={index}>
+                    <td>{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td>Rs {product.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="invoice-total">
+              <p><strong>Total Amount:</strong> Rs {selectedOrder.amount}</p>
+              <p><strong>Total Amount with Tax:</strong> Rs {(selectedOrder.amount * 1.02).toFixed(2)}</p>          
+
+            </div>
+          </div>
+        </div>
+      )}
+
+        
+      
     </section>
   );
 };
