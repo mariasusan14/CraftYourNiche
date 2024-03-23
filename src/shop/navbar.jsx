@@ -2,13 +2,11 @@ import React from 'react';
 import { FaShoppingBag,FaHome, FaClipboardList, FaBoxOpen, FaChartLine, FaUsers, FaHandsHelping, FaPaintBrush, FaIdCard, FaSignOutAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import './styles/navbar.css'
+import Header from './header';
 const Navbar = () => {
   return (
     <nav className="navbar">
-    <header>
-      <div className="logo">Your Shop Logo</div>
-      <div className="shop-name">Your Shop Name</div>
-    </header>
+    <Header/>
     <br />
       <ul>
         <li><FaHome /> Dashboard</li>
