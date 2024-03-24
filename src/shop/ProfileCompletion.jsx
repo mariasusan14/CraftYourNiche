@@ -41,7 +41,7 @@ const ProfileCompletion = () => {
     // You can perform form validation here before submitting
     if (isComplete) {
       // Navigate to dashboard page
-      window.location.href = '/dashboard';
+      window.location.href = '/shopdash';
       console.log('Navigating to dashboard...');
     } else {
       console.log('Please complete all fields.');

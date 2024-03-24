@@ -71,8 +71,8 @@ const Auth = () => {
           });
         }
 
-        // Navigate to the respective dashboard based on userType
-        const destination = userType === 'customer' ? '/userdash' : '/verification';
+        // Navigation based on userType
+        const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/verification' : '/details');
         navigate(destination);
       }
     } catch (error) {
@@ -83,7 +83,7 @@ const Auth = () => {
   const login = async () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Get the user's UID from the authentication result
+      
       const userId = userCredential.user.uid;
   
       // Get user data to determine userType
@@ -91,13 +91,13 @@ const Auth = () => {
       const userData = userDoc.data();
       const userType = userData.userType;
   
-      // Navigate to the respective dashboard based on userType
-      const destination = userType === 'customer' ? '/userdash' : '/shopdash';
+      // Navigation based on userType
+      const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/shopdash':'/collabdash');
       navigate(destination);
   
       console.log('User logged in successfully!');
     } catch (error) {
-      setError('Invalid email or password. Please try again.'); // Set login error message
+      setError('Invalid email or password. Please try again.');
       console.error(error);
     }
   };
