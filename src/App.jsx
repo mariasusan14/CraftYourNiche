@@ -9,6 +9,7 @@ import { AddProducts } from "./shop/AddProduct";
 import OrderManagement from "./shop/OrderManagement";
 import ProfileCompletion from "./shop/ProfileCompletion";
 import { Customization } from "./shop/Customization";
+import Product from "./ProductPage/Product";
 
 const App = () => {
   return(
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/addproduct" element={<AddProducts/>}/>
         <Route path="/verification" element={<ProfileCompletion/>}/>   
         <Route path="/customization" element={<Customization/>}/>     
+        <Route path="/product" element={<Product/>}/>     
       </Routes> 
       
     </div>

@@ -19,9 +19,21 @@
     font-size: 18px;
     gap: 90px;
 }
+
 .nav-contact{
     border-radius: 50px;
     padding:10px 38px;
     background: #fff;
     color: #262626;
+}
+
+.nav-products--dropdown{
+    position: absolute;
+    padding-top: 30px;
+}
+
+.nav-products--dropdownitem{
+
+    border-bottom: #EEEEEE solid 1px;
+
 }
