@@ -1,7 +1,7 @@
 // Navbar.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';
-
+import {Link} from 'react-router-dom'
 // ... rest of the component
 
 export const Navbar = () => {
@@ -12,6 +12,7 @@ export const Navbar = () => {
         <li>Home</li>
         <li>Explore</li>
         <li>About</li>
+        <li><Dropdown/></li>
         <li className='nav-contact'>Contact</li>
       </ul>
     </div>
@@ -19,3 +20,28 @@ export const Navbar = () => {
 };
 
 export default Navbar;
+
+function Dropdown(){
+  const [open,setOpen] = useState(false)
+
+  return (
+    <div onMouseEnter={()=>{setOpen(!open)}} onMouseLeave={()=>{setOpen(!open)}}>
+      Products
+      {open && (
+      <div className='nav-products--dropdown'>
+        <DropdownItem value="Traditional" link="https://www.youtube.com"/>
+        <DropdownItem value="Modern"/>
+      </div>
+      )}
+    </div>
+  
+      )
+
+}
+function DropdownItem({value,link}){
+  return(
+    <ul>
+      <Link to={link}><div className='nav-products--dropdownitem'>{value}</div></Link>
+    </ul>
+  )
+}

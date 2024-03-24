@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Navbar from './navbar';
 import { db } from '../config/firebase'; // Import your Firebase configuration
 
 export const Customization = () => {
@@ -9,16 +10,23 @@ export const Customization = () => {
     const [orderCost, setOrderCost] = useState(''); // State variable to store order cost
 
     // Function to fetch orders from Firestore
-    const fetchOrders = async () => {
-        try {
-            const ordersRef = db.collection('customisation'); // Reference to the 'customisation' collection
-            const snapshot = await ordersRef.get(); // Fetch data from Firestore
-            const ordersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Map data to array of orders
-            setOrders(ordersData); // Update state with fetched orders
-        } catch (error) {
-            console.error('Error fetching orders:', error);
+ // Function to fetch orders from Firestore
+const fetchOrders = async () => {
+    try {
+        const userId = auth.currentUser.uid;
+        const orderDoc = doc(db, `shops/${userId}/customisation`, 'orderId'); // Replace 'orderId' with the ID of the document you want to fetch
+        const snapshot = await getDoc(orderDoc);
+        if (snapshot.exists()) {
+            const orderData = { id: snapshot.id, ...snapshot.data() }; // Map data to the order object
+            setOrders([orderData]); // Update state with fetched order
+        } else {
+            console.error('No such order found');
         }
-    };
+    } catch (error) {
+        console.error('Error fetching order:', error);
+    }
+};
+
 
     // Function to handle view order button click
     const onViewOrderClick = (orderId) => {
@@ -33,7 +41,7 @@ export const Customization = () => {
     const onAcceptOrderClick = async () => {
         try {
             // Update Firestore with reply comment and order cost
-            await db.collection('customisation').doc(selectedOrder.id).update({
+            await db.collection('customization').doc(selectedOrder.id).update({
                 replyComment,
                 orderCost,
                 status: 'accepted' // Assuming status changes to 'accepted' after accepting the order
@@ -74,7 +82,7 @@ export const Customization = () => {
         const newActivity = e.target.value;
         try {
             // Update Firestore with the new activity
-            await db.collection('customisation').doc(orderId).update({
+            await db.collection('customization').doc(orderId).update({
                 activity: newActivity
             });
             // Fetch orders again to update the UI
@@ -84,8 +92,14 @@ export const Customization = () => {
         }
     };
 
+    useEffect(() => {
+        // Fetch orders when component mounts
+        fetchOrders();
+    }, []);
+
     return (
         <div>
+            <Navbar />
             <h2>Customization Orders</h2>
             {renderOrders()}
             {/* Modal to display order details */}
@@ -102,6 +116,8 @@ export const Customization = () => {
         </div>
     );
 };
+
+
 
 
 

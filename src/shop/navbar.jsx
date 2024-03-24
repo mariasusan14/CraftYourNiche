@@ -1,9 +1,23 @@
 import React from 'react';
 import { FaShoppingBag,FaHome, FaClipboardList, FaBoxOpen, FaChartLine, FaUsers, FaHandsHelping, FaPaintBrush, FaIdCard, FaSignOutAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import './styles/navbar.css'
+import { auth } from '../config/firebase';
 import Header from './header';
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Sign out the user using Firebase authentication
+      await auth.signOut();
+
+      // Redirect to the login page or any other page after logout
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
   return (
     <nav className="navbar">
     <Header/>
@@ -29,7 +43,7 @@ const Navbar = () => {
         </Link>
      
         <li><FaIdCard /> Verification</li>
-        <li><FaSignOutAlt /> Logout</li>
+        <li onClick={handleLogout}><FaSignOutAlt /> Logout</li>
       </ul>
     </nav>
   );
