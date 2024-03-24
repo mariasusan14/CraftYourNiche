@@ -26,6 +26,14 @@
     background: #fff;
     color: #262626;
 }
+.nav-contact:hover{
+    color: #ffffff;
+}
+
+.nav-contact--link{
+    color: inherit;
+    text-decoration: none;
+}
 
 .nav-products--dropdown{
     position: absolute;
