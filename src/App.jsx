@@ -28,7 +28,8 @@ const App = () => {
         <Route path="/verification" element={<ProfileCompletion/>}/>   
         <Route path="/customization" element={<Customization/>}/>     
         <Route path="/product" element={<Product/>}/>     
-        <Route path="/productlisting" element={<ProductListing/>}/>     
+        <Route path="/productlisting" element={<ProductListing/>}/>
+        <Route path="/collabdash" element={<CollabDash/>}/>  
       </Routes> 
       
     </div>
