@@ -1,0 +1,25 @@
+.job {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    
+  }
+  
+  .job h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .job p {
+    margin-bottom: 10px;
+  }
+  
+  .job p strong {
+    font-weight: bold;
+  }
+  
+  .job p:last-child {
+    margin-bottom: 0;
+  }
+  

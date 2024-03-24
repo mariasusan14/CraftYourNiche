@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './styles/ProfileCompletion.css'
-import Navbar from './navbar';
+
 
 const ProfileCompletion = () => {
   // State to track profile completion progress
@@ -9,6 +9,7 @@ const ProfileCompletion = () => {
   const [tagline, setTagline] = useState('');
   const [logo, setLogo] = useState(null);
   const [shopAddress, setShopAddress] = useState('');
+  const [acceptCustomisation, setAcceptCustomisation] = useState('');
   const [isComplete, setIsComplete] = useState(false);
 
   // Function to update profile completion progress
@@ -19,14 +20,15 @@ const ProfileCompletion = () => {
     if (tagline !== '') filledFields++;
     if (logo !== null) filledFields++;
     if (shopAddress !== '') filledFields++;
-    const progress = filledFields * 25;
-    setIsComplete(filledFields === 4);
+    if (acceptCustomisation !== '') filledFields++;
+    const progress = filledFields * 20;
+    setIsComplete(filledFields === 5);
     setProfileCompletion(progress);
   };
   // useEffect hook to update profile completion whenever any field changes
   useEffect(() => {
     updateProfileCompletion();
-  }, [shopName, tagline, logo, shopAddress]);
+  }, [shopName, tagline, logo, shopAddress, acceptCustomisation]);
 
   // Function to handle logo upload
   const handleLogoUpload = (event) => {
@@ -105,6 +107,20 @@ const ProfileCompletion = () => {
               required
             />
           </div>
+          {/* Accept Customisation */}
+          <div className="verification-step">
+              <label htmlFor="acceptCustomisation">Accept Customisation:</label>
+              <select
+                id="acceptCustomisation"
+                value={acceptCustomisation}
+                onChange={(e) => setAcceptCustomisation(e.target.value)}
+                required
+              >
+                <option value="">Select an option</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
         </div>
         {/* Submit Button */}
         <button type="submit" className={isComplete ? 'complete-button' : 'incomplete-button'} disabled={!isComplete}>

@@ -1,0 +1,19 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center; /* Center the heading */
+  }
+  
+  .job-list {
+    display: grid; /* Change to grid to arrange items in a grid */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Create a grid with flexible columns */
+    gap: 20px; /* Add gap between grid items */
+    justify-content: center; /* Center grid items horizontally */
+  }
+  

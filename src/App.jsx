@@ -10,6 +10,7 @@ import OrderManagement from "./shop/OrderManagement";
 import ProfileCompletion from "./shop/ProfileCompletion";
 import { Customization } from "./shop/Customization";
 import Product from "./ProductPage/Product";
+import CollabDash from "./collab/collabdash";
 
 const App = () => {
   return(
@@ -25,7 +26,8 @@ const App = () => {
         <Route path="/addproduct" element={<AddProducts/>}/>
         <Route path="/verification" element={<ProfileCompletion/>}/>   
         <Route path="/customization" element={<Customization/>}/>     
-        <Route path="/product" element={<Product/>}/>     
+        <Route path="/product" element={<Product/>}/> 
+        <Route path="/collabdash" element={<CollabDash/>}/>     
       </Routes> 
       
     </div>
