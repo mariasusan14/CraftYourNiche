@@ -1,0 +1,40 @@
+.product-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    
+  }
+  
+  .product-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .product-details {
+    margin-top: 16px;
+  }
+  
+  .product-name {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .product-price {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .product-rating {
+    margin-top: 8px;
+  }
+  
+  .product-rating .star {
+    color: #ffd700; /* Gold color */
+    font-size: 20px;
+  }
+  

@@ -1,0 +1,29 @@
+.creview-container{
+    height: fit-content;
+    width:500px;
+    background-color: #EDEDE9;
+    border: white solid 0px;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.creview-cdetails{
+    display : flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+}
+
+.creview-avatar--container{
+    height: 45px;
+    width: 45px;
+}
+
+.creview-avatar{
+    height:100%;
+    width: 100%;
+    object-fit: cover;
+    border: 0px;
+    border: 0px;
+    border-radius: 22.5px;
+}

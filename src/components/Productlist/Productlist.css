@@ -1,0 +1,6 @@
+.productlist{
+    display: flex ;
+    flex-direction: row;
+    overflow: hidden;
+    border: #EEEEEE solid 1px;
+}

@@ -16,3 +16,13 @@ button {
 button:hover {
     background-color: #7f9d37;
 }
+
+.dash-mainsection{
+    display: flex;
+    flex-direction: column;
+}
+
+.dash-mainsection--latestproducts{
+    display: flex;
+    flex-direction: row;
+}
