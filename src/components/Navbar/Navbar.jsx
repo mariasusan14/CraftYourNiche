@@ -13,7 +13,7 @@ export const Navbar = () => {
         <li>Explore</li>
         <li>About</li>
         <li><Dropdown/></li>
-        <li className='nav-contact'>Contact</li>
+        <li className='nav-contact'><Link className='nav-contact--link' to="/customersupport">Contact</Link></li>
       </ul>
     </div>
   );
