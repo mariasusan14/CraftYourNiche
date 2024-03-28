@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './navbar';
-import { db } from '../config/firebase'; // Import your Firebase configuration
+import { db,auth } from '../config/firebase'; // Import your Firebase configuration
+import { doc } from 'firebase/firestore';
 
 export const Customization = () => {
     // Define state variables
