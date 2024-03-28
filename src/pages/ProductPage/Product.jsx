@@ -1,10 +1,11 @@
-import Navbar from "../components/Navbar/Navbar";
-import image1 from "../assets/image1.jpg";
-import image2 from "../assets/image2.jpg";
-import image3 from "../assets/image3.jpg";
+import Navbar from "../../components/Navbar/Navbar";
+
+import image1 from "../../assets/image1.jpg";
+import image2 from "../../assets/image2.jpg";
+import image3 from "../../assets/image3.jpg";
 import "./Product.css";
 import "./CustomerReview.css";
-import Review from "../components/Review/Review";
+import Review from "../../components/Review/Review";
 import { useState } from "react";
 
 

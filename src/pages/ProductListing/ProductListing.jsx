@@ -7,8 +7,9 @@ import {
   DropdownMenu,
   RadioGroup,
 } from "@radix-ui/themes";
-import Navbar from "../components/Navbar/Navbar";
-import ProductCard from "../components/ProductCard/ProductCard";
+import Navbar from "../../components/Navbar/Navbar";
+
+import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductListing.css";
 import { useEffect, useState } from "react";
 

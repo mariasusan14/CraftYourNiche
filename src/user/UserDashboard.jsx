@@ -1,28 +1,26 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
-import './UserDashboard.css'
+import './UserDashboard.css';
 import Navbar from '../components/Navbar/Navbar';
-import Productlist from '../components/Productlist/Productlist';
 
+// Importing the Productlist component
+import Productlist from '../components/Productlist/Productlist';
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
 
-
   const handleLogout = async () => {
     try {
-      // Sign out the user using Firebase authentication
       await auth.signOut();
-
-      // Redirect to the login page or any other page after logout
-      navigate('/auth');
+      navigate('/auth'); // Redirect to the authentication page after logout
     } catch (error) {
       console.error('Error during logout:', error);
     }
   };
 
-  let products=[
+  // Sample product data
+  let products = [
     {
       id: 1,
       name: 'Product 1',
@@ -38,24 +36,36 @@ export const UserDashboard = () => {
       rating: 5,
     },
     // Add more products as needed
-  ]
+  ];
 
   return (
     <div>
-      <Navbar/>
-      
+      <Navbar />
       <h1>Hello, Welcome to the Dashboard!</h1>
-
       <button onClick={handleLogout}>Logout</button>
-      <div className='dash-mainsection'>
-      <div>Latest</div>
-      <hr/>
-      <div className='dash-mainsection--latestproducts'>
-        <Productlist product={products}/>
+
+      {/* Navigation links to different pages */}
+      <div>
+        <button onClick={() => navigate('/profile')}>Profile</button>
+        <button onClick={() => navigate('/shopping-cart')}>Shopping Cart</button>
+        <button onClick={() => navigate('/order-management')}>Order Management</button>
+        <button onClick={() => navigate('/wishlist')}>Wishlist</button>
+        <button onClick={() => navigate('/customer-support')}>Customer Support</button>
+        <button onClick={() => navigate('/product-listing')}>Product Listing</button>
+        <hr />
       </div>
-    </div>
+
+      {/* Main section with latest products */}
+      <div className='dash-mainsection'>
+        <div>Latest</div>
+        <hr />
+        <div className='dash-mainsection--latestproducts'>
+          {/* Passing product data to Productlist component */}
+          <Productlist product={products} />
+        </div>
+      </div>
     </div>
   );
 };
 
-
+export default UserDashboard;
