@@ -37,7 +37,9 @@ const Navbar = () => {
         
         <li><FaChartLine /> Analytics</li>
         <li><FaUsers /> Customers</li>
+        <Link to="/collabdashshop">
         <li><FaHandsHelping /> Collaborations</li>
+        </Link>
         <Link to="/customization" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaPaintBrush /> Customization</li>
         </Link>

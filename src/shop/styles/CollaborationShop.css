@@ -1,0 +1,130 @@
+.container {
+  
+  display: flex;
+  
+}
+.navbar {
+  width: 200px;
+  flex-shrink: 0; 
+  height: 100%;
+  padding: 0;
+}
+.collab {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+/* .collaboration-platform {
+  margin-left: 20px; 
+  background-color: #218838
+} */
+
+.collaboration-request-form {
+  margin-bottom: 20px;
+}
+
+.collaboration-request-form .form-group {
+  margin-bottom: 15px;
+}
+
+.collaboration-request-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.collaboration-request-form input[type="text"],
+.collaboration-request-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.collaboration-request-form textarea {
+  resize: vertical;
+}
+
+.collaboration-request-form button {
+  background-color: #4d2800;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.collaboration-request-form button:hover {
+  background-color: #522b00;
+}
+
+.collaboration-requests ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.collaboration-requests li {
+  margin-bottom: 20px;
+}
+
+.collaboration-requests li .request-details {
+  margin-bottom: 10px;
+}
+
+.collaboration-requests li .request-details h3 {
+  margin-bottom: 5px;
+}
+
+.collaboration-requests li button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.collaboration-requests li button:hover {
+  background-color: #218838;
+}
+
+.responses-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.responses-modal h2 {
+  margin-bottom: 20px;
+}
+
+.responses-modal ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.responses-modal li {
+  margin-bottom: 20px;
+}
+
+.responses-modal li .response-details {
+  margin-bottom: 10px;
+}
+
+.responses-modal li button {
+  margin-left: 10px;
+}
+
+.responses-modal li .response-actions {
+  display: flex;
+}
+
+.responses-modal li .response-actions button {
+  margin-right: 10px;
+}

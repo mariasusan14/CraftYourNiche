@@ -13,6 +13,7 @@ import Product from "./ProductPage/Product";
 import CollabDash from "./collab/collabdash";
 import ProductListing from "./ProductListing/ProductListing";
 import CustomerSupport from "./CustomerSupport/CustomerSupport";
+import CollaborationPlatform from "./shop/CollaborationPlatform";
 
 const App = () => {
   return(
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/product" element={<Product/>}/>     
         <Route path="/productlisting" element={<ProductListing/>}/>
         <Route path="/collabdash" element={<CollabDash/>}/>  
+        <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
         <Route path="/customersupport" element={<CustomerSupport/>}/>  
       </Routes> 
       
