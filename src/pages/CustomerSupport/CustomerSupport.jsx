@@ -1,4 +1,5 @@
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
+
 import { Flex, Text, Button, TextField, TextArea, Box } from "@radix-ui/themes";
 
 export default function CustomerSupport() {
