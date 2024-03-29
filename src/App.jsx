@@ -14,6 +14,9 @@ import CollabDash from "./collab/collabdash";
 import ProductListing from "./pages/ProductListing/ProductListing";
 import CustomerSupport from "./pages/CustomerSupport/CustomerSupport";
 import CollaborationPlatform from "./shop/CollaborationPlatform";
+import CollabDetails from "./collab/collabDetails";
+import CollabProfile from "./collab/CollabProfile";
+import CollabRequests from "./collab/CollabRequests";
 
 const App = () => {
   return (
@@ -34,6 +37,9 @@ const App = () => {
         <Route path="/collabdash" element={<CollabDash />} />
         <Route path="/customersupport" element={<CustomerSupport />} /> 
         <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
+        <Route path="/details" element={<CollabDetails/>}/>
+        <Route path="/collabprofile" element={<CollabProfile/>}/>
+        <Route path="/collabrequests" element={<CollabRequests/>}/>
       </Routes> 
       
     </div>
