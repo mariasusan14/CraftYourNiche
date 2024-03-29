@@ -2,7 +2,8 @@
 
 import React from 'react';
 import JobOpportunity from './JobOpportunity'; // Importing the JobOpportunity component
-//import './styles/CollabDash.css'; // Import CSS file for styling
+import './styles/CollabDash.css'; // Import CSS file for styling
+import Navbar from './navbar';
 
 const CollabDash = () => {
   // Dummy data for job opportunities
@@ -29,14 +30,20 @@ const CollabDash = () => {
   ];
 
   return (
-    <div className="container">
-      <h1 className="heading">Job Opportunities</h1>
-      <div className="job-list">
-        {jobOpportunities.map((job, index) => (
-          <JobOpportunity key={index} job={job} />
-        ))}
+    <div className="main">
+    <Navbar/>
+      <div className="container">
+        <div className="heading">
+          <h1>Job Opportunities</h1>
+        </div>      
+        <div className="job-list">
+          {jobOpportunities.map((job, index) => (
+            <JobOpportunity key={index} job={job} />
+          ))}
+        </div>
       </div>
     </div>
+    
   );
 }
 

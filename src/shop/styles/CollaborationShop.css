@@ -3,7 +3,7 @@
 }
 
 .navbar {
-  width: 200px;
+  
   flex-shrink: 0; 
   height: 100vh; /* Extend the navbar to full viewport height */
   padding: 0;
