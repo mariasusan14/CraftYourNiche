@@ -103,6 +103,7 @@ const fetchCollaborationRequests = async () => {
         <section className="collaboration-platform">
           <div className="collaboration-request-form">
             <h2>Post Collaboration Request</h2>
+            <hr/>
             <form onSubmit={handleSubmitRequest}>
               <div className="form-group">
                 <label htmlFor="projectTitle">Project Title:</label>

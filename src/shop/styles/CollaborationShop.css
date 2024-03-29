@@ -1,18 +1,23 @@
 .container {
-  
   display: flex;
-  
 }
+
 .navbar {
   width: 200px;
   flex-shrink: 0; 
-  height: 100%;
+  height: 100vh; /* Extend the navbar to full viewport height */
   padding: 0;
+  position: fixed; /* Set navbar position to fixed */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
 }
+
 .collab {
   flex-grow: 1;
-  margin-left: 20px;
+  margin-left: 220px; /* Adjust margin to accommodate the width of the navbar */
+  padding-top: 20px; /* Add padding to avoid content being hidden under the navbar */
 }
+
+
 
 /* .collaboration-platform {
   margin-left: 20px; 
@@ -29,7 +34,7 @@
 
 .collaboration-request-form label {
   display: block;
-  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
 .collaboration-request-form input[type="text"],
@@ -59,6 +64,7 @@
 }
 
 .collaboration-requests li {
+  width: fit-content;
   margin-bottom: 20px;
   background-color: white;
 }
