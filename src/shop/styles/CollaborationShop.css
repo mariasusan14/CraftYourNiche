@@ -53,10 +53,6 @@
   cursor: pointer;
 }
 
-.collaboration-request-form button:hover {
-  background-color: #522b00;
-}
-
 .collaboration-requests ul {
   list-style-type: none;
   padding: 0;
@@ -64,10 +60,12 @@
 
 .collaboration-requests li {
   margin-bottom: 20px;
+  background-color: white;
 }
 
 .collaboration-requests li .request-details {
   margin-bottom: 10px;
+
 }
 
 .collaboration-requests li .request-details h3 {
@@ -75,7 +73,8 @@
 }
 
 .collaboration-requests li button {
-  background-color: #28a745;
+  background-color: #4d2800;
+  width: 100px;
   color: #fff;
   padding: 8px 12px;
   border: none;
@@ -84,7 +83,7 @@
 }
 
 .collaboration-requests li button:hover {
-  background-color: #218838;
+  background-color: #704211;
 }
 
 .responses-modal {
