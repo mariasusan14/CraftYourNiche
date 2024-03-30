@@ -8,57 +8,38 @@ import {
   RadioGroup,
 } from "@radix-ui/themes";
 import Navbar from "../../components/Navbar/Navbar";
-
+import { collection,getDocs } from "firebase/firestore";
+import { db } from "../../config/firebase";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductListing.css";
 import { useEffect, useState } from "react";
 
 export default function ProductListing() {
-  let products = [
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 400,
-      rating: 3,
-    },
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 1500,
-      rating: 4.5,
-    },
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 1200,
-      rating: 4.5,
-    },
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 1000,
-      rating: 4.5,
-    },
-    {
-      name: "wooden pot",
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2021/7/NK/QZ/AW/132970306/handicraft-items-500x500.jpg",
-      price: 1000,
-      rating: 3,
-    },
-    // Add other products similarly
-  ];
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+      fetchProducts();
+    }, []);
+  
+    const fetchProducts = async () => {
+      try {
+        const productsData = [];
+        const querySnapshot = await getDocs(collection(db, 'shops'));
+        for (const doc of querySnapshot.docs) {
+          const productsCollectionRef = collection(doc.ref, 'products');
+          const productsQuerySnapshot = await getDocs(productsCollectionRef);
+          productsQuerySnapshot.forEach((productDoc) => {
+            const { title, url, price } = productDoc.data();
+            productsData.push({ title, url, price });
+          });
+        }
+        console.log(productsData);
+        setProducts(productsData);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    
 
   const [sliderValueInitial, setSliderValueInitial] = useState(0); // Initial value of the slider
   const [sliderValueFinal, setSliderValueFinal] = useState(100); // Initial value of the slider
@@ -146,6 +127,7 @@ export default function ProductListing() {
                   product.price >= (sliderValueInitial / 100) * 1500 &&
                   product.price <= (sliderValueFinal / 100) * 1500
                 ) {
+                  console.log(product);
                   return <ProductCard product={product} />;
                 }
               })}

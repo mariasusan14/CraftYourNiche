@@ -1,15 +1,15 @@
 import "./Productcard.css"
 
 export default function ProductCard({ product }){
-    const { name, image, price, rating } = product;
-  
+    const { title, url, price, rating } = product;
+    
     return (
       <div className="product-card">
         <div className="product-image--container">
-        <img src={image} alt={name} className="product-image" />
+        <img src={url} alt={title} className="product-image" />
         </div>
         <div className="product-dt">
-          <span className="product-name">{name}</span>
+          <span className="product-name">{title}</span>
           <span className="product-price">${price}</span>
           <div className="product-rating">
             {Array.from({ length: rating }, (_, index) => (
