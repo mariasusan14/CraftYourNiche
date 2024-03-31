@@ -8,7 +8,7 @@
   
   .order-management-body {
     flex-grow: 1;
-    margin-left: 210px;
+    margin-left: 250px;
     padding: 10px; 
     padding-left: 20px;
   }
@@ -30,11 +30,12 @@
   .search-filter input[type="text"],
   .search-filter select {
     padding: 10px;
-    margin-right: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 12px;
-    width: auto;
+    
   }
   
   .search-filter input[type="text"]::placeholder {

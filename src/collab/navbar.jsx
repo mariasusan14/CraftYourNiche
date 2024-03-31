@@ -15,7 +15,7 @@ const handleLogout = async () => {
 
 function Navbar() {
   return (
-    <div className="navbar">
+    <div className="collab-navbar">
         
       {/* Profile icon */}
       <div className="navbar-item">

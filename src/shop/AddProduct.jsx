@@ -82,7 +82,7 @@ export const AddProducts = () => {
     };
 
     return (
-        <div className="container">
+        <div className="addprod-container">
             <Navbar />
             <div className="addprod">
                 <br />

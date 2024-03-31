@@ -4,6 +4,8 @@
     color: #fff; 
     padding: 20px;
     height: 100vh;
+    position: fixed; /* Set navbar position to fixed */
+    overflow-y: auto;
 }
 
 ul {

@@ -110,6 +110,7 @@ const OrderManagement = () => {
                   <td>{order.status}</td>
                   <td>
                     <select onChange={(e) => handleActivityChange(order.id, e.target.value)}>
+                    <option value="">Select</option>
                       <option value="Pending">Pending</option>
                       <option value="Processing">Processing</option>
                       <option value="Delivered">Delivered</option>

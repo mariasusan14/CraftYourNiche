@@ -1,19 +1,11 @@
-.container {
+.collab-container {
   display: flex;
 }
 
-.navbar {
-  
-  flex-shrink: 0; 
-  height: 100vh; /* Extend the navbar to full viewport height */
-  padding: 0;
-  position: fixed; /* Set navbar position to fixed */
-  overflow-y: auto; /* Enable vertical scrolling if needed */
-}
 
 .collab {
   flex-grow: 1;
-  margin-left: 220px; /* Adjust margin to accommodate the width of the navbar */
+  margin-left: 250px; /* Adjust margin to accommodate the width of the navbar */
   padding-top: 20px; /* Add padding to avoid content being hidden under the navbar */
 }
 

@@ -95,10 +95,10 @@ const fetchCollaborationRequests = async () => {
 
   // JSX rendering
   return (
-    <div className="container">
-      <div className="navbar">
+    <div className="collab-container">
+      
         <Navbar />
-      </div>
+     
       <div className="collab">
         <section className="collaboration-platform">
           <div className="collaboration-request-form">
