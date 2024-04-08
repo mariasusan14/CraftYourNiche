@@ -1,0 +1,51 @@
+.user-profile {
+    
+    margin: 20px;
+    padding: 20px;
+    
+  }
+
+  .btn{
+    display: flex;
+    flex-direction: row;
+    
+  }
+
+  .save-btn,.cancel-btn,.edit-btn,.back-btn{
+    margin: 5px;
+    width: 100px;
+  }
+
+  
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #4d2800;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3d2102;
+  }
+  

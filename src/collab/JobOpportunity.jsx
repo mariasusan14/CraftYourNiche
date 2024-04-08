@@ -1,6 +1,7 @@
 // JobOpportunity.jsx
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './styles/JobOpportunities.css'; // Import CSS file for styling
 
 const JobOpportunity = ({ job }) => {
@@ -11,6 +12,9 @@ const JobOpportunity = ({ job }) => {
       <p><strong>Company:</strong> {job.company}</p>
       <p><strong>Location:</strong> {job.location}</p>
       <p>{job.description}</p>
+      <Link to="/details">
+        <button className="apply-button">Apply</button>
+      </Link>
     </div>
   );
 }

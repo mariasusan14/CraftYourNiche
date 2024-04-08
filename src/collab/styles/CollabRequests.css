@@ -1,0 +1,44 @@
+/* CollabRequests.css */
+
+.collabreq-container{
+    padding: 10px;
+}
+
+.collabreq-heading{
+    color: #4d2800;
+}
+
+.bk-button{
+    width: auto;
+}
+
+/* Style for the table */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  /* Style for table header */
+  th {
+    background-color: #4d2800; /* Brown color */
+    color: white;
+    border: 1px solid #4d2800;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Style for table data */
+  td {
+    border: 1px solid #4d2800;
+    padding: 8px;
+  }
+  
+  /* Style for table rows */
+  tr:nth-child(even) {
+    background-color: white; /* White color */
+  }
+  
+  
+  

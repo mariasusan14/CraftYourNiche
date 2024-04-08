@@ -72,7 +72,7 @@ const Auth = () => {
         }
 
         // Navigation based on userType
-        const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/verification' : '/details');
+        const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/verification' : '/collabdash');
         navigate(destination);
       }
     } catch (error) {

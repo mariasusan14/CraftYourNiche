@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate,Link } from 'react-router-dom'; 
 import './styles/collabDetails.css';
 
 function CollabDetails() {
@@ -62,7 +62,10 @@ function CollabDetails() {
           <label htmlFor="skills">Skills:</label>
           <textarea id="skills" name="skills" value={resumeDetails.skills} onChange={handleChange}></textarea>
         </div>
-        <button type="submit" disabled={isSubmitDisabled}>Submit</button>
+        <Link to="/collabdash">
+         <button type="submit" disabled={isSubmitDisabled}>Submit</button>
+        </Link>
+        
       </form>
     </div>
   );

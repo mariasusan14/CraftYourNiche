@@ -1,4 +1,4 @@
-// CollabDash.jsx
+// collabdash.jsx
 
 import React from 'react';
 import JobOpportunity from './JobOpportunity'; // Importing the JobOpportunity component
