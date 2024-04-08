@@ -1,50 +1,86 @@
-
-.product-details{
-    display: flex;
-    flex-direction: row;
-    padding: 60px 0 0 120px;
+.product-atc--button {
+  max-width: fit-content;
+  min-width: fit-content;
+  background-color: #5b2421;
 }
-.product-details--basic{
-    padding-left: 250px;
-}
-.product-details--heading{
-    font-size: 30px;
-    font-weight: 600;
-}
-.product-details--price{
-    font-size:25px;
-}
-.product-images{
-    padding : 10px;
+.product-atc--button:hover {
+  background-color: #4d2800;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.2);
 }
 
-.product-mainimg{
-    height:100%;
-    width: 100%;
-    object-fit: cover; 
+.product-buy--button {
+  max-width: fit-content;
+  min-width: fit-content;
+  background-color: #5b2421;
+}
+.product-buy--button:hover {
+  background-color: #4d2800;
+  box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.2);
 }
 
-.product-mainimg--container{
-    height: 350px;
-    width: 350px;
-   padding-bottom: 20px; 
+.product-details {
+  display: flex;
+  flex-direction: row;
+  padding: 60px 0 0 120px;
+}
+.product-details--basic {
+  padding-left: 250px;
+}
+.product-details--heading {
+  font-size: 30px;
+  font-weight: 600;
+}
+.product-details--price {
+  font-size: 25px;
+}
+.product-rating--progressbar {
+  width: 100px;
+  max-height: 4px;
+}
+.product-review--section {
+  position: absolute;
+  right: 200px;
 }
 
-.product-subimg{
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+.product-images {
+  padding: 10px;
 }
 
-.product-subimg--list{
-    display: flex;
-    width: 350px;
-    flex-direction: row;
-    overflow: hidden;
+.product-mainimg {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
-.product-subimg--container{
-    height : 100px;
-    width : 100px;
-    padding: 0 10px 10px 0;
+.product-mainimg--container {
+  height: 350px;
+  width: 350px;
+  padding-bottom: 20px;
+}
+
+.product-subimg {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.product-subimg--active {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  padding: 2px;
+  border: #4d2800 solid 3px;
+}
+
+.product-subimg--list {
+  display: flex;
+  width: 350px;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.product-subimg--container {
+  height: 100px;
+  width: 100px;
+  padding: 0 10px 10px 0;
 }
