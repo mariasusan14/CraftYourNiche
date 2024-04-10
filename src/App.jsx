@@ -8,7 +8,6 @@ import { ShopDashboard } from "./shop/ShopDashboard";
 import { AddProducts } from "./shop/AddProduct";
 import OrderManagement from "./shop/OrderManagement";
 import ProfileCompletion from "./shop/ProfileCompletion";
-import { Customization } from "./shop/Customization";
 import Product from "./pages/ProductPage/Product";
 import CollabDash from "./collab/collabdash";
 import ProductListing from "./pages/ProductListing/ProductListing";
@@ -17,6 +16,7 @@ import CollaborationPlatform from "./shop/CollaborationPlatform";
 import CollabDetails from "./collab/collabDetails";
 import CollabProfile from "./collab/CollabProfile";
 import CollabRequests from "./collab/CollabRequests";
+import CustomizationShop from "./shop/Customization";
 
 const App = () => {
   return (
@@ -31,13 +31,13 @@ const App = () => {
         <Route path="/orders" element={<OrderManagement />} />
         <Route path="/addproduct" element={<AddProducts />} />
         <Route path="/verification" element={<ProfileCompletion />} />
-        <Route path="/customization" element={<Customization />} />
+        <Route path="/customization" element={<CustomizationShop />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productlisting" element={<ProductListing />} />
         <Route path="/collabdash" element={<CollabDash />} />
         <Route path="/customersupport" element={<CustomerSupport />} /> 
         <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
-        <Route path="/details" element={<CollabDetails/>}/>
+        <Route path="/details/:shopId/:requestId" element={<CollabDetails/>}/>
         <Route path="/collabprofile" element={<CollabProfile/>}/>
         <Route path="/collabrequests" element={<CollabRequests/>}/>
       </Routes> 

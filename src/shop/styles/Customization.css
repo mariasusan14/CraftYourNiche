@@ -1,0 +1,69 @@
+.customization-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.option-container {
+  margin-bottom: 20px;
+}
+
+.option-input {
+  margin-bottom: 10px;
+}
+
+.sub-option-list {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.sub-option-item {
+  margin-bottom: 5px;
+}
+
+button{
+  width: 100px;
+}
+
+.add-option-btn,
+.add-sub-option-btn {
+  margin-left: 10px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.add-option-btn:hover,
+.add-sub-option-btn:hover {
+  background-color: #0056b3;
+}
+
+.add-option-btn:focus,
+.add-sub-option-btn:focus {
+  outline: none;
+}
+
+.delete-option-btn,
+.delete-sub-option-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+}
+
+.delete-option-btn:hover,
+.delete-sub-option-btn:hover {
+  background-color: #bd2130;
+}
+
+.delete-option-btn:focus,
+.delete-sub-option-btn:focus {
+  outline: none;
+}

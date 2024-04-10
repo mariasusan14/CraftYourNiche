@@ -127,7 +127,7 @@ export default function ProductListing() {
                   product.price >= (sliderValueInitial / 100) * 1500 &&
                   product.price <= (sliderValueFinal / 100) * 1500
                 ) {
-                  console.log(product);
+              
                   return <ProductCard product={product} />;
                 }
               })}

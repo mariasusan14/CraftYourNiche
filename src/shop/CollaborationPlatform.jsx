@@ -1,104 +1,107 @@
-// Import necessary libraries and components
 import React, { useState, useEffect } from 'react';
-import { db, auth } from '../config/firebase'; // Import your Firebase configuration
-import './styles/CollaborationShop.css'; // Import CSS file for styling
+import { db, auth } from '../config/firebase';
+import './styles/CollaborationShop.css';
 import Navbar from '../shop/navbar';
-import { collection, getDocs, doc, addDoc,getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, addDoc, getDoc,updateDoc } from 'firebase/firestore';
 
-// Define the CollaborationPlatform component
 const CollaborationPlatform = () => {
-  // State to manage collaboration requests and responses
   const [collaborationRequests, setCollaborationRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [responses, setResponses] = useState([]);
 
-  // useEffect hook to fetch collaboration requests on component mount
   useEffect(() => {
     fetchCollaborationRequests();
   }, []);
 
+  const fetchCollaborationRequests = async () => {
+    try {
+      const userId = auth.currentUser.uid;
+      const userDocRef = doc(collection(db, 'collaborationRequests'), userId);
 
- // Function to fetch collaboration requests from Firestore
-const fetchCollaborationRequests = async () => {
-  try {
-    const userId = auth.currentUser.uid; // Get the current user's UID
-    const userDocRef = doc(collection(db, 'collaborationRequests'), userId); // Reference to the document with userId as the ID in the "collaborationRequests" collection
+      const requestsSnapshot = await getDocs(collection(userDocRef, 'requests'));
+      const userRequests = requestsSnapshot.docs.map(doc => ({ id: doc.id, requestid: doc.id, ...doc.data() }));
 
-    // Fetch collaboration requests from the "requests" subcollection of the current user
-    const requestsSnapshot = await getDocs(collection(userDocRef, 'requests'));
-    const userRequests = requestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const allRequests = [...userRequests];
+      setCollaborationRequests(allRequests);
+    } catch (error) {
+      console.error('Error fetching collaboration requests:', error);
+    }
+  };
 
-    // Combine collaboration requests and user-specific requests
-    const allRequests = [...userRequests];
-    
-    // Set the collaboration requests state
-    setCollaborationRequests(allRequests);
-  } catch (error) {
-    console.error('Error fetching collaboration requests:', error);
-  }
-};
-
-
-  // Function to handle submission of collaboration request form
   const handleSubmitRequest = async (event) => {
     event.preventDefault();
     try {
       // Extract form data
       const newRequest = {
+        shopid: auth.currentUser.uid,
         projectTitle: event.target.projectTitle.value,
         projectDescription: event.target.projectDescription.value,
         requiredSkills: event.target.requiredSkills.value,
         deadline: event.target.deadline.value,
         status: 'open',
-        responses: []
+        responses: [],
+        requestid: '' // Initialize requestid
       };
-
+  
       // Get the current user's UID
       const userId = auth.currentUser.uid;
-
+  
       // Reference to the "collaborationRequests" collection
       const useref = collection(db, 'collaborationRequests');
-
+  
       // Reference to the document with userId as the ID in the "collaborationRequests" collection
       const userDocRef = doc(useref, userId);
-
+  
       // Reference to the "requests" subcollection of the user's document
       const requestsCollectionRef = collection(userDocRef, 'requests');
-
+  
       // Add a new document with the specified data in the "requests" subcollection
-      await addDoc(requestsCollectionRef, newRequest);
-
+      const newRequestRef = await addDoc(requestsCollectionRef, newRequest);
+  
+      // Update the newRequest object with the requestid
+      newRequest.requestid = newRequestRef.id;
+  
+      // Update the document in the "requests" subcollection with the requestid
+      await updateDoc(newRequestRef, { requestid: newRequestRef.id });
+  
       // Clear form fields
       event.target.reset();
-
+  
       // Fetch updated collaboration requests
       fetchCollaborationRequests();
     } catch (error) {
       console.error('Error submitting collaboration request:', error);
     }
   };
+  
 
-  // Function to handle viewing responses for a specific request
   const handleViewResponses = (request) => {
     setSelectedRequest(request);
+    fetchResponses(request.id);
   };
 
-  // Function to handle accepting a response
+  const fetchResponses = async (requestId) => {
+    try {
+      const requestDocRef = doc(collection(db, 'collaborationRequests', auth.currentUser.uid, 'requests'), requestId);
+      const requestDocSnapshot = await getDoc(requestDocRef);
+      const requestResponses = requestDocSnapshot.data()?.responses || [];
+      setResponses(requestResponses);
+    } catch (error) {
+      console.error('Error fetching responses:', error);
+    }
+  };
+
   const handleAcceptResponse = (response) => {
     // Logic to accept the response
   };
 
-  // Function to handle rejecting a response
   const handleRejectResponse = (response) => {
     // Logic to reject the response
   };
 
-  // JSX rendering
   return (
     <div className="collab-container">
-      
-        <Navbar />
-     
+      <Navbar />
       <div className="collab">
         <section className="collaboration-platform">
           <div className="collaboration-request-form">

@@ -1,50 +1,76 @@
-// collabdash.jsx
-
-import React from 'react';
-import JobOpportunity from './JobOpportunity'; // Importing the JobOpportunity component
-import './styles/CollabDash.css'; // Import CSS file for styling
+import React, { useEffect, useState } from 'react';
+import JobOpportunity from './JobOpportunity';
+import './styles/CollabDash.css';
 import Navbar from './navbar';
-
+import { collection, getDocs, query } from 'firebase/firestore';
+import { db } from '../config/firebase'; 
+import './styles/CollabDash.css'
 const CollabDash = () => {
-  // Dummy data for job opportunities
-  const jobOpportunities = [
-    {
-        title: 'Handicraft Designer',
-        company: 'Artisan Creations',
-        location: 'New Delhi, India',
-        description: 'We are looking for a talented handicraft designer to create unique and innovative designs for our product range. Candidates should have experience in various handicraft techniques such as pottery, weaving, and wood carving.'
-      },
-      {
-        title: 'Artisan Coordinator',
-        company: 'Craftworks Collective',
-        location: 'Portland, OR',
-        description: 'Craftworks Collective is seeking an artisan coordinator to oversee the production process of handmade crafts. Responsibilities include coordinating with artisans, managing inventory, and ensuring quality standards are met.'
-      },
-      {
-        title: 'Handicraft Sales Representative',
-        company: 'Global Handmade',
-        location: 'Paris, France',
-        description: 'Global Handmade is hiring a sales representative to promote and sell handmade handicrafts to retail stores and online platforms. Candidates should have excellent communication skills and a passion for artisanal products.'
-      }
-    // Add more dummy job objects as needed
-  ];
+  const [jobOpportunities, setJobOpportunities] = useState([]);
+
+  useEffect(() => {
+    fetchJobOpportunities();
+  }, []);
+
+  const fetchJobOpportunities = async () => {
+    try {
+      const jobData = [];
+      const collaborationRequestsQuerySnapshot = await getDocs(collection(db, 'collaborationRequests'));
+     
+      // Create an array to store all the promises for fetching requests subcollections
+      const requestsPromises = [];
+  
+      // Iterate over each document in the collaborationRequests collection
+      collaborationRequestsQuerySnapshot.forEach((collabDoc) => {
+        const requestsCollectionRef = collection(collabDoc.ref, 'requests');
+        const requestPromise = getDocs(requestsCollectionRef).then((requestsQuerySnapshot) => {
+          // Iterate over each document in the requests subcollection
+          requestsQuerySnapshot.forEach((requestDoc) => {
+            const requestData = requestDoc.data();
+            
+            // Extract required fields and add them to the jobData array
+            const job = {
+              requestid: requestData.requestid,
+              shopid :requestData.shopid,
+              title: requestData.projectTitle,
+              // company: requestData.companyName, // Add your company name if available
+              description: requestData.projectDescription,
+              skills: requestData.requiredSkills,
+              deadline: requestData.deadline // Convert Firebase Timestamp to JavaScript Date
+            };
+            jobData.push(job);
+          });
+        });
+        requestsPromises.push(requestPromise);
+      });
+  
+      // Wait for all promises to resolve before updating the state
+      await Promise.all(requestsPromises);
+  
+      // Set the job opportunities array after fetching data
+      setJobOpportunities(jobData);
+    } catch (error) {
+      console.error('Error fetching job opportunities:', error);
+    }
+  };
+  
 
   return (
     <div className="main">
-    <Navbar/>
+      <Navbar />
       <div className="container">
         <div className="heading">
           <h1>Job Opportunities</h1>
-        </div>      
+        </div>
         <div className="job-list">
           {jobOpportunities.map((job, index) => (
             <JobOpportunity key={index} job={job} />
           ))}
+          
         </div>
       </div>
     </div>
-    
   );
-}
+};
 
 export default CollabDash;
