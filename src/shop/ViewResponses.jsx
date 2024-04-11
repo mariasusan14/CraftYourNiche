@@ -84,8 +84,9 @@ const ViewResponses = ({ requestId }) => {
         {responses.map((response) => (
           <li key={response.id}>
             <div className="response-details">
-              <p>Email: {response.email}</p>
-              <p>Phone Number: {response.phoneNumber}</p>
+              <p>Name: {response.fullName}</p>
+              <p>Skills: {response.skills}</p>
+              <p>Experience: {response.experience}</p>
               {/* Display other response details */}
             </div>
             <div className="response-actions">
