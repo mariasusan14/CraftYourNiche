@@ -1,0 +1,27 @@
+.view-responses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.response-card {
+  width: 300px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.response-details {
+  margin-bottom: 10px;
+}
+
+.response-actions button {
+  margin-right: 10px;
+}
+
+.contact-info {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
