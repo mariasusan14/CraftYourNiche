@@ -17,6 +17,7 @@ import CollabDetails from "./collab/collabDetails";
 import CollabProfile from "./collab/CollabProfile";
 import CollabRequests from "./collab/CollabRequests";
 import CustomizationShop from "./shop/Customization";
+import CollaborationRequests from "./shop/CollaborationRequests";
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/details/:shopId/:requestId" element={<CollabDetails/>}/>
         <Route path="/collabprofile" element={<CollabProfile/>}/>
         <Route path="/collabrequests" element={<CollabRequests/>}/>
+        <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
       </Routes> 
       
     </div>

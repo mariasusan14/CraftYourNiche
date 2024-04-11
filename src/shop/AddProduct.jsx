@@ -42,9 +42,9 @@ export const AddProducts = () => {
             setImageError('Please select an image');
             return;
         }
-
-        const storageRef = ref(storage, `product-images/${image.name}`);
         const userId = auth.currentUser.uid;
+        const storageRef = ref(storage, `product-images/${userId}/${image.name}`);
+        
 
         try {
             // Upload image to storage

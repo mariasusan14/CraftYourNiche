@@ -2,19 +2,11 @@
   display: flex;
 }
 
-
 .collab {
   flex-grow: 1;
   margin-left: 250px; /* Adjust margin to accommodate the width of the navbar */
   padding-top: 20px; /* Add padding to avoid content being hidden under the navbar */
 }
-
-
-
-/* .collaboration-platform {
-  margin-left: 20px; 
-  background-color: #218838
-} */
 
 .collaboration-request-form {
   margin-bottom: 20px;
@@ -63,7 +55,6 @@
 
 .collaboration-requests li .request-details {
   margin-bottom: 10px;
-
 }
 
 .collaboration-requests li .request-details h3 {

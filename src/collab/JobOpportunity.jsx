@@ -22,5 +22,3 @@ const JobOpportunity = ({ job }) => {
 }
 
 export default JobOpportunity;
-
-
