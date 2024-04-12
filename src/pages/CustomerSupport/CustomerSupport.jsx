@@ -1,13 +1,11 @@
-import Navbar from "../../components/Navbar/Navbar";
-
+import React from "react";
 import { Flex, Text, Button, TextField, TextArea, Box } from "@radix-ui/themes";
 
 export default function CustomerSupport() {
   return (
-    <div>
-      <Navbar />
-      <Box width="800px" height="500px" pl={"9"} pt={"9"}>
-      <Flex direction={"column"}>
+    
+    <Box width="800px" height="500px" pl={9} pt={9}>
+      <Flex direction="column">
         <Text>Your Name:</Text>
         <TextField.Root size="2" placeholder="" />
         <Text>Your Email:</Text>
@@ -16,9 +14,8 @@ export default function CustomerSupport() {
         <TextField.Root size="2" placeholder="" />
         <Text>Your Message:</Text>
         <TextArea size="2" placeholder="" />
-        <Button variant="surface"> Submit </Button>
+        <Button variant="surface">Submit</Button>
       </Flex>
-      </Box>
-    </div>
+    </Box>
   );
 }

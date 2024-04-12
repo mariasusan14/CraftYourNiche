@@ -1,28 +1,67 @@
-button {
-    background-color: #6B8E23;
-    color: #fff;
-    width: 10%; 
-    padding: 15px;
-    padding: 10px 15px;
-    font-size: 16px;
+/* UserDashboard.css */
+
+/* Main container */
+.dash-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Page title */
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Navigation buttons */
+  .nav-buttons {
+    margin-bottom: 20px;
+  }
+  
+.nav-buttons button {
+        padding: 1px 5px; /* Adjust padding as needed */
+        margin-right: 15px;
+        border: blanchedalmond solid 7px;
+        border-radius: 20px;
+        background-color: #6B8E23;
+        color: #fff;
+        font-size: 16px; /* Adjust font size as needed */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        height: 40px;
+        width: 150px;
+}
+      
+  
+  .nav-buttons button:hover {
+    background-color: #7f9d37;
+  }
+  
+  /* Logout button */
+  .logout-button {
+    padding: 10px 20px;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
+    background-color: #dc3545;
+    color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    display: flex;
-    justify-content: center;
-}
-
-button:hover {
-    background-color: #7f9d37;
-}
-
-.dash-mainsection{
-    display: flex;
-    flex-direction: column;
-}
-
-.dash-mainsection--latestproducts{
-    display: flex;
-    flex-direction: row;
-}
+  }
+  
+  .logout-button:hover {
+    background-color: #bb2d3b;
+  }
+  
+  /* Main section */
+  .dash-mainsection {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  
+  /* Horizontal rule */
+  .dash-mainsection hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
