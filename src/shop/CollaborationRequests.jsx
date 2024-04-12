@@ -1,7 +1,6 @@
-// CollaborationRequests.jsx
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../config/firebase';
-import { collection, getDocs, doc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import './styles/CollaborationRequests.css';
 import ViewResponses from './ViewResponses';
 
@@ -33,6 +32,20 @@ const CollaborationRequests = () => {
     }));
   };
 
+  const handleCloseRequest = async (requestId) => {
+    try {
+      const userId = auth.currentUser.uid;
+      const userDocRef = doc(collection(db, 'collaborationRequests'), userId);
+      const requestDocRef = doc(collection(userDocRef, 'requests'), requestId);
+      
+      await updateDoc(requestDocRef, { status: 'closed' });
+      
+      setCollaborationRequests(prevRequests => prevRequests.filter(request => request.id !== requestId));
+    } catch (error) {
+      console.error('Error closing request:', error);
+    }
+  };
+
   return (
     <div className="collaboration-requests-page">
       <h2>Collaboration Requests</h2>
@@ -45,6 +58,7 @@ const CollaborationRequests = () => {
               <p>Required Skills: {request.requiredSkills}</p>
               <p>Deadline: {request.deadline}</p>
               <button onClick={() => handleViewResponses(request.id)}>View Responses</button>
+              <button onClick={() => handleCloseRequest(request.id)}>Close Request</button>
               {request.showResponses && <ViewResponses requestId={request.id} />}
             </div>
           </li>
