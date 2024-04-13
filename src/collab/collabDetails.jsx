@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import './styles/collabDetails.css';
-import { addDoc, collection, doc, updateDoc,getDoc } from 'firebase/firestore';
-import { db } from '../config/firebase'; // Import your Firebase instance
+import { addDoc, collection, doc, updateDoc,getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase'; // Import your Firebase instance
 
 function CollabDetails() {
   const navigate = useNavigate();
   const { shopId, requestId } = useParams(); // Get the shopId and requestId from the URL parameters
-  
+  const userId=auth.currentUser.uid;
   const [resumeDetails, setResumeDetails] = useState({
     fullName: '',
     email: '',
     phoneNumber: '',
     experience: '',
-    skills: ''
+    skills: '',
+    
   });
 
   const handleChange = (e) => {
@@ -26,40 +27,26 @@ function CollabDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (Object.values(resumeDetails).every(value => value !== '')) {
-      try {
-        // Reference to the document in the requests subcollection
-        const requestRef = doc(db, 'collaborationRequests', shopId, 'requests', requestId);
-  
-        // Get the current data of the request document
-        const requestDoc = await getDoc(requestRef);
-        const requestData = requestDoc.data();
-  
-        // Add the new response to the responses array
-        const newResponses = [...requestData.responses, resumeDetails];
-  
-        // Update the responses array in the request document
-        await updateDoc(requestRef, { responses: newResponses });
-  
-        // Clear form fields
-        setResumeDetails({
-          fullName: '',
-          email: '',
-          phoneNumber: '',
-          experience: '',
-          skills: ''
-        });
-  
-        // Navigate back to the previous page
-        navigate(-1);
-      } catch (error) {
-        console.error('Error adding response: ', error);
-      }
-    } else {
-      alert('Please fill in all details.');
+    try {
+      const responseCollectionRef = collection(db, 'collaborationResponses');
+      await addDoc(responseCollectionRef, {
+        userId: userId,
+        shopId: shopId,
+        requestId: requestId,
+        fullName: resumeDetails.fullName,
+        email: resumeDetails.email,
+        phoneNumber: resumeDetails.phoneNumber,
+        experience: resumeDetails.experience,
+        skills: resumeDetails.skills
+      });
+      console.log('Application submitted successfully');
+      navigate('/collabdash');
+    } catch (error) {
+      console.error('Error submitting application:', error);
     }
   };
+  
+  
   
 
   const isSubmitDisabled = Object.values(resumeDetails).some(value => value === '');
