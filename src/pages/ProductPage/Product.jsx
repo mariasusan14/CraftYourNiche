@@ -134,6 +134,15 @@ export default function Product() {
                     <span>hlo</span>
                   </DataList.Value>
                 </DataList.Item>
+
+                <DataList.Item align="center">
+                  <DataList.Label minWidth="88px" color="black">
+                    Size
+                  </DataList.Label>
+                  <DataList.Value>
+                    <span>M</span>
+                  </DataList.Value>
+                </DataList.Item>
               </DataList.Root>
             </Box>
           </div>
