@@ -3,13 +3,11 @@ import { Link } from 'react-router-dom';
 import './styles/JobOpportunities.css'; // Import CSS file for styling
 
 const JobOpportunity = ({ job }) => {
-  console.log("hii");
-  console.log(job);
   return (
     <div className="job">
-      {console.log(job.title)}
       <h2>{job.title}</h2>
       <hr /><br />
+      
       {/* <p><strong>Company:</strong> {job.company}</p> */}
       <p>{job.description}</p>
       <p><strong>Skills Required:</strong> {job.skills}</p>

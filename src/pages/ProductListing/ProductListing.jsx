@@ -25,6 +25,7 @@ export default function ProductListing() {
       try {
         const productsData = [];
         const querySnapshot = await getDocs(collection(db, 'shops'));
+        
         for (const doc of querySnapshot.docs) {
           const productsCollectionRef = collection(doc.ref, 'products');
           const productsQuerySnapshot = await getDocs(productsCollectionRef);
@@ -33,7 +34,7 @@ export default function ProductListing() {
             productsData.push({ title, url, price });
           });
         }
-        console.log(productsData);
+        
         setProducts(productsData);
       } catch (error) {
         console.error('Error fetching products:', error);

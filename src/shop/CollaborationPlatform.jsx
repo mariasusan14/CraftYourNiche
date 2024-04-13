@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom'; // Import useHistory to handle navigation
+import { useNavigate } from 'react-router-dom'; 
 import { db, auth } from '../config/firebase';
 import './styles/CollaborationShop.css';
 import Navbar from '../shop/navbar';
-// import CollaborationRequests from './CollaborationRequests';
-import { collection, getDocs, doc, addDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDoc, doc, addDoc,setDoc,getDocs ,updateDoc} from 'firebase/firestore';
 
 const CollaborationPlatform = () => {
-  const navigate = useNavigate(); // Get the history object
+  const navigate = useNavigate(); 
   const [collaborationRequests, setCollaborationRequests] = useState([]);
-  const [selectedRequest, setSelectedRequest] = useState(null);
-  const [responses, setResponses] = useState([]);
 
   useEffect(() => {
     fetchCollaborationRequests();
@@ -19,10 +16,15 @@ const CollaborationPlatform = () => {
   const fetchCollaborationRequests = async () => {
     try {
       const userId = auth.currentUser.uid;
-      const userDocRef = doc(collection(db, 'collaborationRequests'), userId);
-      const requestsSnapshot = await getDocs(collection(userDocRef, 'requests'));
-      const userRequests = requestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setCollaborationRequests(userRequests);
+      const userDocRef = doc(db, 'collaborationRequests', userId);
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const requestsSnapshot = await getDocs(collection(userDocRef, 'requests'));
+        const userRequests = requestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCollaborationRequests(userRequests);
+      } else {
+        console.error('User document does not exist');
+      }
     } catch (error) {
       console.error('Error fetching collaboration requests:', error);
     }
@@ -31,7 +33,6 @@ const CollaborationPlatform = () => {
   const handleSubmitRequest = async (event) => {
     event.preventDefault();
     try {
-      // Extract form data
       const newRequest = {
         shopid: auth.currentUser.uid,
         projectTitle: event.target.projectTitle.value,
@@ -42,23 +43,27 @@ const CollaborationPlatform = () => {
         responses: [],
         requestid: ''
       };
-  
+
       const userId = auth.currentUser.uid;
-      const useref = collection(db, 'collaborationRequests');
-      const userDocRef = doc(useref, userId);
+      const userDocRef = doc(db, 'collaborationRequests', userId); // Correctly construct document reference
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (!userDocSnapshot.exists()) {
+        await setDoc(userDocRef, { shopid: userId }); // Create user document if it doesn't exist
+      }
+
       const requestsCollectionRef = collection(userDocRef, 'requests');
       const newRequestRef = await addDoc(requestsCollectionRef, newRequest);
       newRequest.requestid = newRequestRef.id;
       await updateDoc(newRequestRef, { requestid: newRequestRef.id });
-  
+
       event.target.reset();
       fetchCollaborationRequests();
     } catch (error) {
       console.error('Error submitting collaboration request:', error);
     }
   };
+  
 
-  // Function to navigate to collaboration requests page
   const handleViewCollaborationRequests = () => {
     navigate('/viewcollabrequests');
   };
