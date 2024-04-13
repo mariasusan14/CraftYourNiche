@@ -41,18 +41,25 @@
   position: absolute;
   right: 200px;
 }
+.product-reviewrating {
+  padding: 100px 0 0 100px;
+}
 
 .product-images {
+  width: fit-content;
   padding: 10px;
 }
 
 .product-mainimg {
+  margin: 0;
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 7px;
 }
 
 .product-mainimg--container {
+  margin: 0;
   height: 350px;
   width: 350px;
   padding-bottom: 20px;
@@ -62,17 +69,23 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 5px;
+  margin: 0;
 }
 
 .product-subimg--active {
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 90%;
+  border-radius: 5px;
   object-fit: cover;
   padding: 2px;
   border: #4d2800 solid 3px;
+  margin: 0;
 }
 
 .product-subimg--list {
+  margin: 0px;
+  padding: 5px;
   display: flex;
   width: 350px;
   flex-direction: row;

@@ -1,6 +1,11 @@
 .review-box--whole {
   min-width: 400px;
 }
+
+.review-box--whole > * {
+  margin: 10px 0 0 0;
+}
+
 .review-button--submit {
   width: fit-content;
   background-color: #5b2421;
