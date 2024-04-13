@@ -1,14 +1,19 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
 import './UserDashboard.css';
 import Navbar from '../components/Navbar/Navbar';
-
-// Importing the Productlist component
+import Profile from '../pages/Profile';
+import ShoppingCart from '../pages/ShoppingCart';
+import OrderManagement from '../pages/OrderManagement';
+import Wishlist from '../pages/Wishlist';
+import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
+import ProductListing from '../pages/ProductListing/ProductListing';
 import Productlist from '../components/Productlist/Productlist';
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
+  const [activePage, setActivePage] = useState(null);
 
   const handleLogout = async () => {
     try {
@@ -16,6 +21,30 @@ export const UserDashboard = () => {
       navigate('/auth'); // Redirect to the authentication page after logout
     } catch (error) {
       console.error('Error during logout:', error);
+    }
+  };
+
+  const handlePageChange = (page) => {
+    setActivePage(page);
+  };
+
+  // Function to render the active page content
+  const renderActivePage = () => {
+    switch (activePage) {
+      case 'profile':
+        return <Profile />;
+      case 'shopping-cart':
+        return <ShoppingCart />;
+      case 'order-management':
+        return <OrderManagement />;
+      case 'wishlist':
+        return <Wishlist />;
+      case 'customer-support':
+        return <CustomerSupport />;
+      case 'product-listing':
+        return <Productlist product={products} />;
+      default:
+        return null;
     }
   };
 
@@ -39,30 +68,28 @@ export const UserDashboard = () => {
   ];
 
   return (
-    <div>
+    <div className="dash-container">
       <Navbar />
-      <h1>Hello, Welcome to the Dashboard!</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <h1 className="page-title">Hello, Welcome to the Dashboard!</h1>
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
 
       {/* Navigation links to different pages */}
-      <div>
-        <button onClick={() => navigate('/profile')}>Profile</button>
-        <button onClick={() => navigate('/shopping-cart')}>Shopping Cart</button>
-        <button onClick={() => navigate('/order-management')}>Order Management</button>
-        <button onClick={() => navigate('/wishlist')}>Wishlist</button>
-        <button onClick={() => navigate('/customer-support')}>Customer Support</button>
-        <button onClick={() => navigate('/product-listing')}>Product Listing</button>
+      <div className="nav-buttons">
+        <button className="nav-button" onClick={() => handlePageChange('profile')}>Profile</button>
+        <button className="nav-button" onClick={() => handlePageChange('shopping-cart')}>Shopping Cart</button>
+        <button className="nav-button" onClick={() => handlePageChange('order-management')}>Order Management</button>
+        <button className="nav-button" onClick={() => handlePageChange('wishlist')}>Wishlist</button>
+        <button className="nav-button" onClick={() => handlePageChange('customer-support')}>Support</button>
+        <button className="nav-button" onClick={() => handlePageChange('product-listing')}>Product Listing</button>
         <hr />
       </div>
 
-      {/* Main section with latest products */}
+      {/* Main section with active page */}
       <div className='dash-mainsection'>
-        <div>Latest</div>
+        <div>{activePage === 'product-listing' ? 'Latest' : ''}</div>
         <hr />
-        <div className='dash-mainsection--latestproducts'>
-          {/* Passing product data to Productlist component */}
-          <Productlist product={products} />
-        </div>
+        {/* Render active page content */}
+        {renderActivePage()}
       </div>
     </div>
   );

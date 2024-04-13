@@ -43,9 +43,7 @@ const Navbar = () => {
         <Link to="/customization" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaPaintBrush /> Customization</li>
         </Link>
-        <Link to="/verification" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaIdCard /> Verification</li>
-        </Link>
+        
         
         <li onClick={handleLogout}><FaSignOutAlt /> Logout</li>
       </ul>
