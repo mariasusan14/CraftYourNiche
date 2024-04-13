@@ -1,29 +1,47 @@
-.creview-container{
-    height: fit-content;
-    width:500px;
-    background-color: #EDEDE9;
-    border: white solid 0px;
-    border-radius: 15px;
-    padding: 10px;
-    margin-bottom: 40px;
+.creview {
+  padding-top: 40px;
+}
+.creview-avatar {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border: 0px;
+  border: 0px;
+  border-radius: 22.5px;
+  margin: 0;
 }
 
-.creview-cdetails{
-    display : flex;
-    flex-direction: row;
-    margin-bottom: 15px;
+.creview-avatar--container {
+  height: 45px;
+  width: 45px;
+  padding: 5px 5px 0 10px;
+}
+.creview-container {
+  height: fit-content;
+  width: 500px;
+  background-color: #edede9;
+  border: white solid 0px;
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 40px;
 }
 
-.creview-avatar--container{
-    height: 45px;
-    width: 45px;
+.creview-cdetails {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 0;
 }
 
-.creview-avatar{
-    height:100%;
-    width: 100%;
-    object-fit: cover;
-    border: 0px;
-    border: 0px;
-    border-radius: 22.5px;
+.creview-review {
+  margin: 0;
+  padding: 15px 10px 5px 25px;
+}
+
+.creview-title {
+  margin-bottom: 10px;
+}
+.creview-username {
+  margin: 0px;
+  padding-left: 10px;
 }

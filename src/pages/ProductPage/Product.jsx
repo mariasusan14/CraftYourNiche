@@ -8,6 +8,7 @@ import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
 import { useState } from "react";
+import Magnifier from "../../components/Magnifier/Magnifier";
 
 export default function Product() {
   const [hasPurchased, setPurchased] = useState(true);
@@ -58,7 +59,14 @@ export default function Product() {
   let ratSummary = ratingSummary(reviews);
 
   const [mainimg, setMainimg] = useState(productImages[0]);
-  const [imgClass, setImgClass] = useState("product-mainimg--active");
+  const [magnifierOn, setMagnifierOn] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top } = e.target.getBoundingClientRect();
+    setPosition({ x: e.clientX - left, y: e.clientY - top });
+  };
+
   return (
     <div>
       <Navbar />
@@ -67,8 +75,19 @@ export default function Product() {
         <div className="product-details">
           <div className="product-images">
             <div className="product-mainimg--container">
-              <img src={mainimg} className="product-mainimg" />
+              <img
+                src={mainimg}
+                className="product-mainimg"
+                onMouseMove={(e) => {
+                  setMagnifierOn(true);
+                  handleMouseMove(e);
+                  console.log(`${position.x} ${position.y}`);
+                }}
+                onMouseLeave={() => setMagnifierOn(false)}
+              />
             </div>
+            {/* Magnifier */}
+            {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
               {productImages.map((img) => (
                 <div className="product-subimg--container">
@@ -119,7 +138,7 @@ export default function Product() {
             </Box>
           </div>
         </div>
-        <Flex direction={"row"}>
+        <Flex className="product-reviewrating" direction={"row"}>
           {/*rating card for product*/}
 
           <Flex direction={"column"}>
@@ -164,8 +183,8 @@ function CustomerReviews({ reviews }) {
   reviews = reviews;
 
   return (
-    <div>
-      <span>Customer Reviews</span>
+    <div className="creview">
+      <span className="creview-title">Customer Reviews</span>
       {reviews.map((review) => (
         <div className="creview-container">
           <div className="creview-cdetails">
