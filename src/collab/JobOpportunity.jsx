@@ -12,7 +12,7 @@ const JobOpportunity = ({ job }) => {
       <p>{job.description}</p>
       <p><strong>Skills Required:</strong> {job.skills}</p>
       <p><strong>Deadline:</strong> {job.deadline}</p>
-      <Link to={`/details/${job.shopid}/${job.requestid}`}> {/* Link to CollabDetails with shopId */}
+      <Link to={`/details/${job.shopid}/${job.requestid}/${job.title}`}> {/* Link to CollabDetails with shopId */}
         <button className="apply-button">Apply</button>
       </Link>
     </div>

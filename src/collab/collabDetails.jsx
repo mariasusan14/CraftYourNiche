@@ -6,7 +6,7 @@ import { auth, db } from '../config/firebase'; // Import your Firebase instance
 
 function CollabDetails() {
   const navigate = useNavigate();
-  const { shopId, requestId } = useParams(); // Get the shopId and requestId from the URL parameters
+  const { shopId, requestId,title } = useParams(); // Get the shopId and requestId from the URL parameters
   const userId=auth.currentUser.uid;
   const [resumeDetails, setResumeDetails] = useState({
     fullName: '',
@@ -37,7 +37,9 @@ function CollabDetails() {
         email: resumeDetails.email,
         phoneNumber: resumeDetails.phoneNumber,
         experience: resumeDetails.experience,
-        skills: resumeDetails.skills
+        skills: resumeDetails.skills,
+        status: 'pending',
+        projectTitle:title
       });
       console.log('Application submitted successfully');
       navigate('/collabdash');

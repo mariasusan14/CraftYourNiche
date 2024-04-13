@@ -1,14 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './styles/CollabRequests.css'
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
+import './styles/CollabRequests.css';
+
 const CollabRequests = () => {
-  // Dummy data for job application statuses
-  const [applications, setApplications] = useState([
-    { id: 1, jobPost: 'Handicraft Designer', company: 'Artisan Creations', status: 'Pending' },
-    { id: 2, jobPost: 'Artisan Coordinator', company: 'Craftworks Collective', status: 'Accepted' },
-    { id: 3, jobPost: 'Handicraft Sales Representative', company: 'Global Handmade', status: 'Rejected' },
-    // Add more dummy application statuses as needed
-  ]);
+  const [applications, setApplications] = useState([]);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        
+        const userApplicationsQuery = query(collection(db, 'collaborationResponses'), where('userId', '==', userId));
+        const userApplicationsSnapshot = await getDocs(userApplicationsQuery);
+        const userApplicationsData = [];
+        for (const docSnap of userApplicationsSnapshot.docs) {
+          const { shopId, requestId, status,projectTitle } = docSnap.data();
+          
+
+          // Fetch shopName from shops collection
+          const shopDocRef = doc(db, 'shops', shopId);
+          const shopDocSnapshot = await getDoc(shopDocRef);
+          
+
+          const shopName = shopDocSnapshot.exists() ? shopDocSnapshot.data().shopName : ''; 
+          userApplicationsData.push({
+            shopName,
+            projectTitle,
+            status
+          });
+        }
+
+        setApplications(userApplicationsData);
+      } catch (error) {
+        console.error('Error fetching collaboration requests:', error);
+      }
+    };
+
+    fetchApplications();
+  }, []);
 
   return (
     <div className='collabreq-container'>
@@ -24,11 +55,11 @@ const CollabRequests = () => {
           </tr>
         </thead>
         <tbody>
-          {applications.map(application => (
-            <tr key={application.id}>
-              <td>{application.id}</td>
-              <td>{application.jobPost}</td>
-              <td>{application.company}</td>
+          {applications.map((application, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{application.projectTitle}</td>
+              <td>{application.shopName}</td>
               <td>{application.status}</td>
             </tr>
           ))}
@@ -40,6 +71,6 @@ const CollabRequests = () => {
       </Link>
     </div>
   );
-}
+};
 
 export default CollabRequests;

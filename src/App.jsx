@@ -38,7 +38,7 @@ const App = () => {
         <Route path="/collabdash" element={<CollabDash />} />
         <Route path="/customersupport" element={<CustomerSupport />} /> 
         <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
-        <Route path="/details/:shopId/:requestId" element={<CollabDetails/>}/>
+        <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails/>}/>
         <Route path="/collabprofile" element={<CollabProfile/>}/>
         <Route path="/collabrequests" element={<CollabRequests/>}/>
         <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
