@@ -14,7 +14,7 @@ function CollabDetails() {
     phoneNumber: '',
     experience: '',
     skills: '',
-    
+    status: 'pending'
   });
 
   const handleChange = (e) => {
