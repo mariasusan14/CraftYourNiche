@@ -3,6 +3,7 @@ import { db, auth } from '../config/firebase';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import './styles/CollaborationRequests.css';
 import ViewResponses from './ViewResponses';
+import { Link } from 'react-router-dom';
 
 const CollaborationRequests = () => {
   const [collaborationRequests, setCollaborationRequests] = useState([]);
@@ -59,11 +60,16 @@ const CollaborationRequests = () => {
               <p>Deadline: {request.deadline}</p>
               <button onClick={() => handleViewResponses(request.id)}>View Responses</button>
               <button onClick={() => handleCloseRequest(request.id)}>Close Request</button>
+              
               {request.showResponses && <ViewResponses requestId={request.id} />}
+              
             </div>
           </li>
         ))}
       </ul>
+      <Link to="/collabdashshop">
+        <button>Back</button>
+      </Link>
     </div>
   );
 };

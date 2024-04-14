@@ -40,6 +40,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: auto;
 }
 
 .collaboration-requests ul {
@@ -50,7 +51,7 @@
 .collaboration-requests li {
   width: fit-content;
   margin-bottom: 20px;
-  background-color: white;
+  background-color: white;  
 }
 
 .collaboration-requests li .request-details {
@@ -61,9 +62,13 @@
   margin-bottom: 5px;
 }
 
+.collaboration-request-btn{
+  width: auto;
+}
+
 .collaboration-requests li button {
   background-color: #4d2800;
-  width: 100px;
+  width: auto;
   color: #fff;
   padding: 8px 12px;
   border: none;

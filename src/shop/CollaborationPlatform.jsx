@@ -97,8 +97,8 @@ const CollaborationPlatform = () => {
             </form>
           </div>
           <div className="collaboration-requests">
-            <h2>Collaboration Requests</h2>
-            <button onClick={handleViewCollaborationRequests}>View Collaboration Requests</button>
+            {/* <h2>Collaboration Requests</h2> */}
+            <button className='collaboration-request-btn' onClick={handleViewCollaborationRequests}>View Collaboration Requests</button>
           </div>
         </section>
       </div>

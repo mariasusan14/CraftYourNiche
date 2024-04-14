@@ -10,7 +10,7 @@ const CollabRequests = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const userId = auth.currentUser.uid;
+        const userId = auth.currentUser.uid; 
         
         const userApplicationsQuery = query(collection(db, 'collaborationResponses'), where('userId', '==', userId));
         const userApplicationsSnapshot = await getDocs(userApplicationsQuery);
@@ -60,7 +60,12 @@ const CollabRequests = () => {
               <td>{index + 1}</td>
               <td>{application.projectTitle}</td>
               <td>{application.shopName}</td>
-              <td>{application.status}</td>
+              <td style={{ color: 
+                application.status === 'accepted' ? '#32CD32' : 
+                application.status === 'rejected' ? 'red' : 'default' 
+              }}>
+                {application.status}
+              </td>
             </tr>
           ))}
         </tbody>
