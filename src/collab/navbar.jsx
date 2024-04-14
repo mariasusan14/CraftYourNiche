@@ -1,10 +1,14 @@
 import React from 'react';
 import { FaSignOutAlt,FaUser, FaEnvelope } from 'react-icons/fa';
 import { auth } from '../config/firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './styles/Navbar.css'; // Import CSS file for styling
 
-const handleLogout = async () => {
+
+
+function Navbar() {
+  const navigate=useNavigate();
+  const handleLogout = async () => {
     try {
       await auth.signOut();
       navigate('/auth'); // Redirect to the authentication page after logout
@@ -12,8 +16,6 @@ const handleLogout = async () => {
       console.error('Error during logout:', error);
     }
   };
-
-function Navbar() {
   return (
     <div className="collab-navbar">
         

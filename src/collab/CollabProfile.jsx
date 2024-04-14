@@ -1,29 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './styles/CollabProfile.css'; // Import CSS file for styling
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import { db , auth} from '../config/firebase'; // Import your Firebase instance
+import './styles/CollabProfile.css'
 
 const CollabProfile = () => {
-  // State variables to store user profile information
-  const [name, setName] = useState('John Doe');
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [bio, setBio] = useState('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-
-  // State variable to track whether the user is in edit mode
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [bio, setBio] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // Fetch user profile data from Firestore when the component mounts
+    const fetchUserProfile = async () => {
+      try {
+        const userId = auth.currentUser.uid; 
+        const userDocRef = doc(db, 'user', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setName(userData.fullName);
+          setEmail(userData.email);
+          setBio(userData.bio || ''); 
+        } else {
+          console.error('User document does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to submit updated profile data to the server
-    console.log('Profile updated:', { name, email, bio });
-    // You can make an API request to update the user's profile data
-    setIsEditing(false); // Exit edit mode after submission
+    try {
+      const userId = auth.currentUser.uid; 
+      const userDocRef = doc(db, 'user', userId);
+      await setDoc(userDocRef, {
+        fullName: name,
+        email: email,
+        bio: bio
+      }, { merge: true }); 
+
+      console.log('Profile updated successfully');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
   };
 
   return (
     <div className="user-profile">
-    <h1>Profile</h1>
-    <br /><hr /><br />
+      <h1>Profile</h1>
+      <br /><hr /><br />
       {isEditing ? (
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -53,12 +84,12 @@ const CollabProfile = () => {
             ></textarea>
           </div>
           <div className="btn">
-          <button className='save-btn' type="submit">Save</button>
-          <button className='cancel-btn' type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+            <button className='save-btn' type="submit">Save</button>
+            <button className='cancel-btn' type="button" onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
         </form>
       ) : (
-        <div>          
+        <div>
           <div>
             <p><strong>Name:</strong> {name}</p>
             <br />
@@ -68,12 +99,11 @@ const CollabProfile = () => {
             <br />
           </div>
           <div className="btn">
-          <Link to="/collabdash">
-            <button className="back-btn">Back</button>
-          </Link>
-          <button className='edit-btn' onClick={() => setIsEditing(true)}>Edit</button>
+            <Link to="/collabdash">
+              <button className="back-btn">Back</button>
+            </Link>
+            <button className='edit-btn' onClick={() => setIsEditing(true)}>Edit</button>
           </div>
-          
         </div>
       )}
     </div>
