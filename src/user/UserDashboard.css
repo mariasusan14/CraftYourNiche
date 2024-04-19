@@ -42,14 +42,14 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #dc3545;
+    background-color: #ef233c;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
   .logout-button:hover {
-    background-color: #bb2d3b;
+    background-color: #c1121f;
   }
   
   /* Main section */

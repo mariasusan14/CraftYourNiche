@@ -77,7 +77,7 @@ export const UserDashboard = () => {
       <div className="nav-buttons">
         <button className="nav-button" onClick={() => handlePageChange('profile')}>Profile</button>
         <button className="nav-button" onClick={() => handlePageChange('shopping-cart')}>Shopping Cart</button>
-        <button className="nav-button" onClick={() => handlePageChange('order-management')}>Order Management</button>
+        <button className="nav-button" onClick={() => handlePageChange('order-management')}>Order Mngmt</button>
         <button className="nav-button" onClick={() => handlePageChange('wishlist')}>Wishlist</button>
         <button className="nav-button" onClick={() => handlePageChange('customer-support')}>Support</button>
         <button className="nav-button" onClick={() => handlePageChange('product-listing')}>Product Listing</button>
