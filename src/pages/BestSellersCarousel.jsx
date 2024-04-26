@@ -5,9 +5,9 @@ import Slider from "react-slick"; // Import React Slick for carousel functionali
 import "slick-carousel/slick/slick.css"; // Import slick carousel styles
 import "slick-carousel/slick/slick-theme.css"; // Import slick carousel theme styles
 
-const ProductListShop = () => {
-  // Sample new arrivals data
-  const newArrivals = products.slice(0, 5); // Assuming first 5 products are new arrivals
+const BestSellersCarousel = () => {
+  // Sample bestsellers data
+  const bestsellers = products.slice(5, 10); // Assuming next 5 products are bestsellers
 
   // Slick carousel settings
   const carouselSettings = {
@@ -46,18 +46,15 @@ const ProductListShop = () => {
   };
 
   return (
-    <div className="product-list-shop">
-      {/* New Arrivals */}
-      <div className="product-list-section">
-        <h2>New Arrivals</h2>
-        <Slider {...carouselSettings}>
-          {newArrivals.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </Slider>
-      </div>
+    <div className="product-list-section">
+      <h2>Bestsellers</h2>
+      <Slider {...carouselSettings}>
+        {bestsellers.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </Slider>
     </div>
   );
 };
 
-export default ProductListShop;
+export default BestSellersCarousel;

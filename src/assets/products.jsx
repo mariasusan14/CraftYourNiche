@@ -1,26 +1,34 @@
-// src/assets/products.js
+// ../assets/products.js
 
 export const products = [
-    {
-      id: 1,
-      name: "Product One",
-      price: "$19.99",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      image: "product-one.jpg",
-    },
-    {
-      id: 2,
-      name: "Product Two",
-      price: "$29.99",
-      description: "Pellentesque habitant morbi tristique senectus et netus.",
-      image: "product-two.jpg",
-    },
-    {
-      id: 3,
-      name: "Product Three",
-      price: "$39.99",
-      description: "Fusce at massa nec sapien auctor gravida in in tellus.",
-      image: "product-three.jpg",
-    },
-  ];
-  
+  {
+    id: 1,
+    title: "Product 1",
+    url: "/path/to/product1.jpg",
+    price: 10.99,
+    rating: 4,
+  },
+  {
+    id: 2,
+    title: "Product 2",
+    url: "/path/to/product2.jpg",
+    price: 19.99,
+    rating: 3,
+  },
+  // Add more products here
+  {
+    id: 3,
+    title: "Product 3",
+    url: "/path/to/product3.jpg",
+    price: 15.99,
+    rating: 5,
+  },
+  {
+    id: 4,
+    title: "Product 4",
+    url: "/path/to/product4.jpg",
+    price: 29.99,
+    rating: 4,
+  },
+  // Add more products as needed
+];
