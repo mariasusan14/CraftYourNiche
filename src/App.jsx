@@ -18,6 +18,7 @@ import CollabProfile from "./collab/CollabProfile";
 import CollabRequests from "./collab/CollabRequests";
 import CustomizationShop from "./shop/Customization";
 import CollaborationRequests from "./shop/CollaborationRequests";
+import ShopPage from "./pages/ShopPage"; // Import ShopPage component
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/" element={<Landing />} />
         <Route path="/hero" element={<Hero />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/shop" element={<ShopPage />} /> {/* New route for ShopPage */}
         <Route path="/shopdash" element={<ShopDashboard />} />
         <Route path="/userdash" element={<UserDashboard />} />
         <Route path="/inventory" element={<InventoryManagement />} />

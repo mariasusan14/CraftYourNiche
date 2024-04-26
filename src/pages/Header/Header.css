@@ -1,0 +1,251 @@
+/* Tailwind CSS Classes */
+/* You can add these classes to your main CSS file or component styles */
+
+/* Header */
+.bg-white {
+    background-color: #ffffff;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .sticky {
+    position: sticky;
+  }
+  
+  .top-0 {
+    top: 0;
+  }
+  
+  .z-50 {
+    z-index: 50;
+  }
+  
+  .max-w-7xl {
+    max-width: 80rem;
+  }
+  
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .h-16 {
+    height: 4rem;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .md\:block {
+    display: block;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 1rem;
+  }
+  
+  .text-gray-900 {
+    color: #1a202c;
+  }
+  
+  .hover\:text-gray-700:hover {
+    color: #4a5568;
+  }
+  
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .rounded-md {
+    border-radius: 0.375rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  /* Menu Icon */
+  .-mr-2 {
+    margin-right: -0.5rem;
+  }
+  
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .block {
+    display: block;
+  }
+  
+  .h-6 {
+    height: 1.5rem;
+  }
+  
+  .w-6 {
+    width: 1.5rem;
+  }
+  
+  /* Header Bottom */
+  .bg-white {
+    background-color: #0c46b2; /* Light grey background color */
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .max-w-7xl {
+    max-width: 80rem;
+  }
+  
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .h-16 {
+    height: 4rem;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .md\:flex {
+    display: flex;
+  }
+  
+  .md\:items-center {
+    align-items: center;
+  }
+  
+  .md\:justify-end {
+    justify-content: flex-end;
+  }
+  
+  .text-gray-500 {
+    color: #718096;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .mr-4 {
+    margin-right: 1rem;
+  }
+  
+  .inline-flex {
+    display: inline-flex;
+  }
+  
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .border {
+    border-width: 1px;
+  }
+  
+  .rounded-md {
+    border-radius: 0.375rem;
+  }
+  
+  .text-white {
+    color: #000000;
+  }
+  
+  .bg-blue-600 {
+    background-color: #2563eb;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .focus\:outline-none:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  .focus\:ring-2:focus {
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  }
+  
+  .focus\:ring-offset-2:focus {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+  }
+  
+  .focus\:ring-blue-500:focus {
+    --ring-color: #2563eb;
+    box-shadow: 0 0 0 3px var(--ring-color);
+  }
+  
+  .focus\:ring:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  }
+  
+  

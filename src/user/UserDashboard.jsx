@@ -10,7 +10,6 @@ import Wishlist from '../pages/Wishlist';
 import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
 import ProductListing from '../pages/ProductListing/ProductListing';
 import Productlist from '../components/Productlist/Productlist';
-
 export const UserDashboard = () => {
   const navigate = useNavigate();
   const [activePage, setActivePage] = useState(null);
@@ -83,7 +82,9 @@ export const UserDashboard = () => {
         <button className="nav-button" onClick={() => handlePageChange('product-listing')}>Product Listing</button>
         <hr />
       </div>
-
+      <div>
+          <product></product> 
+        </div>
       {/* Main section with active page */}
       <div className='dash-mainsection'>
         <div>{activePage === 'product-listing' ? 'Latest' : ''}</div>
@@ -92,6 +93,7 @@ export const UserDashboard = () => {
         {renderActivePage()}
       </div>
     </div>
+    
   );
 };
 
