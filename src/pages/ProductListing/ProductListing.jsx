@@ -58,7 +58,7 @@ export default function ProductListing() {
   console.log(products);
   return (
     <div>
-      <Navbar />
+      
       <Flex direction="row">
         {/* Filters: */}
         <div className="productlisting-filters">

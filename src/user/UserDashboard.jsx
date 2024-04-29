@@ -41,7 +41,7 @@ export const UserDashboard = () => {
       case 'customer-support':
         return <CustomerSupport />;
       case 'product-listing':
-        return <Productlist product={products} />;
+        return <ProductListing/>;
       default:
         return null;
     }
