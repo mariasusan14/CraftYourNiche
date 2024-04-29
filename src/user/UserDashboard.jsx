@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
 import './UserDashboard.css';
-import Navbar from '../components/Navbar/Navbar';
 import Profile from '../pages/Profile';
 import ShoppingCart from '../pages/ShoppingCart';
 import OrderManagement from '../pages/OrderManagement';
@@ -10,9 +9,10 @@ import Wishlist from '../pages/Wishlist';
 import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
 import ProductListing from '../pages/ProductListing/ProductListing';
 import Productlist from '../components/Productlist/Productlist';
+
 export const UserDashboard = () => {
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState(null);
+  const [activePage, setActivePage] = useState('product-listing'); // Set default active page to 'product-listing'
 
   const handleLogout = async () => {
     try {
@@ -68,7 +68,6 @@ export const UserDashboard = () => {
 
   return (
     <div className="dash-container">
-      <Navbar />
       <h1 className="page-title">Hello, Welcome to the Dashboard!</h1>
       <button className="logout-button" onClick={handleLogout}>Logout</button>
 
@@ -82,9 +81,7 @@ export const UserDashboard = () => {
         <button className="nav-button" onClick={() => handlePageChange('product-listing')}>Product Listing</button>
         <hr />
       </div>
-      <div>
-          <product></product> 
-        </div>
+     
       {/* Main section with active page */}
       <div className='dash-mainsection'>
         <div>{activePage === 'product-listing' ? 'Latest' : ''}</div>
@@ -93,7 +90,6 @@ export const UserDashboard = () => {
         {renderActivePage()}
       </div>
     </div>
-    
   );
 };
 

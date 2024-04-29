@@ -1,6 +1,8 @@
-.productlist{
-    display: flex ;
-    flex-direction: row;
+.productlist {
+    display: flex;
+    flex-wrap: wrap-reverse; /* Wrap items to the next row */
+    gap: 20px; /* Add spacing between each product */
     overflow: hidden;
-    border: #EEEEEE solid 1px;
-}
+    border: #eeeeee solid 1px;
+  }
+  
