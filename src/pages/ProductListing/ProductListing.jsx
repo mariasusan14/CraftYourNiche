@@ -4,7 +4,7 @@ import {
   Text,
   Slider,
   Button,
-  DropdownMenu,
+  DropdownMenu, 
   RadioGroup,
 } from "@radix-ui/themes";
 import Navbar from "../../components/Navbar/Navbar";
@@ -13,6 +13,7 @@ import { db } from "../../config/firebase";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductListing.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function ProductListing() {
   const [products, setProducts] = useState([]);
@@ -30,8 +31,8 @@ export default function ProductListing() {
         const productsCollectionRef = collection(doc.ref, "products");
         const productsQuerySnapshot = await getDocs(productsCollectionRef);
         productsQuerySnapshot.forEach((productDoc) => {
-          const { title, url, price } = productDoc.data();
-          productsData.push({ title, url, price });
+          const { title, url, price, category, description, productId } = productDoc.data();
+          productsData.push({ title, url, price, category, description, productId });
         });
       }
 
@@ -174,7 +175,16 @@ export default function ProductListing() {
                   product.price >= (sliderValueInitial / 100) * 1500 &&
                   product.price <= (sliderValueFinal / 100) * 1500
                 ) {
-                  return <ProductCard product={product} />;
+                  return (
+                    <Link
+                      to={{
+                        pathname: `/product/${product.productId}`, // Use index or product ID as a unique identifier for the product
+                        state: { product }, // Pass product data as state
+                      }}
+                      key={product.productId}
+                    >
+                      <ProductCard product={product} />
+                    </Link>);
                 }
               })}
             </div>

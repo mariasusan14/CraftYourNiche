@@ -19,13 +19,13 @@ import CollabRequests from "./collab/CollabRequests";
 import CustomizationShop from "./shop/Customization";
 import CollaborationRequests from "./shop/CollaborationRequests";
 import ShopPage from "./pages/ShopPage"; // Import ShopPage component
-import CustomisationComponent from "./pages/customisation/CustomisationUser";
-
+import Data from "./Context/Data";
 
 const App = () => {
   return (
     <div>
-      <Routes>
+    <Data>
+    <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/hero" element={<Hero />} />
         <Route path="/auth" element={<Auth />} />
@@ -37,16 +37,18 @@ const App = () => {
         <Route path="/addproduct" element={<AddProducts />} />
         <Route path="/verification" element={<ProfileCompletion />} />
         <Route path="/customization" element={<CustomizationShop />} />
-        <Route path="/product" element={<Product />} />
+        <Route path="//product/:productId" element={<Product />} />
         <Route path="/productlisting" element={<ProductListing />} />
         <Route path="/collabdash" element={<CollabDash />} />
-        <Route path="/customersupport" element={<CustomerSupport />} /> 
+        <Route path="/customersupport" element={<CustomerSupport />} />  
         <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
         <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails/>}/>
         <Route path="/collabprofile" element={<CollabProfile/>}/>
         <Route path="/collabrequests" element={<CollabRequests/>}/>
         <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
       </Routes> 
+    </Data>
+      
       
     </div>
   );

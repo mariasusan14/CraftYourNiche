@@ -33,7 +33,7 @@ const Header = () => {
     <header>
       <div className="logo">
         {logoUrl ? (
-          <img src={logoUrl} alt="Shop Logo" />
+          <img className='logo-img' src={logoUrl} alt="Shop Logo" />
         ) : (
           <span>No Logo Available</span>
         )}
