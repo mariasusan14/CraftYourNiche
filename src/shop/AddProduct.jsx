@@ -13,6 +13,7 @@ export const AddProducts = () => {
     const [image, setImage] = useState(null);
     const [category, setCategory] = useState('');
     const [otherCategory, setOtherCategory] = useState('');
+    const [addCustomisation, setAddCustomisation] = useState('');
 
     const [imageError, setImageError] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
@@ -60,6 +61,7 @@ export const AddProducts = () => {
                 price: Number(price),
                 quantity: Number(quantity),
                 category: category === 'Other' ? otherCategory : category,
+                addCustomisation,
                 url
             });
 
@@ -70,6 +72,7 @@ export const AddProducts = () => {
             setQuantity('');
             setCategory('');
             setOtherCategory('');
+            setAddCustomisation('');
             document.getElementById('file').value = '';
             setImageError('');
             setUploadError('');
@@ -131,8 +134,7 @@ export const AddProducts = () => {
                         className="form-control"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        required
-                    >
+                        required>
                         <option value="">Select Category</option>
                         <option value="Handmade Jewelry">Handmade Jewelry</option>
                         <option value="Phone Cases">Phone Cases</option>
@@ -164,6 +166,18 @@ export const AddProducts = () => {
                             />
                         </>
                     )}
+                    <br />
+                    <label>Add Customisation</label>
+                    <select
+                        className="form-control"
+                        value={addCustomisation}
+                        onChange={(e) => setAddCustomisation(e.target.value)}
+                        required
+                    >
+                        <option value="">Select Option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
                     <br />
                     <label>Upload Product Image</label>
                     <input type="file" id="file" className="form-control" required onChange={handleProductImg} />
