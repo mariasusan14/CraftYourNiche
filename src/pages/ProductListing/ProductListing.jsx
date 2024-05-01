@@ -28,11 +28,12 @@ export default function ProductListing() {
       const querySnapshot = await getDocs(collection(db, "shops"));
 
       for (const doc of querySnapshot.docs) {
+        const shopId = doc.id; 
         const productsCollectionRef = collection(doc.ref, "products");
         const productsQuerySnapshot = await getDocs(productsCollectionRef);
         productsQuerySnapshot.forEach((productDoc) => {
           const { title, url, price, category, description, productId } = productDoc.data();
-          productsData.push({ title, url, price, category, description, productId });
+          productsData.push({ shopId, title, url, price, category, description, productId });
         });
       }
 
@@ -56,7 +57,7 @@ export default function ProductListing() {
     else if (a.price < b.price) return 1;
     return 0;
   };
-  console.log(products);
+  
   return (
     <div>
       
@@ -178,7 +179,7 @@ export default function ProductListing() {
                   return (
                     <Link
                       to={{
-                        pathname: `/product/${product.productId}`, // Use index or product ID as a unique identifier for the product
+                        pathname: `/product/${product.shopId}/${product.productId}`, // Use index or product ID as a unique identifier for the product
                         state: { product }, // Pass product data as state
                       }}
                       key={product.productId}

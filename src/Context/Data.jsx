@@ -1,6 +1,8 @@
 import React from 'react'
 import Context from './Context'
 import { useEffect,useState } from 'react';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../config/firebase';
 
 function Data(props) {
     const [products, setProducts] = useState([]);
@@ -11,22 +13,23 @@ function Data(props) {
 
   const fetchProducts = async () => {
     try {
-      const productsData = [];
-      const querySnapshot = await getDocs(collection(db, "shops"));
-
-      for (const doc of querySnapshot.docs) {
-        const productsCollectionRef = collection(doc.ref, "products");
-        const productsQuerySnapshot = await getDocs(productsCollectionRef);
-        productsQuerySnapshot.forEach((productDoc) => {
-          const { title, url, price, category, description, productId } = productDoc.data();
-          productsData.push({ title, url, price, category, description, productId });
-        });
+        const productsData = [];
+        const querySnapshot = await getDocs(collection(db, "shops"));
+      
+        for (const doc of querySnapshot.docs) {
+          const shopId = doc.id; 
+          const productsCollectionRef = collection(doc.ref, "products");
+          const productsQuerySnapshot = await getDocs(productsCollectionRef);
+          productsQuerySnapshot.forEach((productDoc) => {
+            const { title, url, price, category, description, productId } = productDoc.data();
+            productsData.push({ shopId, title, url, price, category, description, productId });
+          });
+        }
+        setProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-
-      setProducts(productsData);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+      
   };
   return (
     <Context.Provider value={products}>

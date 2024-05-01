@@ -1,38 +1,30 @@
+import { useState,useEffect, useContext} from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
-
-import image1 from "../../assets/image1.jpg";
-import image2 from "../../assets/image2.jpg";
-import image3 from "../../assets/image3.jpg";
+import Context from "../../Context/Context";
 import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
-import { useState,useLocation, useContext } from "react";
+
 import Magnifier from "../../components/Magnifier/Magnifier"; 
-import { useParams } from "react-router-dom";
-import context from "../../Context/Context";
+
 
 export default function Product() {
+  const [magnifierOn, setMagnifierOn] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hasPurchased, setPurchased] = useState(true);
-  const { productId } = useParams();
-  const products=useContext(context)
-  // const [product, setProduct] = useState(null);
-  //below variables need to be added as props
-  console.log(products);
-  console.log("URL Product ID:", productId);
-products.forEach(product => {
-  console.log("Product ID in Array:", product.productId);
-});
+  const { shopId,productId } = useParams();
+  const products = useContext(Context);
+  const product = products.find((product) => product.productId === productId);
 
-
-  // if (!product) {
-  //   return <div>Loading...</div>;
-  // }
-  // var productName = product.title;
-  var productPrice = 250;
-  var productName = "Bamboo Lamp";
-  var productImages = [image1, image2, image3];
-  //variables given below are to be added as props
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+  const { title: productName, price: productPrice, url: productUrl, description: productDescription } = product;
+  const productImages = [productUrl];
+  const [mainimg, setMainimg] = useState(productImages[0]);
+  
   var reviews = [
     {
       avatar:
@@ -73,9 +65,7 @@ products.forEach(product => {
 
   let ratSummary = ratingSummary(reviews);
 
-  const [mainimg, setMainimg] = useState(productImages[0]);
-  const [magnifierOn, setMagnifierOn] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  
 
   const handleMouseMove = (e) => {
     const { left, top } = e.target.getBoundingClientRect();
@@ -101,7 +91,7 @@ products.forEach(product => {
                 onMouseLeave={() => setMagnifierOn(false)}
               />
             </div>
-            {/* Magnifier */}
+            Magnifier
             {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
               {productImages.map((img) => (
@@ -131,12 +121,7 @@ products.forEach(product => {
             </Flex>
             <Box width={"700px"} pt={"8"}>
               <Text as="p" wrap={"pretty"}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse ligula nibh, finibus eu mi id, dignissim interdum
-                arcu. Sed nec felis ac tellus aliquam volutpat id ac erat. Nulla
-                fringilla semper volutpat. Sed iaculis placerat nisi. Proin elit
-                libero, tempor id ante a, bibendum sollicitudin felis. Etiam
-                nulla urna, pharetra.
+                {productDescription}
               </Text>
             </Box>
             <Box pt={"7"}>
