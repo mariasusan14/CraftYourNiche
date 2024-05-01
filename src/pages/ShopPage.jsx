@@ -1,25 +1,43 @@
-import React from "react";
-import Footer from "./Footer/Footer"; // Corrected import path
-import FooterBottom from "./Footer/FooterBottom"; // Corrected import path
-import ProductListShop from "./ProductListShop"; // Updated import path for ProductListShop
-import BestSellersCarousel from "./BestSellersCarousel"; // Import BestSellersCarousel component
-import Header from "./Header/Header"; // Updated import path for Header
-import HeaderBottom from "./Header/HeaderBottom";
+import React, { useState } from 'react';
 
-const ShopPage = () => {
+const ShoppingCart = () => {
+  const [cartItems, setCartItems] = useState([
+    { id: 1, name: 'Product A', price: 20, image: 'productA.jpg' },
+    { id: 2, name: 'Product B', price: 30, image: 'productB.jpg' },
+    { id: 3, name: 'Product C', price: 25, image: 'productC.jpg' },
+  ]);
+
+  const shippingCharge = 5; // Example shipping charge
+
+  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0) + shippingCharge;
+
   return (
     <div>
-      <Header />
-      <HeaderBottom />
-      {/* Your ShopPage content */}
-      <ProductListShop />
-      {/* Add the BestSellersCarousel component */}
-      <BestSellersCarousel />
-      {/* Add the Footer components */}
-      <Footer />
-      <FooterBottom />
+      <h2>Shopping Cart</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartItems.map(item => (
+            <tr key={item.id}>
+              <td><img src={item.image} alt={item.name} style={{ width: '50px', height: '50px' }} /></td>
+              <td>{item.name}</td>
+              <td>${item.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        <p>Shipping Charge: ${shippingCharge}</p>
+        <p>Total: ${totalPrice}</p>
+      </div>
     </div>
   );
-};
+}
 
-export default ShopPage;
+export default ShoppingCart;
