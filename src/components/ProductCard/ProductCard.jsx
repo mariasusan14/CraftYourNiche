@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
         <span className="product-price">${price}</span>
         <div className="product-rating">
           {Array.from({ length: rating }, (_, index) => (
-            <span key={index} className="star">&#9733;</span>
+            <span key={index} className="star">&#9733;</span> 
           ))}
         </div>
       </div>

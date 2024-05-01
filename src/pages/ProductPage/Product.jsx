@@ -7,13 +7,28 @@ import image3 from "../../assets/image3.jpg";
 import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
-import { useState } from "react";
-import Magnifier from "../../components/Magnifier/Magnifier";
+import { useState,useLocation, useContext } from "react";
+import Magnifier from "../../components/Magnifier/Magnifier"; 
+import { useParams } from "react-router-dom";
+import context from "../../Context/Context";
 
 export default function Product() {
   const [hasPurchased, setPurchased] = useState(true);
+  const { productId } = useParams();
+  const products=useContext(context)
+  // const [product, setProduct] = useState(null);
   //below variables need to be added as props
-  var productName = "Bamboo Lamp";
+  console.log(products);
+  console.log("URL Product ID:", productId);
+products.forEach(product => {
+  console.log("Product ID in Array:", product.productId);
+});
+
+
+  // if (!product) {
+  //   return <div>Loading...</div>;
+  // }
+  // var productName = product.title;
   var productPrice = 250;
   var productName = "Bamboo Lamp";
   var productImages = [image1, image2, image3];
