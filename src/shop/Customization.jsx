@@ -1,84 +1,50 @@
-import React, { useState } from 'react';
-import './styles/Customization.css'
-const initialCustomizationOptions = [
-  { id: 1, name: 'Color', options: ['Red', 'Blue', 'Green'] },
-  { id: 2, name: 'Size', options: ['Small', 'Medium', 'Large'] },
-  { id: 3, name: 'Material', options: ['Cotton', 'Leather', 'Polyester'] },
-];
+// ShopCustomisationComponent.jsx
+import React, { useState, useEffect } from 'react';
+import { db } from '../config/firebase';
+import { collection, doc, getDocs } from 'firebase/firestore';
 
-const CustomizationShop = () => {
-  const [customizationOptions, setCustomizationOptions] = useState(initialCustomizationOptions);
-  
-  const handleAddOption = () => {
-    const newOptionId = customizationOptions.length + 1;
-    setCustomizationOptions([
-      ...customizationOptions,
-      { id: newOptionId, name: 'New Option', options: [] }
-    ]);
+const ShopCustomisationComponent = ({ shopId }) => {
+  const [customisationRequests, setCustomisationRequests] = useState([]);
+
+  useEffect(() => {
+    fetchCustomisationRequests();
+  }, []);
+
+  const fetchCustomisationRequests = async () => {
+    try {
+      const customisationRef = collection(db, `customers/${shopId}/customisationRequests`);
+      const querySnapshot = await getDocs(customisationRef);
+      const requests = [];
+      querySnapshot.forEach((doc) => {
+        requests.push({ id: doc.id, data: doc.data() });
+      });
+      setCustomisationRequests(requests);
+    } catch (error) {
+      console.error('Error fetching customisation requests:', error);
+    }
   };
 
-  const handleDeleteOption = (id) => {
-    setCustomizationOptions(customizationOptions.filter(option => option.id !== id));
-  };
-
-  const handleOptionNameChange = (id, newName) => {
-    setCustomizationOptions(customizationOptions.map(option => {
-      if (option.id === id) {
-        return { ...option, name: newName };
-      }
-      return option;
-    }));
-  };
-
-  const handleAddSubOption = (id) => {
-    setCustomizationOptions(customizationOptions.map(option => {
-      if (option.id === id) {
-        const newSubOptionId = option.options.length + 1;
-        return { ...option, options: [...option.options, `Sub Option ${newSubOptionId}`] };
-      }
-      return option;
-    }));
-  };
-
-  const handleDeleteSubOption = (optionId, subOptionIndex) => {
-    setCustomizationOptions(customizationOptions.map(option => {
-      if (option.id === optionId) {
-        const updatedOptions = [...option.options];
-        updatedOptions.splice(subOptionIndex, 1);
-        return { ...option, options: updatedOptions };
-      }
-      return option;
-    }));
+  const respondToRequest = async (requestId, response) => {
+    // Add response handling logic here
+    console.log(`Responding to request ${requestId}:`, response);
   };
 
   return (
     <div>
-      {customizationOptions.map(option => (
-        <div key={option.id}>
-          <input
-            type="text"
-            value={option.name}
-            onChange={(e) => handleOptionNameChange(option.id, e.target.value)}
-          />
-          <button onClick={() => handleDeleteOption(option.id)}>Delete</button>
-          <ul>
-            {option.options.map((subOption, index) => (
-              <li key={index}>
-                {subOption}
-                <button onClick={() => handleDeleteSubOption(option.id, index)}>Delete</button>
-              </li>
-            ))}
-            <button onClick={() => handleAddSubOption(option.id)}>Add Sub Option</button>
-          </ul>
-        </div>
-      ))}
-      <button onClick={handleAddOption}>Add Option</button>
+      <h2>Customisation Requests</h2>
+      <ul>
+        {customisationRequests.map((request) => (
+          <li key={request.id}>
+            <div>Request ID: {request.id}</div>
+            <div>Product ID: {Object.keys(request.data)[0]}</div>
+            {/* Display other request details here */}
+            <button onClick={() => respondToRequest(request.id, 'Accepted')}>Accept</button>
+            <button onClick={() => respondToRequest(request.id, 'Rejected')}>Reject</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
-export default CustomizationShop;
-
-
-
-
+export default ShopCustomisationComponent;

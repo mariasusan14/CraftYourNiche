@@ -1,8 +1,0 @@
-.productlist {
-    display: flex;
-    flex-wrap: wrap-reverse; /* Wrap items to the next row */
-    gap: 20px; /* Add spacing between each product */
-    overflow: hidden;
-    border: #eeeeee solid 1px;
-  }
-  

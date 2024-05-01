@@ -8,7 +8,8 @@ import OrderManagement from '../pages/OrderManagement';
 import Wishlist from '../pages/Wishlist';
 import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
 import ProductListing from '../pages/ProductListing/ProductListing';
-import Productlist from '../components/Productlist/Productlist';
+import Product from '../pages/ProductPage/Product';
+import CustomisationComponent from '../pages/customisation/CustomisationUser';
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export const UserDashboard = () => {
       case 'wishlist':
         return <Wishlist />;
       case 'customer-support':
-        return <CustomerSupport />;
+        return <CustomisationComponent/>;
       case 'product-listing':
         return <ProductListing/>;
       default:

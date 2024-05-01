@@ -19,6 +19,8 @@ import CollabRequests from "./collab/CollabRequests";
 import CustomizationShop from "./shop/Customization";
 import CollaborationRequests from "./shop/CollaborationRequests";
 import ShopPage from "./pages/ShopPage"; // Import ShopPage component
+import CustomisationComponent from "./pages/customisation/CustomisationUser";
+
 
 const App = () => {
   return (

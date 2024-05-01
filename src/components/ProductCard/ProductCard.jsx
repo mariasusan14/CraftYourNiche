@@ -3,11 +3,11 @@ import { products } from "../../assets/products";
 
 
 export default function ProductCard({ product }) {
-  const { title, url, price, rating } = product; // Update to imageUrl
+  const { title, url, price, rating } = product; 
   return (
     <div className="product-card">
       <div className="product-image--container">
-        <img src={url} alt={title} className="product-image" /> {/* Update to imageUrl */}
+        <img src={url} alt={title} className="product-image" /> 
       </div>
       <div className="product-dt">
         <span className="product-name">{title}</span>
