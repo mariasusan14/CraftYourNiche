@@ -1,5 +1,5 @@
 import { useState,useEffect, useContext} from "react";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
 import Context from "../../Context/Context";
@@ -119,11 +119,19 @@ export default function Product() {
               <button className="product-atc--button">Add to cart</button>
               <button className="product-buy--button">Buy</button>
             </Flex>
+            <Link
+               to={`/customisation/${shopId}/${productId}`}
+               className="product-customise--button"
+               >
+               <button className="customise-button">Customise</button>
+           </Link>
             <Box width={"700px"} pt={"8"}>
               <Text as="p" wrap={"pretty"}>
                 {productDescription}
               </Text>
             </Box>
+
+
             <Box pt={"7"}>
               <DataList.Root>
                 <DataList.Item align="center">
@@ -207,32 +215,4 @@ function CustomerReviews({ reviews }) {
       ))}
     </div>
   );
-}
-
-/*
-function CustomisationForm() {
-  //to be given as props:
-  let customisations = [
-    {
-      img: "",
-      details: [
-        {
-          param1: "",
-          param2: "",
-          param3: "",
-        },
-      ],
-    },
-  ];
-}
-
-/*Alternate Approach:
-function CustomisationForm(){
-  //to be given as props (the customisations available for the product set by the seller)
-  //of the format: [{type(as in formtype):,title:,choices:[choice1,choice2,..also can be null]}]
-  //currently available formtypes :
-  //radio,checkboxes,dropdown
-  let customisations = [{type:"radio",title:}]
-  return()
-}
-*/
+} 

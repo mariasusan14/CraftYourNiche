@@ -20,6 +20,7 @@ import CustomizationShop from "./shop/Customization";
 import CollaborationRequests from "./shop/CollaborationRequests";
 import ShopPage from "./pages/ShopPage"; // Import ShopPage component
 import Data from "./Context/Data";
+import CustomisationComponent from "./pages/customisation/CustomisationUser";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
         <Route path="/collabprofile" element={<CollabProfile/>}/>
         <Route path="/collabrequests" element={<CollabRequests/>}/>
         <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
+        <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent/>}/>
       </Routes> 
     </Data>
       

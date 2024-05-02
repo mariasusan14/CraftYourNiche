@@ -1,10 +1,11 @@
-// CustomisationComponent.jsx
 import React, { useState } from 'react';
-import { auth } from '../../config/firebase';
+import { auth, storage } from '../../config/firebase';
 import { db } from '../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const CustomisationComponent = ({ shopId, productId }) => {
+const CustomisationComponent = () => {
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
   const [material, setMaterial] = useState('');
@@ -12,15 +13,60 @@ const CustomisationComponent = ({ shopId, productId }) => {
   const [design, setDesign] = useState('');
   const [addOns, setAddOns] = useState('');
   const [customizationInstructions, setCustomizationInstructions] = useState('');
+  const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const { shopId, productId } = useParams();
+  const userId = auth.currentUser.uid;
+  const uploadedImages = [];
+  const handleImageUpload = async (e) => {
+    try {
+      const files = e.target.files;
+      console.log('Files:', files); // Log the files to check if they are defined
+      if (!files) return; // Check if files is defined, if not, return early
+
+      
+
+      const uploadPromises = Array.from(files).map(async (imageFile) => {
+        const storageRef = ref(storage, `customisation/${userId}/${productId}/${imageFile.name}`);
+        try {
+          await uploadBytes(storageRef, imageFile);
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log('Download URL:', downloadURL); // Log the download URL
+          uploadedImages.push(downloadURL); // Collect all uploaded image URLs
+        } catch (error) {
+          console.error('Error uploading image:', error);
+        }
+      });
+
+      // Wait for all upload promises to resolve
+      await Promise.all(uploadPromises);
+
+      console.log('Uploaded Images:', uploadedImages); // Log the uploaded image URLs array
+
+      // Once all uploads are completed, update the state with all image URLs
+      setImages(uploadedImages);
+    } catch (error) {
+      console.error('Error handling image upload:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      const userId = auth.currentUser.uid;
-      const customisationRef = doc(db, `customers/${userId}/customisationRequests`, shopId);
+
+      // Upload images and retrieve their URLs
+      await handleImageUpload(e);
+
+      // Create a document with userId as document ID
+      const userCustomisationRef = doc(db, `customisation/${userId}`);
+      await setDoc(userCustomisationRef, {});
+
+      // Create a document with shopId as document ID under the user's customisation
+      const customisationRef = doc(userCustomisationRef, `customisationRequests/${shopId}`);
+
+      // Update the document with customisation details and image URLs
       await setDoc(customisationRef, {
         [productId]: {
           color,
@@ -30,8 +76,10 @@ const CustomisationComponent = ({ shopId, productId }) => {
           design,
           addOns,
           customizationInstructions,
+          images,
         },
       });
+
       // Reset form fields after submission
       setColor('');
       setSize('');
@@ -40,6 +88,7 @@ const CustomisationComponent = ({ shopId, productId }) => {
       setDesign('');
       setAddOns('');
       setCustomizationInstructions('');
+      setImages([]);
       setError('');
       console.log('Customisation request submitted successfully!');
     } catch (error) {
@@ -54,10 +103,9 @@ const CustomisationComponent = ({ shopId, productId }) => {
     <div>
       <h2>Customisation Options</h2>
       <form onSubmit={handleSubmit}>
-        
         <label htmlFor="color">Color:</label>
         <input type="text" id="color" value={color} onChange={(e) => setColor(e.target.value)} />
-        
+
         <label htmlFor="size">Size:</label>
         <input type="text" id="size" value={size} onChange={(e) => setSize(e.target.value)} />
 
@@ -80,6 +128,10 @@ const CustomisationComponent = ({ shopId, productId }) => {
           onChange={(e) => setCustomizationInstructions(e.target.value)}
           required
         ></textarea>
+
+        <label htmlFor="images">Upload Images:</label>
+        <input type="file" id="images" onChange={handleImageUpload} multiple />
+
         <button type="submit" disabled={submitting}>
           {submitting ? 'Submitting...' : 'Submit Customization Request'}
         </button>
@@ -90,7 +142,3 @@ const CustomisationComponent = ({ shopId, productId }) => {
 };
 
 export default CustomisationComponent;
-
-
-
-
