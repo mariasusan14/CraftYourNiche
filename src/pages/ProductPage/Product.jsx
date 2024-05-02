@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
+import { Link } from "react-router-dom";
 import Context from "../../Context/Context";
 import "./Product.css";
 import "./CustomerReview.css";
@@ -139,8 +140,8 @@ export default function Product() {
 
   return (
     <div>
-      <Navbar />
-      <hr />
+    
+      
       <div className="product-container">
         <div className="product-details">
           <div className="product-images">
@@ -203,22 +204,19 @@ export default function Product() {
             <Box pt={"7"}>
               <DataList.Root>
                 <DataList.Item align="center">
-                  <DataList.Label minWidth="88px" color="black">
-                    Material
-                  </DataList.Label>
-                  <DataList.Value>
-                    <span>hlo</span>
-                  </DataList.Value>
+                <Link to="/userdash">
+                  <button className="back-btn">Back</button>
+                </Link>
                 </DataList.Item>
 
-                <DataList.Item align="center">
+                {/* <DataList.Item align="center">
                   <DataList.Label minWidth="88px" color="black">
                     Size
                   </DataList.Label>
                   <DataList.Value>
                     <span>M</span>
                   </DataList.Value>
-                </DataList.Item>
+                </DataList.Item> */}
               </DataList.Root>
             </Box>
           </div>
