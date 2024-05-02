@@ -7,28 +7,37 @@ import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
 import Magnifier from "../../components/Magnifier/Magnifier";
-import { db } from "../../config/firebase"; // Import your Firestore instance
+import { auth, db } from "../../config/firebase"; // Import your Firestore instance
+import { collection, doc,setDoc,getDoc } from "firebase/firestore";
 
 export default function Product() {
   const [magnifierOn, setMagnifierOn] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hasPurchased, setPurchased] = useState(true);
+  const [quantity, setQuantity] = useState(0); // Unconditionally initialized
   const { shopId, productId } = useParams();
   const products = useContext(Context);
+  console.log(products);
   const product = products.find((product) => product.productId === productId);
 
-  useEffect(() => {
-    // Add logic to check if the user has purchased the product
-    // Set the hasPurchased state based on the logic
-  }, []);
-
+  // Initialize product details
+  let productName = "";
+  let productPrice = 0;
+  let productDescription = "";
+  let productImages = [];
+  if (product) {
+    productName = product.title;
+    productPrice = product.price;
+    productDescription = product.description;
+    productImages = [product.url];
+  }
+  const [mainimg, setMainimg] = useState(productImages[0]); 
   if (!product) {
     return <div>Loading...</div>;
   }
 
-  const { title: productName, price: productPrice, url: productUrl, description: productDescription } = product;
-  const productImages = [productUrl];
-  const [mainimg, setMainimg] = useState(productImages[0]);
+  
+  
 
   var reviews = [
     {
@@ -75,15 +84,49 @@ export default function Product() {
     setPosition({ x: e.clientX - left, y: e.clientY - top });
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (product, quantity) => {
     try {
-      // Add logic to add product to Firestore shopping cart
-      await db.collection('customers').doc(currentUser.uid).collection('shoppingcart').add(product);
-      console.log('Product added to cart successfully!');
+        // Ensure product, quantity, and currentUser are defined
+        const userId = auth.currentUser.uid;
+        if (!product || !quantity || !userId) {
+            console.error('Product, quantity, or current user is undefined');
+            return;
+        }
+
+        // Get a reference to the cart document for the current user
+        const cartDocRef = doc(db, 'cart', userId);
+
+        // Check if the cart collection exists
+        const cartDocSnapshot = await getDoc(cartDocRef);
+        if (!cartDocSnapshot.exists()) {
+            // If the cart collection doesn't exist, create it
+            await setDoc(cartDocRef, {});
+        }
+
+        // Get the current cart data
+        const cartSnapshot = await getDoc(cartDocRef);
+        const currentCartData = cartSnapshot.data();
+        const updatedProductArray = currentCartData && currentCartData.products ? [...currentCartData.products] : [];
+
+        // Create an object with the product and its quantity
+        const productWithQuantity = { product: product, quantity: quantity,status:"order received" };
+
+        // Push the productWithQuantity object into the updatedProductArray
+        
+            updatedProductArray.push(productWithQuantity);
+       
+
+        // Update the cart document with the new product array
+        await setDoc(cartDocRef, { products: updatedProductArray });
+
+        alert('Product added to cart successfully!');
     } catch (error) {
-      console.error('Error adding product to cart: ', error);
+        console.error('Error adding product to cart: ', error);
     }
-  };
+};
+
+
+  
 
   const handleBuyNow = async () => {
     try {
@@ -138,10 +181,16 @@ export default function Product() {
           <div className="product-details--basic">
             <span className="product-details--heading">{productName}</span>
             <div className="product-details--price">Rs. {productPrice}</div>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+            />
             <Flex direction={"row"} align={"center"} gap={"7"} pt={"5"}>
-              <button className="product-atc--button" onClick={handleAddToCart}>
-                Add to cart
-              </button>
+            <button className="product-atc--button" onClick={() => handleAddToCart(product, quantity)}>
+              Add to cart
+            </button>
+
               <button className="product-buy--button" onClick={handleBuyNow}>
                 Buy
               </button>

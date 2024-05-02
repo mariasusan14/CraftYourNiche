@@ -1,33 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db,auth } from '../config/firebase';
 
 const OrderManagement = () => {
-  const [orders, setOrders] = useState([
-    { id: 1, productName: 'Product A', amount: 50, status: 'Ready', image: 'productA.jpg' },
-    { id: 2, productName: 'Product B', amount: 30, status: 'Shipped', image: 'productB.jpg' },
-    { id: 3, productName: 'Product C', amount: 20, status: 'Delivered', image: 'productC.jpg' },
-    { id: 4, productName: 'Product D', amount: 40, status: 'Cancelled', image: 'productD.jpg' },
-  ]);
+  
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const cartDocRef = doc(db, 'cart', userId);
+        
+        // Check if the cart document exists
+        const cartDocSnapshot = await getDoc(cartDocRef);
+        if (cartDocSnapshot.exists()) {
+          // If the cart document exists, fetch the cart items
+          const cartData = cartDocSnapshot.data();
+          const fetchedCartItems = cartData.products || [];
+          setCartItems(fetchedCartItems);
+
+          
+        } else {
+          console.log('Cart document does not exist for the user.');
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching shopping cart items:', error);
+        setLoading(false);
+      }
+    };
+  
+    fetchCartItems();
+  }, []);
 
   return (
     <div>
       <h2>Order Management</h2>
       <table>
         <thead>
-          <tr>
-            <th>Order ID</th>
+          <tr>            
             <th>Image</th>
-            <th>Product Name</th>
-            <th>Amount</th>
+            <th>Product Name</th>            
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td><img src={order.image} alt={order.productName} style={{ width: '50px', height: '50px' }} /></td>
-              <td>{order.productName}</td>
-              <td>{order.amount}</td>
+          {cartItems.map(order => (
+            <tr>
+              
+              <td><img src={order.product.url} alt={order.product.title} style={{ width: '50px', height: '50px' }} /></td>
+              <td>{order.product.title}</td>
+              
               <td>{order.status}</td>
             </tr>
           ))}

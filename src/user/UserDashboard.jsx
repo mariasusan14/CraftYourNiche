@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { auth } from '../config/firebase';
 import './UserDashboard.css';
 import Profile from '../pages/Profile';
-import ShoppingCart from '../pages/ShoppingCart';
+import ShoppingCart from '../pages/Shoppingcart1';
 import OrderManagement from '../pages/OrderManagement';
 import Wishlist from '../pages/Wishlist';
 import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
