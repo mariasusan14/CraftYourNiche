@@ -110,7 +110,7 @@ export default function Product() {
         const updatedProductArray = currentCartData && currentCartData.products ? [...currentCartData.products] : [];
 
         // Create an object with the product and its quantity
-        const productWithQuantity = { product: product, quantity: quantity,status:"order received" };
+        const productWithQuantity = { product: product, quantity: quantity,status:"in cart" };
 
         // Push the productWithQuantity object into the updatedProductArray
         

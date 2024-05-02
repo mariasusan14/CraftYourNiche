@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc,setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { FaTrash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -15,17 +16,15 @@ const ShoppingCart = () => {
         const userId = auth.currentUser.uid;
         const cartDocRef = doc(db, 'cart', userId);
         
-        // Check if the cart document exists
+        
         const cartDocSnapshot = await getDoc(cartDocRef);
         if (cartDocSnapshot.exists()) {
-          // If the cart document exists, fetch the cart items
+          
           const cartData = cartDocSnapshot.data();
           const fetchedCartItems = cartData.products || [];
           setCartItems(fetchedCartItems);
-
-          // Calculate total price
           let totalPrice = fetchedCartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-          // Add shipping charge
+          
           totalPrice += totalPrice * shippingChargePercentage;
           setTotal(totalPrice);
         } else {
@@ -44,24 +43,16 @@ const ShoppingCart = () => {
   const renderCartItems = () => {
     const handleDeleteItem = async (productId) => {
       try {
-        // Get the current user's ID
-        const userId = auth.currentUser.uid;
-        // Get a reference to the cart document
-        const cartDocRef = doc(db, 'cart', userId);
-        // Get the current cart data
+        
+        const userId = auth.currentUser.uid;        
+        const cartDocRef = doc(db, 'cart', userId);        
         const cartDocSnapshot = await getDoc(cartDocRef);
-        const currentCartData = cartDocSnapshot.data();
-        // Find the index of the item to delete
-        const index = currentCartData.products.findIndex(item => item.product.productId === productId);
-        // Remove the item from the products array
-        currentCartData.products.splice(index, 1);
-        // Update the cart document with the new products array
-        await setDoc(cartDocRef, { products: currentCartData.products });
-        // Update the local state to reflect the changes
-        setCartItems(currentCartData.products);
-        // Recalculate the total price
-        let totalPrice = currentCartData.products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-        // Add shipping charge
+        const currentCartData = cartDocSnapshot.data();        
+        const index = currentCartData.products.findIndex(item => item.product.productId === productId);        
+        currentCartData.products.splice(index, 1);        
+        await setDoc(cartDocRef, { products: currentCartData.products });        
+        setCartItems(currentCartData.products);        
+        let totalPrice = currentCartData.products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);        
         totalPrice += totalPrice * shippingChargePercentage;
         setTotal(totalPrice);
       } catch (error) {
@@ -115,6 +106,10 @@ const ShoppingCart = () => {
           </tr>
         </tbody>
       </table>
+      <Link>
+        <button style={{width:'auto'}}>Buy</button>
+      </Link>
+      
     </div>
   );
 };
