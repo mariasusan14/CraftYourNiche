@@ -1,4 +1,4 @@
-import { useState,useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
@@ -6,25 +6,30 @@ import Context from "../../Context/Context";
 import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
-
-import Magnifier from "../../components/Magnifier/Magnifier"; 
-
+import Magnifier from "../../components/Magnifier/Magnifier";
+import { db } from "../../config/firebase"; // Import your Firestore instance
 
 export default function Product() {
   const [magnifierOn, setMagnifierOn] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hasPurchased, setPurchased] = useState(true);
-  const { shopId,productId } = useParams();
+  const { shopId, productId } = useParams();
   const products = useContext(Context);
   const product = products.find((product) => product.productId === productId);
+
+  useEffect(() => {
+    // Add logic to check if the user has purchased the product
+    // Set the hasPurchased state based on the logic
+  }, []);
 
   if (!product) {
     return <div>Loading...</div>;
   }
+
   const { title: productName, price: productPrice, url: productUrl, description: productDescription } = product;
   const productImages = [productUrl];
   const [mainimg, setMainimg] = useState(productImages[0]);
-  
+
   var reviews = [
     {
       avatar:
@@ -65,11 +70,28 @@ export default function Product() {
 
   let ratSummary = ratingSummary(reviews);
 
-  
-
   const handleMouseMove = (e) => {
     const { left, top } = e.target.getBoundingClientRect();
     setPosition({ x: e.clientX - left, y: e.clientY - top });
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      // Add logic to add product to Firestore shopping cart
+      await db.collection('customers').doc(currentUser.uid).collection('shoppingcart').add(product);
+      console.log('Product added to cart successfully!');
+    } catch (error) {
+      console.error('Error adding product to cart: ', error);
+    }
+  };
+
+  const handleBuyNow = async () => {
+    try {
+      // Add logic to initiate purchase process
+      console.log('Buying product: ', product);
+    } catch (error) {
+      console.error('Error buying product: ', error);
+    }
   };
 
   return (
@@ -95,17 +117,18 @@ export default function Product() {
             {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
               {productImages.map((img) => (
-                <div className="product-subimg--container">
+                <div className="product-subimg--container" key={img}>
                   <img
                     src={img}
                     className={
-                      img == mainimg
+                      img === mainimg
                         ? "product-subimg--active"
                         : "product-subimg"
                     }
                     onMouseEnter={() => {
                       setMainimg(img);
                     }}
+                    alt={`Product ${img}`}
                   />
                 </div>
               ))}
@@ -116,8 +139,12 @@ export default function Product() {
             <span className="product-details--heading">{productName}</span>
             <div className="product-details--price">Rs. {productPrice}</div>
             <Flex direction={"row"} align={"center"} gap={"7"} pt={"5"}>
-              <button className="product-atc--button">Add to cart</button>
-              <button className="product-buy--button">Buy</button>
+              <button className="product-atc--button" onClick={handleAddToCart}>
+                Add to cart
+              </button>
+              <button className="product-buy--button" onClick={handleBuyNow}>
+                Buy
+              </button>
             </Flex>
             <Box width={"700px"} pt={"8"}>
               <Text as="p" wrap={"pretty"}>
@@ -148,8 +175,7 @@ export default function Product() {
           </div>
         </div>
         <Flex className="product-reviewrating" direction={"row"}>
-          {/*rating card for product*/}
-
+          {/* rating card for product */}
           <Flex direction={"column"}>
             <span>Customer Rating</span>
             <RatingCardItem rating={5} ratSummary={ratSummary} />
@@ -158,8 +184,7 @@ export default function Product() {
             <RatingCardItem rating={2} ratSummary={ratSummary} />
             <RatingCardItem rating={1} ratSummary={ratSummary} />
           </Flex>
-          {/*product review section*/}
-
+          {/* product review section */}
           <div className="product-review--section">
             {hasPurchased && <Review />}
             <CustomerReviews reviews={reviews} />
@@ -194,11 +219,11 @@ function CustomerReviews({ reviews }) {
   return (
     <div className="creview">
       <span className="creview-title">Customer Reviews</span>
-      {reviews.map((review) => (
-        <div className="creview-container">
+      {reviews.map((review, index) => (
+        <div className="creview-container" key={index}>
           <div className="creview-cdetails">
             <div className="creview-avatar--container">
-              <img src={review.avatar} className="creview-avatar" />
+              <img src={review.avatar} className="creview-avatar" alt={`Avatar of ${review.username}`} />
             </div>
             <span className="creview-username">{review.username}</span>
           </div>
@@ -208,31 +233,3 @@ function CustomerReviews({ reviews }) {
     </div>
   );
 }
-
-/*
-function CustomisationForm() {
-  //to be given as props:
-  let customisations = [
-    {
-      img: "",
-      details: [
-        {
-          param1: "",
-          param2: "",
-          param3: "",
-        },
-      ],
-    },
-  ];
-}
-
-/*Alternate Approach:
-function CustomisationForm(){
-  //to be given as props (the customisations available for the product set by the seller)
-  //of the format: [{type(as in formtype):,title:,choices:[choice1,choice2,..also can be null]}]
-  //currently available formtypes :
-  //radio,checkboxes,dropdown
-  let customisations = [{type:"radio",title:}]
-  return()
-}
-*/

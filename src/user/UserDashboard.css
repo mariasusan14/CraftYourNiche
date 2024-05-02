@@ -38,8 +38,9 @@
   }
   
   /* Logout button */
-  .logout-button1 {
-    padding: 10px 20px; /* Increased padding for better size */
+  .logout-button {
+    padding: 10px 20px;
+    width: 150px; /* Increased padding for better size */
     border: none;
     border-radius: 50px;
     background-color: #ef233c;
