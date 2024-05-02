@@ -36,11 +36,13 @@ const Auth = () => {
   const submitUser = async () => {
     try {
       const existingAccount = await checkExistingAccount();
-
+      if(password.length<7){
+        alert("Password must contain atleast 6 characters")
+      }
       if (existingAccount) {
-        setError('Account already exists. Please log in or use a different email.');
+        alert('Account already exists. Please log in or use a different email.');
       } else if (!validateSignUpFields()) {
-        setError('Please fill in all fields and ensure passwords match.');
+        alert('Please fill in all fields and ensure passwords match.');
       } else {
         // Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -57,7 +59,7 @@ const Auth = () => {
         });
 
         console.log('User document created in Firestore:', userDocRef.id);
-        console.log('User signed up successfully!');
+        alert('User signed up successfully!');
         
         // Store user data in additional collection based on userType
         if (userType === 'customer') {
