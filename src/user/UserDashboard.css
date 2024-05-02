@@ -39,17 +39,20 @@
   
   /* Logout button */
   .logout-button {
-    padding: 10px 10px;
+    padding: 10px 20px;
+    width: 150px; /* Increased padding for better size */
     border: none;
-    border-radius: 15px;
+    border-radius: 50px;
     background-color: #ef233c;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease;
     position: fixed;
-    top: 20px; /* Adjust this value to position the button vertically */
-    right: 20px; /* Adjust this value to position the button horizontally */
-  }
+    top: 10px;
+    right: 10px; /* Placing it in the top right corner */
+    z-index: 999; /* Ensure it stays on top of other elements */
+}
+
   
   
   

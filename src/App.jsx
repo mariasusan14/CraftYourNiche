@@ -18,38 +18,39 @@ import CollabProfile from "./collab/CollabProfile";
 import CollabRequests from "./collab/CollabRequests";
 import CustomizationShop from "./shop/Customization";
 import CollaborationRequests from "./shop/CollaborationRequests";
-import ShopPage from "./pages/ShopPage"; // Import ShopPage component
+import ShopPage from "./pages/Shoppingcart1"; // Import ShopPage component
 import Data from "./Context/Data";
 import CustomisationComponent from "./pages/customisation/CustomisationUser";
 
 const App = () => {
   return (
     <div>
-    <Data>
-    <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/hero" element={<Hero />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/shop" element={<ShopPage />} /> {/* New route for ShopPage */}
-        <Route path="/shopdash" element={<ShopDashboard />} />
-        <Route path="/userdash" element={<UserDashboard />} />
-        <Route path="/inventory" element={<InventoryManagement />} />
-        <Route path="/orders" element={<OrderManagement />} />
-        <Route path="/addproduct" element={<AddProducts />} />
-        <Route path="/verification" element={<ProfileCompletion />} />
-        <Route path="/customization" element={<CustomizationShop />} />
-        <Route path="//product/:shopId/:productId" element={<Product />} />
-        <Route path="/productlisting" element={<ProductListing />} />
-        <Route path="/collabdash" element={<CollabDash />} />
-        <Route path="/customersupport" element={<CustomerSupport />} />  
-        <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
-        <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails/>}/>
-        <Route path="/collabprofile" element={<CollabProfile/>}/>
-        <Route path="/collabrequests" element={<CollabRequests/>}/>
-        <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
-        <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent/>}/>
-      </Routes> 
-    </Data>
+      <Data>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/hero" element={<Hero />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/shoppingcart" element={<ShopPage />} /> {/* Changed route for ShopPage */}
+          <Route path="/shopdash" element={<ShopDashboard />} />
+          <Route path="/userdash" element={<UserDashboard />} />
+          <Route path="/inventory" element={<InventoryManagement />} />
+          <Route path="/orders" element={<OrderManagement />} />
+          <Route path="/addproduct" element={<AddProducts />} />
+          <Route path="/verification" element={<ProfileCompletion />} />
+          <Route path="/customization" element={<CustomizationShop />} />
+          <Route path="//product/:shopId/:productId" element={<Product />} />
+          <Route path="/productlisting" element={<ProductListing />} />
+          <Route path="/collabdash" element={<CollabDash />} />
+          <Route path="/customersupport" element={<CustomerSupport />} />  
+          <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
+          <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails/>}/>
+          <Route path="/collabprofile" element={<CollabProfile/>}/>
+          <Route path="/collabrequests" element={<CollabRequests/>}/>
+          <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
+          <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent/>}/>
+        </Routes> 
+      </Data>
+    
       
       
     </div>

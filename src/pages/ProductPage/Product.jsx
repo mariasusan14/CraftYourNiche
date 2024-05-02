@@ -1,3 +1,5 @@
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { useState,useEffect, useContext} from "react";
 import { useParams,Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
@@ -6,25 +8,39 @@ import Context from "../../Context/Context";
 import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
-
-import Magnifier from "../../components/Magnifier/Magnifier"; 
-
+import Magnifier from "../../components/Magnifier/Magnifier";
+import { auth, db } from "../../config/firebase"; // Import your Firestore instance
+import { collection, doc,setDoc,getDoc } from "firebase/firestore";
 
 export default function Product() {
   const [magnifierOn, setMagnifierOn] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hasPurchased, setPurchased] = useState(true);
-  const { shopId,productId } = useParams();
+  const [quantity, setQuantity] = useState(0); // Unconditionally initialized
+  const { shopId, productId } = useParams();
   const products = useContext(Context);
+  console.log(products);
   const product = products.find((product) => product.productId === productId);
 
+  // Initialize product details
+  let productName = "";
+  let productPrice = 0;
+  let productDescription = "";
+  let productImages = [];
+  if (product) {
+    productName = product.title;
+    productPrice = product.price;
+    productDescription = product.description;
+    productImages = [product.url];
+  }
+  const [mainimg, setMainimg] = useState(productImages[0]); 
   if (!product) {
     return <div>Loading...</div>;
   }
-  const { title: productName, price: productPrice, url: productUrl, description: productDescription } = product;
-  const productImages = [productUrl];
-  const [mainimg, setMainimg] = useState(productImages[0]);
+
   
+  
+
   var reviews = [
     {
       avatar:
@@ -65,11 +81,62 @@ export default function Product() {
 
   let ratSummary = ratingSummary(reviews);
 
-  
-
   const handleMouseMove = (e) => {
     const { left, top } = e.target.getBoundingClientRect();
     setPosition({ x: e.clientX - left, y: e.clientY - top });
+  };
+
+  const handleAddToCart = async (product, quantity) => {
+    try {
+        // Ensure product, quantity, and currentUser are defined
+        const userId = auth.currentUser.uid;
+        if (!product || !quantity || !userId) {
+            console.error('Product, quantity, or current user is undefined');
+            return;
+        }
+
+        // Get a reference to the cart document for the current user
+        const cartDocRef = doc(db, 'cart', userId);
+
+        // Check if the cart collection exists
+        const cartDocSnapshot = await getDoc(cartDocRef);
+        if (!cartDocSnapshot.exists()) {
+            // If the cart collection doesn't exist, create it
+            await setDoc(cartDocRef, {});
+        }
+
+        // Get the current cart data
+        const cartSnapshot = await getDoc(cartDocRef);
+        const currentCartData = cartSnapshot.data();
+        const updatedProductArray = currentCartData && currentCartData.products ? [...currentCartData.products] : [];
+
+        // Create an object with the product and its quantity
+        const productWithQuantity = { product: product, quantity: quantity,status:"order received" };
+
+        // Push the productWithQuantity object into the updatedProductArray
+        
+            updatedProductArray.push(productWithQuantity);
+       
+
+        // Update the cart document with the new product array
+        await setDoc(cartDocRef, { products: updatedProductArray });
+
+        alert('Product added to cart successfully!');
+    } catch (error) {
+        console.error('Error adding product to cart: ', error);
+    }
+};
+
+
+  
+
+  const handleBuyNow = async () => {
+    try {
+      // Add logic to initiate purchase process
+      console.log('Buying product: ', product);
+    } catch (error) {
+      console.error('Error buying product: ', error);
+    }
   };
 
   return (
@@ -95,17 +162,18 @@ export default function Product() {
             {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
               {productImages.map((img) => (
-                <div className="product-subimg--container">
+                <div className="product-subimg--container" key={img}>
                   <img
                     src={img}
                     className={
-                      img == mainimg
+                      img === mainimg
                         ? "product-subimg--active"
                         : "product-subimg"
                     }
                     onMouseEnter={() => {
                       setMainimg(img);
                     }}
+                    alt={`Product ${img}`}
                   />
                 </div>
               ))}
@@ -115,9 +183,19 @@ export default function Product() {
           <div className="product-details--basic">
             <span className="product-details--heading">{productName}</span>
             <div className="product-details--price">Rs. {productPrice}</div>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value))}
+            />
             <Flex direction={"row"} align={"center"} gap={"7"} pt={"5"}>
-              <button className="product-atc--button">Add to cart</button>
-              <button className="product-buy--button">Buy</button>
+            <button className="product-atc--button" onClick={() => handleAddToCart(product, quantity)}>
+              Add to cart
+            </button>
+
+              <button className="product-buy--button" onClick={handleBuyNow}>
+                Buy
+              </button>
             </Flex>
             <Link
                to={`/customisation/${shopId}/${productId}`}
@@ -156,8 +234,7 @@ export default function Product() {
           </div>
         </div>
         <Flex className="product-reviewrating" direction={"row"}>
-          {/*rating card for product*/}
-
+          {/* rating card for product */}
           <Flex direction={"column"}>
             <span>Customer Rating</span>
             <RatingCardItem rating={5} ratSummary={ratSummary} />
@@ -166,8 +243,7 @@ export default function Product() {
             <RatingCardItem rating={2} ratSummary={ratSummary} />
             <RatingCardItem rating={1} ratSummary={ratSummary} />
           </Flex>
-          {/*product review section*/}
-
+          {/* product review section */}
           <div className="product-review--section">
             {hasPurchased && <Review />}
             <CustomerReviews reviews={reviews} />
@@ -202,11 +278,11 @@ function CustomerReviews({ reviews }) {
   return (
     <div className="creview">
       <span className="creview-title">Customer Reviews</span>
-      {reviews.map((review) => (
-        <div className="creview-container">
+      {reviews.map((review, index) => (
+        <div className="creview-container" key={index}>
           <div className="creview-cdetails">
             <div className="creview-avatar--container">
-              <img src={review.avatar} className="creview-avatar" />
+              <img src={review.avatar} className="creview-avatar" alt={`Avatar of ${review.username}`} />
             </div>
             <span className="creview-username">{review.username}</span>
           </div>
@@ -215,4 +291,5 @@ function CustomerReviews({ reviews }) {
       ))}
     </div>
   );
-} 
+}
+
