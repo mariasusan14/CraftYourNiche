@@ -70,7 +70,7 @@ export const UserDashboard = () => {
   return (
     <div className="dash-container">
       <h1 className="page-title">Hello, Welcome to the Dashboard!</h1>
-      <button className="logout-button" onClick={handleLogout}>Logout</button>
+      <button className="logout-button1" onClick={handleLogout}>Logout</button>
 
       {/* Navigation links to different pages */}
       <div className="nav-buttons">
