@@ -1,25 +1,52 @@
-import React, { useState } from 'react';
-import Navbar from './navbar';
+import React, { useState, useEffect } from 'react';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db, auth } from '../config/firebase';
+import Navbar from './navbar'; 
 import './styles/OrderManagement.css'; // Import CSS file for styling
 
 const OrderManagement = () => {
-  // Dummy data for orders
-  const [orders, setOrders] = useState([
-    { id: 1, invoiceNo: 'INV001', address: 'Kochi, India', orderTime: '2024-03-10 10:00 AM', customerName: 'John Doe', method: 'Credit Card', amount: 100, status: 'Pending', products: [{ name: 'Product 1', quantity: 2, price: 50 }, { name: 'Product 2', quantity: 1, price: 50 }] },
-    { id: 2, invoiceNo: 'INV002', address: 'Thrissur, India', orderTime: '2024-03-11 11:00 AM', customerName: 'Jane Smith', method: 'PayPal', amount: 150, status: 'Delivered', products: [{ name: 'Product 3', quantity: 3, price: 50 }, { name: 'Product 4', quantity: 1, price: 100 }] },
-    // Add more orders as needed
-  ]);
-
-  // State to track which order's invoice is being viewed
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
-
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 5; // Number of orders per page
-
-  // Filtering options
+  const ordersPerPage = 5; 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const orders=[]
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const ordersRef = collection(db, 'orders');
+        const q = query(ordersRef, where('products', 'array-contains', { product: { shopId: userId } }));
+        const querySnapshot = await getDocs(q);
+
+        const allProducts = [];
+        querySnapshot.forEach(doc => {
+          const orderData = doc.data();
+          const orderProducts = orderData.products || [];
+          orderProducts.forEach(productData => {
+            const product = productData.product;
+            if (product.shopId === userId) {
+              allProducts.push(product);
+            }
+          });
+        });
+
+        setProducts(allProducts);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+  console.log(products);
+  
+  
 
   // Filtered orders based on search query and status filter
   const filteredOrders = orders.filter(order =>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, setDoc,addDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { FaTrash } from 'react-icons/fa';
-import { redirect } from 'react-router-dom';
+
+
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -85,29 +86,16 @@ const ShoppingCart = () => {
     e.preventDefault();
     try {
       const userId = auth.currentUser.uid;
-      const updatePromises = cartItems.map(async (item) => {
-        const cartDocRef = doc(db, 'cart', userId);
-        const cartDocSnapshot = await getDoc(cartDocRef);
-        const currentCartData = cartDocSnapshot.data();
-        const updatedProducts = currentCartData.products.map(productItem => {
-          if (productItem.product.productId === item.product.productId) {
-            console.log("status changed");
-            return { ...productItem, status: 'order placed' };
-          }
-          return productItem;
-        });
-        await setDoc(cartDocRef, { products: updatedProducts });
-      });
-      await Promise.all(updatePromises);
-      const orderDocRef = doc(db, 'orders', userId);
-      const orderData = {
-        fullName,
-        contactNo,
-        shippingAddress,
-        total,
-        products: cartItems
-      };
-      await setDoc(orderDocRef, orderData);
+      const orderCollectionRef = collection(db, 'orders');
+    const orderData = {
+      userId,
+      fullName,
+      contactNo,
+      shippingAddress,
+      total,
+      products: cartItems
+    };
+    await addDoc(orderCollectionRef, orderData);
 
       const cartDocRef = doc(db, 'cart', userId);
       await setDoc(cartDocRef, { products: [] });

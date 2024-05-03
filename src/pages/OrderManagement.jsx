@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
-import { db,auth } from '../config/firebase';
+import { doc, getDoc,getDocs,collection,query,where } from 'firebase/firestore';
+import { db,auth } from '../config/firebase'; 
 
 const OrderManagement = () => {
   
@@ -10,26 +10,23 @@ const OrderManagement = () => {
     const fetchCartItems = async () => {
       try {
         const userId = auth.currentUser.uid;
-        const cartDocRef = doc(db, 'orders', userId);
-        
-        // Check if the cart document exists
-        const cartDocSnapshot = await getDoc(cartDocRef);
-        if (cartDocSnapshot.exists()) {
-          // If the cart document exists, fetch the cart items
-          const cartData = cartDocSnapshot.data();
-          const fetchedCartItems = cartData.products || [];
-          setCartItems(fetchedCartItems);
-
-          
-        } else {
-          console.log('Cart document does not exist for the user.');
-        }
+        const ordersRef = collection(db, 'orders');
+        const q = query(ordersRef, where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        const fetchedCartItems = [];
+        querySnapshot.forEach((doc) => {
+          const cartData = doc.data();
+          const products = cartData.products || [];
+          fetchedCartItems.push(...products);
+        });
+        setCartItems(fetchedCartItems);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching shopping cart items:', error);
         setLoading(false);
       }
     };
+    
   
     fetchCartItems();
   }, []);

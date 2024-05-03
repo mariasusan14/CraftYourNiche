@@ -150,7 +150,7 @@ export default function Product() {
                 onMouseMove={(e) => {
                   setMagnifierOn(true);
                   handleMouseMove(e);
-                  console.log(`${position.x} ${position.y}`);
+                  // console.log(`${position.x} ${position.y}`);
                 }}
                 onMouseLeave={() => setMagnifierOn(false)}
               />
@@ -190,9 +190,7 @@ export default function Product() {
               Add to cart
             </button>
 
-              <button className="product-buy--button" onClick={handleBuyNow}>
-                Buy
-              </button>
+              
             </Flex>
             {customisation === 'Yes' && (
              <Link
