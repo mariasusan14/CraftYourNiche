@@ -40,7 +40,7 @@ export const UserDashboard = () => {
       case 'wishlist':
         return <Wishlist />;
       case 'customer-support':
-        return <CustomisationComponent/>;
+        return <CustomerSupport/>;
       case 'product-listing':
         return <ProductListing/>;
       default:
