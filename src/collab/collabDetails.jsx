@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import './styles/collabDetails.css';
-import { addDoc, collection, doc, updateDoc,getDoc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../config/firebase'; // Import your Firebase instance
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 function CollabDetails() {
   const navigate = useNavigate();
-  const { shopId, requestId,title } = useParams(); // Get the shopId and requestId from the URL parameters
-  const userId=auth.currentUser.uid;
+  const { shopId, requestId, title } = useParams();
+  const userId = auth.currentUser.uid;
   const [resumeDetails, setResumeDetails] = useState({
     fullName: '',
     email: '',
@@ -25,6 +27,13 @@ function CollabDetails() {
     }));
   };
 
+  const handlePhoneChange = (value) => {
+    setResumeDetails(prevState => ({
+      ...prevState,
+      phoneNumber: value
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,7 +48,7 @@ function CollabDetails() {
         experience: resumeDetails.experience,
         skills: resumeDetails.skills,
         status: 'pending',
-        projectTitle:title
+        projectTitle: title
       });
       console.log('Application submitted successfully');
       navigate('/collabdash');
@@ -47,9 +56,6 @@ function CollabDetails() {
       console.error('Error submitting application:', error);
     }
   };
-  
-  
-  
 
   const isSubmitDisabled = Object.values(resumeDetails).some(value => value === '');
 
@@ -69,7 +75,15 @@ function CollabDetails() {
         </div>
         <div className='form-items'>
           <label htmlFor="phoneNumber">Phone Number:</label>
-          <input type="text" id="phoneNumber" name="phoneNumber" value={resumeDetails.phoneNumber} onChange={handleChange} />
+          <PhoneInput
+            country={'in'}
+            value={resumeDetails.phoneNumber}
+            onChange={handlePhoneChange}
+            inputProps={{
+              required: true,
+              name: 'phoneNumber'
+            }}
+          />
         </div>
         <div className='form-items'>
           <label htmlFor="experience">Experience:</label>
