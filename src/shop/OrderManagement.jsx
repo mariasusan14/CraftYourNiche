@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs,doc,updateDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import Navbar from './navbar'; 
 import './styles/OrderManagement.css'; // Import CSS file for styling
@@ -12,16 +12,15 @@ const OrderManagement = () => {
   const ordersPerPage = 5; 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const orders=[]
+  
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const userId = auth.currentUser.uid;
         const ordersRef = collection(db, 'orders');
-        const q = query(ordersRef, where('products', 'array-contains', { product: { shopId: userId } }));
-        const querySnapshot = await getDocs(q);
-
+        const querySnapshot = await getDocs(ordersRef);
+  
         const allProducts = [];
         querySnapshot.forEach(doc => {
           const orderData = doc.data();
@@ -29,11 +28,20 @@ const OrderManagement = () => {
           orderProducts.forEach(productData => {
             const product = productData.product;
             if (product.shopId === userId) {
-              allProducts.push(product);
+              const order = {
+                id:doc.id,
+                title: product.title,
+                status: productData.status,
+                quantity: productData.quantity,
+                totalPrice: productData.quantity * product.price,
+                fullName: orderData.fullName,
+                contactNo: orderData.contactNo,
+                shippingAddress: orderData.shippingAddress
+              };
+              allProducts.push(order);
             }
           });
         });
-
         setProducts(allProducts);
         setLoading(false);
       } catch (error) {
@@ -41,16 +49,12 @@ const OrderManagement = () => {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, []);
-  console.log(products);
   
-  
-
   // Filtered orders based on search query and status filter
-  const filteredOrders = orders.filter(order =>
-    order.customerName.toLowerCase().includes(searchQuery.toLowerCase()) &&
+  const filteredOrders = products.filter(order =>
+    order.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (statusFilter === '' || order.status === statusFilter)
   );
 
@@ -62,27 +66,25 @@ const OrderManagement = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Handle activity change
-  const handleActivityChange = (orderId, newStatus) => {
-    const updatedOrders = orders.map(order => {
-      if (order.id === orderId) {
-        return { ...order, status: newStatus };
-      }
-      return order;
-    });
-    setOrders(updatedOrders);
+  const handleActivityChange = async (orderId, newStatus) => {
+    try {
+      const orderRef = doc(db, 'orders', orderId);
+      await updateDoc(orderRef, {
+        'products.status': newStatus
+      }, { merge: true });
+      // Update the status in the local state
+      setProducts(products.map(product => {
+        if (product.id === orderId) {
+          return { ...product, status: newStatus };
+        }
+        return product;
+      }));
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
   };
-
-  // Function to handle viewing invoice
-  const viewInvoice = (orderId) => {
-    const order = orders.find(order => order.id === orderId);
-    setSelectedOrder(order);
-  };
-
-  // Function to close the invoice modal
-  const closeInvoiceModal = () => {
-    setSelectedOrder(null);
-  };
+ 
+  
 
   return (
     <section className="order-management">
@@ -116,37 +118,37 @@ const OrderManagement = () => {
           <table>
             <thead>
               <tr>
-                <th>Invoice No</th>
-                <th>Order Time</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total price</th>
                 <th>Customer Name</th>
-                <th>Method</th>
-                <th>Amount</th>
+                <th>Address</th>
+                <th>Contact</th>
                 <th>Status</th>
-                <th>Activity</th>
-                <th>Invoice Bill</th>
+                
+                
               </tr>
             </thead>
             <tbody>
-              {currentOrders.map(order => (
-                <tr key={order.id}>
-                  <td>{order.invoiceNo}</td>
-                  <td>{order.orderTime}</td>
-                  <td>{order.customerName}</td>
-                  <td>{order.method}</td>
-                  <td>{order.amount}</td>
-                  <td>{order.status}</td>
+              {products.map(product => (
+                <tr key={product.id}>
+                  <td>{product.title}</td>
+                  <td>{product.quantity}</td>
+                  <td>{product.totalPrice}</td>
+                  <td>{product.fullName}</td>                  
+                  <td>{product.shippingAddress}</td>
+                  <td>{product.contactNo}</td>
+                  
                   <td>
-                    <select onChange={(e) => handleActivityChange(order.id, e.target.value)}>
-                    <option value="">Select</option>
+                    <select onChange={(e) => handleActivityChange(product.id, e.target.value)}>
+                    <option value="">{product.status}</option>
                       <option value="Pending">Pending</option>
                       <option value="Processing">Processing</option>
                       <option value="Delivered">Delivered</option>
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </td>
-                  <td>
-                    <button onClick={() => viewInvoice(order.id)}>View Invoice</button>
-                  </td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -163,49 +165,7 @@ const OrderManagement = () => {
             ))}
           </ul>
         </div>
-      </div>
-      {/* Invoice Modal */}
-      {selectedOrder && (
-        <div className="invoice-modal">
-          <div className="invoice-content">
-            <span className="close" onClick={closeInvoiceModal}>&times;</span>
-            <h2 className="invoice-title">Invoice</h2>
-            <div className="invoice-details">
-              <p><strong>Invoice No:</strong> {selectedOrder.invoiceNo}</p>
-              <p><strong>Order Time:</strong> {selectedOrder.orderTime}</p>
-              <p><strong>Customer Name:</strong> {selectedOrder.customerName}</p>
-              <p><strong>Address:</strong> {selectedOrder.address}</p>
-              <p><strong>Payment Method:</strong> {selectedOrder.method}</p>
-            </div>
-            <table className="invoice-table">
-              <thead>
-                <tr>
-                  <th>Product Name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedOrder.products.map((product, index) => (
-                  <tr key={index}>
-                    <td>{product.name}</td>
-                    <td>{product.quantity}</td>
-                    <td>Rs {product.price}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="invoice-total">
-              <p><strong>Total Amount:</strong> Rs {selectedOrder.amount}</p>
-              <p><strong>Total Amount with Tax:</strong> Rs {(selectedOrder.amount * 1.02).toFixed(2)}</p>          
-
-            </div>
-          </div>
-        </div>
-      )}
-
-        
-      
+      </div>  
     </section>
   );
 };
