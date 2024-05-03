@@ -10,7 +10,7 @@ const OrderManagement = () => {
     const fetchCartItems = async () => {
       try {
         const userId = auth.currentUser.uid;
-        const cartDocRef = doc(db, 'cart', userId);
+        const cartDocRef = doc(db, 'orders', userId);
         
         // Check if the cart document exists
         const cartDocSnapshot = await getDoc(cartDocRef);
@@ -47,7 +47,7 @@ const OrderManagement = () => {
         </thead>
         <tbody>
           {cartItems.map(order => (
-            <tr>
+            <tr key={order.product.productId}>
               
               <td><img src={order.product.url} alt={order.product.title} style={{ width: '50px', height: '50px' }} /></td>
               <td>{order.product.title}</td>

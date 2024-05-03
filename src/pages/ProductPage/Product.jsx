@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams,Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
-import { Link } from "react-router-dom";
+
 import Context from "../../Context/Context";
 import "./Product.css";
 import "./CustomerReview.css";
@@ -108,7 +108,7 @@ export default function Product() {
         const updatedProductArray = currentCartData && currentCartData.products ? [...currentCartData.products] : [];
 
         // Create an object with the product and its quantity
-        const productWithQuantity = { product: product, quantity: quantity,status:"in cart" };
+        const productWithQuantity = { product: product, quantity: quantity,status:"order placed" };
 
         // Push the productWithQuantity object into the updatedProductArray
         

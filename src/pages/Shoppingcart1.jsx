@@ -1,30 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc,setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { FaTrash } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [fullName, setFullName] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [showForm, setShowForm] = useState(false);
   const shippingChargePercentage = 0.02;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const userDocRef = doc(db, 'user', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setFullName(userData.fullName || '');
+          setContactNo(userData.phoneNumber || '');
+          setShippingAddress(userData.shippingAddress || '');
+        } else {
+          console.log('User document does not exist for the user.');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
         const userId = auth.currentUser.uid;
         const cartDocRef = doc(db, 'cart', userId);
-        
-        
+
         const cartDocSnapshot = await getDoc(cartDocRef);
         if (cartDocSnapshot.exists()) {
-          
           const cartData = cartDocSnapshot.data();
           const fetchedCartItems = cartData.products || [];
           setCartItems(fetchedCartItems);
           let totalPrice = fetchedCartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-          
+
           totalPrice += totalPrice * shippingChargePercentage;
           setTotal(totalPrice);
         } else {
@@ -36,30 +60,71 @@ const ShoppingCart = () => {
         setLoading(false);
       }
     };
-  
     fetchCartItems();
   }, []);
 
-  const renderCartItems = () => {
-    const handleDeleteItem = async (productId) => {
-      try {
-        
-        const userId = auth.currentUser.uid;        
-        const cartDocRef = doc(db, 'cart', userId);        
+  const handleDeleteItem = async (productId) => {
+    try {
+      const userId = auth.currentUser.uid;
+      const cartDocRef = doc(db, 'cart', userId);
+      const cartDocSnapshot = await getDoc(cartDocRef);
+      const currentCartData = cartDocSnapshot.data();
+      const index = currentCartData.products.findIndex(item => item.product.productId === productId);
+      currentCartData.products.splice(index, 1);
+      await setDoc(cartDocRef, { products: currentCartData.products });
+      setCartItems(currentCartData.products);
+      let totalPrice = currentCartData.products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+      totalPrice += totalPrice * shippingChargePercentage;
+      setTotal(totalPrice);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  const handleBuy = async (e) => {
+    e.preventDefault();
+    try {
+      const userId = auth.currentUser.uid;
+      const updatePromises = cartItems.map(async (item) => {
+        const cartDocRef = doc(db, 'cart', userId);
         const cartDocSnapshot = await getDoc(cartDocRef);
-        const currentCartData = cartDocSnapshot.data();        
-        const index = currentCartData.products.findIndex(item => item.product.productId === productId);        
-        currentCartData.products.splice(index, 1);        
-        await setDoc(cartDocRef, { products: currentCartData.products });        
-        setCartItems(currentCartData.products);        
-        let totalPrice = currentCartData.products.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);        
-        totalPrice += totalPrice * shippingChargePercentage;
-        setTotal(totalPrice);
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      }
-    };
-  
+        const currentCartData = cartDocSnapshot.data();
+        const updatedProducts = currentCartData.products.map(productItem => {
+          if (productItem.product.productId === item.product.productId) {
+            console.log("status changed");
+            return { ...productItem, status: 'order placed' };
+          }
+          return productItem;
+        });
+        await setDoc(cartDocRef, { products: updatedProducts });
+      });
+      await Promise.all(updatePromises);
+      const orderDocRef = doc(db, 'orders', userId);
+      const orderData = {
+        fullName,
+        contactNo,
+        shippingAddress,
+        total,
+        products: cartItems
+      };
+      await setDoc(orderDocRef, orderData);
+
+      const cartDocRef = doc(db, 'cart', userId);
+      await setDoc(cartDocRef, { products: [] });
+
+      setCartItems([]);
+      setTotal(0);
+      setFullName('');
+      setContactNo('');
+      setShippingAddress('');
+      setShowForm(false);
+      alert("Order placed")      
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
+  };
+
+  const renderCartItems = () => {
     return cartItems.map(item => (
       <tr key={item.product.productId}>
         <td>
@@ -69,7 +134,7 @@ const ShoppingCart = () => {
         <td>{item.quantity}</td>
         <td>Rs{item.product.price * item.quantity}</td>
         <td>
-          <button  onClick={() => handleDeleteItem(item.product.productId)} style={{width:'auto'}}><FaTrash /></button>
+          <button onClick={() => handleDeleteItem(item.product.productId)} style={{ width: 'auto' }}><FaTrash /></button>
         </td>
       </tr>
     ));
@@ -83,9 +148,9 @@ const ShoppingCart = () => {
     <div>
       <h2>Shopping Cart</h2>
       <table>
-        <thead style={{width:'auto'}}>
+        <thead style={{ width: 'auto' }}>
           <tr>
-            <th >Image</th>
+            <th>Image</th>
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -106,10 +171,28 @@ const ShoppingCart = () => {
           </tr>
         </tbody>
       </table>
-      <Link>
-        <button style={{width:'auto'}}>Buy</button>
-      </Link>
-      
+      {showForm ? (
+        <form onSubmit={handleBuy}>
+          <label>
+            Full Name:
+            <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Contact Number:
+            <input type="text" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Shipping Address:
+            <input type="text" value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)} />
+          </label>
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+      ) : (
+        <button onClick={() => setShowForm(true)}>Buy</button>
+      )}
     </div>
   );
 };
