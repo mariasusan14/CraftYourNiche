@@ -1,7 +1,10 @@
+
+
+
 import React, { useState } from 'react';
 import { auth, storage } from '../../config/firebase';
 import { db } from '../../config/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -18,6 +21,56 @@ const CustomisationComponent = () => {
   const [error, setError] = useState('');
   const { shopId, productId } = useParams();
   const userId = auth.currentUser.uid;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setSubmitting(true);
+
+      // Create a document with userId as document ID
+      const userCustomisationRef = doc(db, `customisation/${userId}`);
+      await setDoc(userCustomisationRef, {});
+
+      // Create a document with shopId as document ID under the user's customisation
+      const customisationRef = doc(userCustomisationRef, `customisationRequests/${shopId}`);
+
+      // Get the existing customisation requests
+      const customisationDoc = await getDoc(customisationRef);
+      const existingRequests = customisationDoc.data() || {};
+
+      // Update the document with customisation details and image URLs
+      await setDoc(customisationRef, {
+        ...existingRequests,
+        [productId]: {
+          color,
+          size,
+          material,
+          engraving,
+          design,
+          addOns,
+          customizationInstructions,
+          images,
+        },
+      });
+
+      // Reset form fields after submission
+      setColor('');
+      setSize('');
+      setMaterial('');
+      setEngraving('');
+      setDesign('');
+      setAddOns('');
+      setCustomizationInstructions('');
+      setImages([]);
+      setError('');
+      console.log('Customisation request submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting customisation request:', error);
+      setError('Failed to submit customisation request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleImageUpload = async (e) => {
     try {
@@ -63,50 +116,6 @@ const CustomisationComponent = () => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      setSubmitting(true);
-
-      // Create a document with userId as document ID
-      const userCustomisationRef = doc(db, `customisation/${userId}`);
-      await setDoc(userCustomisationRef, {});
-
-      // Create a document with shopId as document ID under the user's customisation
-      const customisationRef = doc(userCustomisationRef, `customisationRequests/${shopId}`);
-
-      // Update the document with customisation details and image URLs
-      await setDoc(customisationRef, {
-        [productId]: {
-          color,
-          size,
-          material,
-          engraving,
-          design,
-          addOns,
-          customizationInstructions,
-          images,
-        },
-      });
-
-      // Reset form fields after submission
-      setColor('');
-      setSize('');
-      setMaterial('');
-      setEngraving('');
-      setDesign('');
-      setAddOns('');
-      setCustomizationInstructions('');
-      setImages([]);
-      setError('');
-      console.log('Customisation request submitted successfully!');
-    } catch (error) {
-      console.error('Error submitting customisation request:', error);
-      setError('Failed to submit customisation request. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <div>

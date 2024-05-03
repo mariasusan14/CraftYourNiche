@@ -1,9 +1,8 @@
-// ShopCustomisationComponent.jsx
 import React, { useState, useEffect } from 'react';
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import { collection, doc, getDocs } from 'firebase/firestore';
 
-const ShopCustomisationComponent = ({ shopId }) => {
+const CustomisationShopComponent = () => {
   const [customisationRequests, setCustomisationRequests] = useState([]);
 
   useEffect(() => {
@@ -12,39 +11,71 @@ const ShopCustomisationComponent = ({ shopId }) => {
 
   const fetchCustomisationRequests = async () => {
     try {
-      const customisationRef = collection(db, `customers/${shopId}/customisationRequests`);
-      const querySnapshot = await getDocs(customisationRef);
-      const requests = [];
+      const customisationRequestsData = [];
+      const querySnapshot = await getDocs(collection(db, 'customisation'));
       querySnapshot.forEach((doc) => {
-        requests.push({ id: doc.id, data: doc.data() });
+        customisationRequestsData.push({ id: doc.id, ...doc.data() });
       });
-      setCustomisationRequests(requests);
+      setCustomisationRequests(customisationRequestsData);
     } catch (error) {
       console.error('Error fetching customisation requests:', error);
     }
   };
 
-  const respondToRequest = async (requestId, response) => {
-    // Add response handling logic here
-    console.log(`Responding to request ${requestId}:`, response);
+  const handleAcceptRequest = async (requestId) => {
+    try {
+      // Update the status of the customisation request to accepted
+      const requestRef = doc(db, 'customisation', requestId);
+      await updateDoc(requestRef, { status: 'accepted' });
+      // You can also update other fields like reply description, cost, etc.
+      console.log('Customisation request accepted successfully!');
+    } catch (error) {
+      console.error('Error accepting customisation request:', error);
+    }
+  };
+
+  const handleRejectRequest = async (requestId) => {
+    try {
+      // Update the status of the customisation request to rejected
+      const requestRef = doc(db, 'customisation', requestId);
+      await updateDoc(requestRef, { status: 'rejected' });
+      // You can also update other fields like rejection reason, reply description, etc.
+      console.log('Customisation request rejected successfully!');
+    } catch (error) {
+      console.error('Error rejecting customisation request:', error);
+    }
   };
 
   return (
     <div>
       <h2>Customisation Requests</h2>
-      <ul>
-        {customisationRequests.map((request) => (
-          <li key={request.id}>
-            <div>Request ID: {request.id}</div>
-            <div>Product ID: {Object.keys(request.data)[0]}</div>
-            {/* Display other request details here */}
-            <button onClick={() => respondToRequest(request.id, 'Accepted')}>Accept</button>
-            <button onClick={() => respondToRequest(request.id, 'Rejected')}>Reject</button>
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Request ID</th>
+            <th>Product ID</th>
+            <th>Customer ID</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {customisationRequests.map((request) => (
+            <tr key={request.id}>
+              <td>{request.id}</td>
+              <td>{request.productId}</td>
+              <td>{request.customerId}</td>
+              <td>{request.status}</td>
+              <td>
+                <button onClick={() => handleAcceptRequest(request.id)}>Accept</button>
+                <button onClick={() => handleRejectRequest(request.id)}>Reject</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default ShopCustomisationComponent;
+export default CustomisationShopComponent;
