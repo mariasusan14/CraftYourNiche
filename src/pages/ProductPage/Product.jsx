@@ -33,14 +33,10 @@ export default function Product() {
     productImages = [product.url];
     customisation=product.addCustomisation;
   }
-  console.log("hi",customisation)
   const [mainimg, setMainimg] = useState(productImages[0]); 
   if (!product) {
     return <div>Loading...</div>;
   }
-
-  
-  
 
   var reviews = [
     {
@@ -197,11 +193,11 @@ export default function Product() {
                 Buy
               </button>
             </Flex>
-            {customisation === 'yes' && (
+            {customisation === 'Yes' && (
              <Link
                    to={`/customisation/${shopId}/${productId}`}
                    className="product-customise--button">
-                 <button className="customise-button">Customisdbdfbdfbfe</button>
+                 <button className="customise-button">Customise</button>
              </Link>
             )}
   
