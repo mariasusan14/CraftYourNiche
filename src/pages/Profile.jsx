@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { db, auth } from '../config/firebase'; // Import your Firebase instance
 
 const Profile = () => {
-  const [userName, setUserName] = useState('John Doe');
-  const [phoneNumber, setPhoneNumber] = useState('123-456-7890');
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [shippingAddress, setShippingAddress] = useState('123 Shipping Street, City, Country');
+  const [userName, setUserName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
+
+  useEffect(() => {
+    // Fetch user profile data from Firestore when the component mounts
+    const fetchUserProfile = async () => {
+      try {
+        const userId = auth.currentUser.uid;
+        const userDocRef = doc(db, 'user', userId);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          setUserName(userData.userName);
+          setPhoneNumber(userData.phoneNumber);
+          setEmail(userData.email);
+          setShippingAddress(userData.shippingAddress);
+        } else {
+          console.error('User document does not exist');
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
@@ -22,14 +48,24 @@ const Profile = () => {
     setShippingAddress(e.target.value);
   };
 
-  const handleUpdateProfile = () => {
-    // Logic for updating profile
-    // You can send the updated data to your backend or perform any other necessary action here
-    console.log("Profile updated:", { userName, phoneNumber, email, shippingAddress });
+  const handleUpdateProfile = async () => {
+    try {
+      const userId = auth.currentUser.uid;
+      const userDocRef = doc(db, 'user', userId);
+      await setDoc(userDocRef, {
+        userName,
+        phoneNumber,
+        email,
+        shippingAddress
+      }, { merge: true });
+
+      console.log('Profile updated successfully');
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
   };
 
   return (
-    
     <div>
       <h2>User Profile</h2>
       <div>
