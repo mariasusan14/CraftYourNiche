@@ -21,8 +21,8 @@ function Data(props) {
           const productsCollectionRef = collection(doc.ref, "products");
           const productsQuerySnapshot = await getDocs(productsCollectionRef);
           productsQuerySnapshot.forEach((productDoc) => {
-            const { title, url, price, category, description, productId } = productDoc.data();
-            productsData.push({ shopId, title, url, price, category, description, productId });
+            const { title, url, price, category, description, productId, addCustomisation } = productDoc.data();
+            productsData.push({ shopId, title, url, price, category, description, productId, addCustomisation });
           });
         }
         setProducts(productsData);

@@ -8,6 +8,13 @@
   box-shadow: 0px 4px 7px rgba(0, 0, 0, 0.2);
 }
 
+.customise-button{
+  max-width: fit-content;
+  min-width: fit-content;
+  background-color: #5b2421;
+  margin-top: 15px;
+}
+
 .product-buy--button {
   max-width: fit-content;
   min-width: fit-content;
