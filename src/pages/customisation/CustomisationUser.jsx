@@ -18,46 +18,55 @@ const CustomisationComponent = () => {
   const [error, setError] = useState('');
   const { shopId, productId } = useParams();
   const userId = auth.currentUser.uid;
-  const uploadedImages = [];
+
   const handleImageUpload = async (e) => {
     try {
       const files = e.target.files;
       console.log('Files:', files); // Log the files to check if they are defined
       if (!files) return; // Check if files is defined, if not, return early
 
-      
-
+      const types = ['image/jpeg', 'image/jpg', 'image/png', 'image/PNG'];
       const uploadPromises = Array.from(files).map(async (imageFile) => {
+        if (!types.includes(imageFile.type)) {
+          setError(`File '${imageFile.name}' is not a valid image file type.`);
+          return null;
+        }
+        
         const storageRef = ref(storage, `customisation/${userId}/${productId}/${imageFile.name}`);
         try {
           await uploadBytes(storageRef, imageFile);
           const downloadURL = await getDownloadURL(storageRef);
           console.log('Download URL:', downloadURL); // Log the download URL
-          uploadedImages.push(downloadURL); // Collect all uploaded image URLs
+          return downloadURL; // Return the download URL
         } catch (error) {
           console.error('Error uploading image:', error);
+          return null; // Return null if there's an error
         }
       });
 
       // Wait for all upload promises to resolve
-      await Promise.all(uploadPromises);
-
+      const uploadedImages = await Promise.all(uploadPromises);
+      
       console.log('Uploaded Images:', uploadedImages); // Log the uploaded image URLs array
 
-      // Once all uploads are completed, update the state with all image URLs
-      setImages(uploadedImages);
+      // Filter out null values (URLs for failed uploads)
+      const validImages = uploadedImages.filter(url => url !== null);
+
+      // Concatenate the new URLs with the existing images array
+      setImages(prevImages => [...prevImages, ...validImages]);
     } catch (error) {
       console.error('Error handling image upload:', error);
     }
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-
-      // Upload images and retrieve their URLs
-      await handleImageUpload(e);
 
       // Create a document with userId as document ID
       const userCustomisationRef = doc(db, `customisation/${userId}`);
@@ -103,7 +112,7 @@ const CustomisationComponent = () => {
     <div>
       <h2>Customisation Options</h2>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="color">Color:</label>
+      <label htmlFor="color">Color:</label>
         <input type="text" id="color" value={color} onChange={(e) => setColor(e.target.value)} />
 
         <label htmlFor="size">Size:</label>
@@ -128,9 +137,18 @@ const CustomisationComponent = () => {
           onChange={(e) => setCustomizationInstructions(e.target.value)}
           required
         ></textarea>
-
+        
         <label htmlFor="images">Upload Images:</label>
         <input type="file" id="images" onChange={handleImageUpload} multiple />
+
+        <div>
+          {images.map((imageUrl, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+              <img src={imageUrl} alt={`Image ${index + 1}`} style={{ width: '100px', height: '100px', marginRight: '10px' }} />
+              <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+            </div>
+          ))}
+        </div>
 
         <button type="submit" disabled={submitting}>
           {submitting ? 'Submitting...' : 'Submit Customization Request'}
