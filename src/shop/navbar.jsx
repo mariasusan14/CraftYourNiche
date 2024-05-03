@@ -6,13 +6,9 @@ import { auth } from '../config/firebase';
 import Header from './header';
 const Navbar = () => {
   const navigate = useNavigate();
-
   const handleLogout = async () => {
     try {
-      // Sign out the user using Firebase authentication
       await auth.signOut();
-
-      // Redirect to the login page or any other page after logout
       navigate('/auth');
     } catch (error) {
       console.error('Error during logout:', error);
@@ -32,19 +28,14 @@ const Navbar = () => {
         </Link>
         <Link to="/inventory" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaBoxOpen /> Inventory</li>
-        </Link>        
-        
-        
-        <li><FaChartLine /> Analytics</li>
-        <li><FaUsers /> Customers</li>
+        </Link> 
+        {/* <li><FaChartLine /> Analytics</li> */}
         <Link to="/collabdashshop" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaHandsHelping /> Collaborations</li>
         </Link>
         <Link to="/customization" style={{textDecoration: 'none', color: 'white'}}>
         <li><FaPaintBrush /> Customization</li>
         </Link>
-        
-        
         <li onClick={handleLogout}><FaSignOutAlt /> Logout</li>
       </ul>
     </nav>

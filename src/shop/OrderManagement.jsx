@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, getDocs,doc,updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs,doc,updateDoc,getDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase';
 import Navbar from './navbar'; 
-import './styles/OrderManagement.css'; // Import CSS file for styling
+import './styles/OrderManagement.css'; 
 
 const OrderManagement = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [loading, setLoading] = useState(true);  
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5; 
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,6 +29,7 @@ const OrderManagement = () => {
             if (product.shopId === userId) {
               const order = {
                 id:doc.id,
+                productId:product.productId,
                 title: product.title,
                 status: productData.status,
                 quantity: productData.quantity,
@@ -52,9 +52,9 @@ const OrderManagement = () => {
     fetchOrders();
   }, []);
   
-  // Filtered orders based on search query and status filter
+  
   const filteredOrders = products.filter(order =>
-    order.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    order.fullName.toLowerCase().includes(searchQuery.toLowerCase()) &&
     (statusFilter === '' || order.status === statusFilter)
   );
 
@@ -66,26 +66,34 @@ const OrderManagement = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleActivityChange = async (orderId, newStatus) => {
-    try {
-      const orderRef = doc(db, 'orders', orderId);
-      await updateDoc(orderRef, {
-        'products.status': newStatus
-      }, { merge: true });
-      // Update the status in the local state
+const handleActivityChange = async (orderId, productId, newStatus) => {
+  try {
+    
+    const orderRef = doc(db, 'orders', orderId);
+    const orderSnapshot = await getDoc(orderRef);    
+    if (orderSnapshot.exists()) {
+      const orderData = orderSnapshot.data();
+      const updatedProducts = orderData.products.map(product => {
+        if (product.product.productId === productId) {
+          return { ...product, status: newStatus };
+        }
+        return product;
+      });
+      
+      await updateDoc(orderRef, { products: updatedProducts }, { merge: true });
       setProducts(products.map(product => {
         if (product.id === orderId) {
           return { ...product, status: newStatus };
         }
         return product;
       }));
-    } catch (error) {
-      console.error('Error updating status:', error);
+    } else {
+      console.log('Order document does not exist');
     }
-  };
- 
-  
-
+  } catch (error) {
+    console.error('Error updating status:', error);
+  }
+};
   return (
     <section className="order-management">
       <Navbar />
@@ -109,11 +117,11 @@ const OrderManagement = () => {
             <option value="Pending">Pending</option>
             <option value="Processing">Processing</option>
             <option value="Delivered">Delivered</option>
-            <option value="Cancelled">Cancelled</option>
+            <option value="Shipped">Shipped</option>
           </select>
         </div>
 
-        {/* Orders */}
+        
         <div className="orders">
           <table>
             <thead>
@@ -125,12 +133,10 @@ const OrderManagement = () => {
                 <th>Address</th>
                 <th>Contact</th>
                 <th>Status</th>
-                
-                
               </tr>
             </thead>
             <tbody>
-              {products.map(product => (
+              {currentOrders.map(product => (
                 <tr key={product.id}>
                   <td>{product.title}</td>
                   <td>{product.quantity}</td>
@@ -138,14 +144,13 @@ const OrderManagement = () => {
                   <td>{product.fullName}</td>                  
                   <td>{product.shippingAddress}</td>
                   <td>{product.contactNo}</td>
-                  
                   <td>
-                    <select onChange={(e) => handleActivityChange(product.id, e.target.value)}>
+                    <select onChange={(e) => handleActivityChange(product.id,product.productId, e.target.value)}>
                     <option value="">{product.status}</option>
                       <option value="Pending">Pending</option>
                       <option value="Processing">Processing</option>
                       <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
+                      <option value="Shipped">Shipped</option>
                     </select>
                   </td>
                   
