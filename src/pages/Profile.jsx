@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from '../config/firebase'; // Import your Firebase instance
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css';
 
 const Profile = () => {
   const [userName, setUserName] = useState('');
@@ -59,7 +61,9 @@ const Profile = () => {
         shippingAddress
       }, { merge: true });
 
-      console.log('Profile updated successfully');
+      // Show a success toast message
+      toast.success('Profile updated successfully');
+
     } catch (error) {
       console.error('Error updating user profile:', error);
     }
@@ -85,6 +89,9 @@ const Profile = () => {
         <textarea value={shippingAddress} onChange={handleShippingAddressChange} />
       </div>
       <button onClick={handleUpdateProfile}>Update Profile</button>
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 }
