@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { Link } from 'react-router-dom';
 
-const CustomisationShopComponent = () => {
+// import './styles/Customization.css'
+const CustomizationShop = () => {
   const [customisationRequests, setCustomisationRequests] = useState([]);
 
   useEffect(() => {
@@ -12,70 +14,75 @@ const CustomisationShopComponent = () => {
   const fetchCustomisationRequests = async () => {
     try {
       const customisationRequestsData = [];
+  
+      // Get all documents from the customisation collection
       const querySnapshot = await getDocs(collection(db, 'customisation'));
-      querySnapshot.forEach((doc) => {
-        customisationRequestsData.push({ id: doc.id, ...doc.data() });
+  
+      // Create an array to store promises for fetching customisation requests
+      const requestsPromises = [];
+  
+      // Iterate over each user document
+      querySnapshot.forEach((userDoc) => {
+        const userId = userDoc.id;
+  
+        // Access the subcollection for each user document
+        const customisationRequestsRef = collection(userDoc.ref, 'customisationRequests');
+        
+        // Push the promise for fetching customisation requests to the array
+        requestsPromises.push(
+          getDocs(customisationRequestsRef).then((customisationRequestsSnapshot) => {
+            // Iterate over each customisation request document
+            customisationRequestsSnapshot.forEach((requestDoc) => {
+              const shopId = requestDoc.id;
+              const requestData = requestDoc.data();
+  
+              // Iterate over each request in the request document
+              Object.keys(requestData).forEach((requestId) => {
+                customisationRequestsData.push({
+                  userId,
+                  shopId,
+                  requestId,
+                  ...requestData[requestId]
+                });
+              });
+            });
+          })
+        );
       });
+  
+      // Wait for all promises to resolve
+      await Promise.all(requestsPromises);
+  
+      // Update the state after all requests are fetched
       setCustomisationRequests(customisationRequestsData);
     } catch (error) {
       console.error('Error fetching customisation requests:', error);
     }
   };
-
-  const handleAcceptRequest = async (requestId) => {
-    try {
-      // Update the status of the customisation request to accepted
-      const requestRef = doc(db, 'customisation', requestId);
-      await updateDoc(requestRef, { status: 'accepted' });
-      // You can also update other fields like reply description, cost, etc.
-      console.log('Customisation request accepted successfully!');
-    } catch (error) {
-      console.error('Error accepting customisation request:', error);
-    }
-  };
-
-  const handleRejectRequest = async (requestId) => {
-    try {
-      // Update the status of the customisation request to rejected
-      const requestRef = doc(db, 'customisation', requestId);
-      await updateDoc(requestRef, { status: 'rejected' });
-      // You can also update other fields like rejection reason, reply description, etc.
-      console.log('Customisation request rejected successfully!');
-    } catch (error) {
-      console.error('Error rejecting customisation request:', error);
-    }
-  };
-
+  
+  
   return (
     <div>
       <h2>Customisation Requests</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Request ID</th>
-            <th>Product ID</th>
-            <th>Customer ID</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customisationRequests.map((request) => (
-            <tr key={request.id}>
-              <td>{request.id}</td>
-              <td>{request.productId}</td>
-              <td>{request.customerId}</td>
-              <td>{request.status}</td>
-              <td>
-                <button onClick={() => handleAcceptRequest(request.id)}>Accept</button>
-                <button onClick={() => handleRejectRequest(request.id)}>Reject</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {customisationRequests.map((request) => (
+          <div key={request.requestId} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
+            <p><strong>Request ID:</strong> {request.requestId}</p>
+            <p><strong>User ID:</strong> {request.userId}</p>
+            <p><strong>Shop ID:</strong> {request.shopId}</p>
+            <p><strong>Product ID:</strong> {request.productId}</p>
+            <p><strong>Status:</strong> {request.status}</p>
+            <div>
+              <Link to={`/viewCustReq/${request.userId}/${request.shopId}/${request.requestId}`}>
+              <button>View Request</button>
+              </Link>
+              
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default CustomisationShopComponent;
+export default CustomizationShop;
