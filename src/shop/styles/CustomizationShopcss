@@ -1,0 +1,38 @@
+/* CustomizationShop.css */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.request-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.request-container p {
+  margin: 0;
+}
+
+.request-container button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.request-container button:hover {
+  background-color: #45a049;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}

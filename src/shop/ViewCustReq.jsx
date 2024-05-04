@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { collection, getDoc, doc,updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { Link } from 'react-router-dom';
 
 const ViewCustomisationRequest = () => {
   const { userId, shopId, requestId } = useParams();
@@ -39,6 +40,10 @@ const ViewCustomisationRequest = () => {
       };
       await updateCustomisationRequest(updatedData);
       console.log('Customisation request accepted successfully!');
+      // Clear fields
+      setReplyDescription('');
+      setCost('');
+      setCostBreakupDescription('');
     } catch (error) {
       console.error('Error accepting customisation request:', error);
     }
@@ -52,6 +57,8 @@ const ViewCustomisationRequest = () => {
       };
       await updateCustomisationRequest(updatedData);
       console.log('Customisation request rejected successfully!');
+      // Clear fields
+      setRejectionReason('');
     } catch (error) {
       console.error('Error rejecting customisation request:', error);
     }
@@ -63,8 +70,6 @@ const ViewCustomisationRequest = () => {
       const docSnapshot = await getDoc(requestRef);
       if (docSnapshot.exists()) {
         const requestData = docSnapshot.data();
-        console.log(requestData)
-        
         if (requestData && requestId && requestData[requestId]) {
           const existingData = requestData[requestId];
           const updatedRequestData = { ...existingData, ...updatedData };
@@ -80,7 +85,6 @@ const ViewCustomisationRequest = () => {
       console.error('Error updating customisation request:', error);
     }
   };
-  
 
   if (!request) {
     return <div>Loading...</div>;
@@ -107,24 +111,36 @@ const ViewCustomisationRequest = () => {
           <img key={index} src={imageUrl} alt={`Image ${index}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
         ))}
       </div>
-      <div>
-        <label>Reply Description:</label>
-        <input type="text" value={replyDescription} onChange={(e) => setReplyDescription(e.target.value)} />
-      </div>
-      <div>
-        <label>Cost:</label>
-        <input type="number" value={cost} onChange={(e) => setCost(e.target.value)} />
-      </div>
-      <div>
-        <label>Cost Breakup Description:</label>
-        <input type="text" value={costBreakupDescription} onChange={(e) => setCostBreakupDescription(e.target.value)} />
-      </div>
-      <button onClick={handleAccept}>Accept</button>
-      <div>
-        <label>Rejection Reason:</label>
-        <input type="text" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} />
-      </div>
-      <button onClick={handleReject}>Reject</button>
+      {request.status !== 'rejected' && (
+        <div>
+          <div>
+            <label>Reply Description:</label>
+            <input type="text" value={replyDescription} onChange={(e) => setReplyDescription(e.target.value)} />
+          </div>
+          <div>
+            <label>Cost:</label>
+            <input type="number" value={cost} onChange={(e) => setCost(e.target.value)} />
+          </div>
+          <div>
+            <label>Cost Breakup Description:</label>
+            <input type="text" value={costBreakupDescription} onChange={(e) => setCostBreakupDescription(e.target.value)} />
+          </div>
+          <Link to ="/customization">
+          <button onClick={handleAccept}>Accept</button>
+          </Link>
+        </div>
+      )}
+      {request.status !== 'accepted' && (
+        <div>
+          <div>
+            <label>Rejection Reason:</label>
+            <input type="text" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} />
+          </div>
+          <Link to ="/customization">
+          <button onClick={handleReject}>Reject</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
