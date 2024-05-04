@@ -21,6 +21,7 @@ import CollaborationRequests from "./shop/CollaborationRequests";
 import ShopPage from "./pages/Shoppingcart1"; // Import ShopPage component
 import Data from "./Context/Data";
 import CustomisationComponent from "./pages/customisation/CustomisationUser";
+import ViewCustomisationRequest from "./shop/ViewCustReq";
 
 const App = () => {
   return (
@@ -38,7 +39,8 @@ const App = () => {
           <Route path="/addproduct" element={<AddProducts />} />
           <Route path="/verification" element={<ProfileCompletion />} />
           <Route path="/customization" element={<CustomizationShop />} />
-          <Route path="//product/:shopId/:productId" element={<Product />} />
+          <Route path="/viewCustReq/:userId/:shopId/:requestId" element={<ViewCustomisationRequest/>}/>
+          <Route path="/product/:shopId/:productId" element={<Product />} />
           <Route path="/productlisting" element={<ProductListing />} />
           <Route path="/collabdash" element={<CollabDash />} />
           <Route path="/customersupport" element={<CustomerSupport />} />  
