@@ -5,7 +5,7 @@ import './UserDashboard.css';
 import Profile from '../pages/Profile';
 import ShoppingCart from '../pages/Shoppingcart1';
 import OrderManagement from '../pages/OrderManagement';
-import Wishlist from '../pages/Wishlist';
+
 import CustomerSupport from '../pages/CustomerSupport/CustomerSupport';
 import ProductListing from '../pages/ProductListing/ProductListing';
 import Product from '../pages/ProductPage/Product';
@@ -13,12 +13,12 @@ import CustomisationComponent from '../pages/customisation/CustomisationUser';
 
 export const UserDashboard = () => {
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState('product-listing'); // Set default active page to 'product-listing'
+  const [activePage, setActivePage] = useState('product-listing'); 
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate('/auth'); // Redirect to the authentication page after logout
+      navigate('/auth'); 
     } catch (error) {
       console.error('Error during logout:', error);
     }
@@ -37,8 +37,6 @@ export const UserDashboard = () => {
         return <ShoppingCart />;
       case 'order-management':
         return <OrderManagement />;
-      case 'wishlist':
-        return <Wishlist />;
       case 'customer-support':
         return <CustomerSupport/>;
       case 'product-listing':
@@ -48,24 +46,7 @@ export const UserDashboard = () => {
     }
   };
 
-  // Sample product data
-  let products = [
-    {
-      id: 1,
-      name: 'Product 1',
-      image: 'product1.jpg',
-      price: 20.99,
-      rating: 4,
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      image: 'product2.jpg',
-      price: 25.49,
-      rating: 5,
-    },
-    // Add more products as needed
-  ];
+
 
   return (
     <div className="dash-container">
@@ -77,7 +58,6 @@ export const UserDashboard = () => {
         <button className="nav-button" onClick={() => handlePageChange('profile')}>Profile</button>
         <button className="nav-button" onClick={() => handlePageChange('shopping-cart')}>Shopping Cart</button>
         <button className="nav-button" onClick={() => handlePageChange('order-management')}>Order Mngmt</button>
-        <button className="nav-button" onClick={() => handlePageChange('wishlist')}>Wishlist</button>
         <button className="nav-button" onClick={() => handlePageChange('customer-support')}>Support</button>
         <button className="nav-button" onClick={() => handlePageChange('product-listing')}>Product Listing</button>
         <hr />

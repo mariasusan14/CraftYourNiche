@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db, auth } from '../config/firebase'; // Import your Firebase instance
-import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast from react-toastify
+import { db, auth } from '../config/firebase';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const Profile = () => {
   const [userName, setUserName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
+  const [countryCode, setCountryCode] = useState('+1'); // Default country code
 
   useEffect(() => {
-    // Fetch user profile data from Firestore when the component mounts
     const fetchUserProfile = async () => {
       try {
         const userId = auth.currentUser.uid;
@@ -23,6 +25,9 @@ const Profile = () => {
           setPhoneNumber(userData.phoneNumber);
           setEmail(userData.email);
           setShippingAddress(userData.shippingAddress);
+          // Extract country code from phone number
+          const extractedCountryCode = userData.phoneNumber.split(' ')[0];
+          setCountryCode(extractedCountryCode);
         } else {
           console.error('User document does not exist');
         }
@@ -38,8 +43,8 @@ const Profile = () => {
     setUserName(e.target.value);
   };
 
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
+  const handlePhoneNumberChange = (value) => {
+    setPhoneNumber(value);
   };
 
   const handleEmailChange = (e) => {
@@ -50,20 +55,23 @@ const Profile = () => {
     setShippingAddress(e.target.value);
   };
 
+  const handleCountryCodeChange = (value) => {
+    setCountryCode(value);
+  };
+
   const handleUpdateProfile = async () => {
     try {
       const userId = auth.currentUser.uid;
       const userDocRef = doc(db, 'user', userId);
+      const formattedPhoneNumber = `${countryCode} ${phoneNumber}`; // Combine country code and phone number
       await setDoc(userDocRef, {
         userName,
-        phoneNumber,
+        phoneNumber: formattedPhoneNumber,
         email,
         shippingAddress
       }, { merge: true });
 
-      // Show a success toast message
       toast.success('Profile updated successfully');
-
     } catch (error) {
       console.error('Error updating user profile:', error);
     }
@@ -78,7 +86,11 @@ const Profile = () => {
       </div>
       <div>
         <label>Phone Number:</label>
-        <input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
+        <PhoneInput
+          country={'us'}
+          value={phoneNumber}
+          onChange={handlePhoneNumberChange}
+        />
       </div>
       <div>
         <label>Email:</label>
@@ -90,7 +102,6 @@ const Profile = () => {
       </div>
       <button onClick={handleUpdateProfile}>Update Profile</button>
 
-      {/* Toast Container */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
