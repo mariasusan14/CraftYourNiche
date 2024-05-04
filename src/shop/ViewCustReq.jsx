@@ -11,6 +11,7 @@ const ViewCustomisationRequest = () => {
   const [cost, setCost] = useState('');
   const [costBreakupDescription, setCostBreakupDescription] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
+  const [enlargedImage, setEnlargedImage] = useState(null);
 
   useEffect(() => {
     const fetchCustomisationRequest = async () => {
@@ -86,6 +87,14 @@ const ViewCustomisationRequest = () => {
     }
   };
 
+  const enlargeImage = (imageUrl) => {
+    setEnlargedImage(imageUrl);
+  };
+
+  const closeEnlargedImage = () => {
+    setEnlargedImage(null);
+  };
+
   if (!request) {
     return <div>Loading...</div>;
   }
@@ -107,39 +116,57 @@ const ViewCustomisationRequest = () => {
       <div>
         <strong>Images:</strong>
         {request.images.map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt={`Image ${index}`} style={{ width: '100px', height: '100px', margin: '5px' }} />
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Image ${index}`}
+            style={{ width: '100px', height: '100px', margin: '5px', cursor: 'pointer' }}
+            onClick={() => enlargeImage(imageUrl)}
+          />
         ))}
       </div>
-      {request.status !== 'rejected' && (
-        <div>
-          <div>
-            <label>Reply Description:</label>
-            <input type="text" value={replyDescription} onChange={(e) => setReplyDescription(e.target.value)} />
+      <div>
+        {enlargedImage && (
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 999 }}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+              <img src={enlargedImage} alt="Enlarged" style={{ maxWidth: '90%', maxHeight: '90%' }} />
+              <button onClick={closeEnlargedImage} style={{ marginTop: '10px' }}>Close</button>
+            </div>
           </div>
+        )}
+      </div>
+      <div>
+        {request.status !== 'rejected' && (
           <div>
-            <label>Cost:</label>
-            <input type="number" value={cost} onChange={(e) => setCost(e.target.value)} />
+            <div>
+              <label>Reply Description:</label>
+              <input type="text" value={replyDescription} onChange={(e) => setReplyDescription(e.target.value)} />
+            </div>
+            <div>
+              <label>Cost:</label>
+              <input type="number" value={cost} onChange={(e) => setCost(e.target.value)} />
+            </div>
+            <div>
+              <label>Cost Breakup Description:</label>
+              <input type="text" value={costBreakupDescription} onChange={(e) => setCostBreakupDescription(e.target.value)} />
+            </div>
+            <Link to ="/customization">
+              <button onClick={handleAccept}>Accept</button>
+            </Link>
           </div>
+        )}
+        {request.status !== 'accepted' && (
           <div>
-            <label>Cost Breakup Description:</label>
-            <input type="text" value={costBreakupDescription} onChange={(e) => setCostBreakupDescription(e.target.value)} />
+            <div>
+              <label>Rejection Reason:</label>
+              <input type="text" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} />
+            </div>
+            <Link to ="/customization">
+              <button onClick={handleReject}>Reject</button>
+            </Link>
           </div>
-          <Link to ="/customization">
-          <button onClick={handleAccept}>Accept</button>
-          </Link>
-        </div>
-      )}
-      {request.status !== 'accepted' && (
-        <div>
-          <div>
-            <label>Rejection Reason:</label>
-            <input type="text" value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} />
-          </div>
-          <Link to ="/customization">
-          <button onClick={handleReject}>Reject</button>
-          </Link>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
