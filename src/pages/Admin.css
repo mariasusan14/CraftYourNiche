@@ -1,0 +1,24 @@
+.admin-page {
+    padding: 20px;
+  }
+  
+  .shop-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .shop-table th, .shop-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .shop-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  .shop-table img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+  
