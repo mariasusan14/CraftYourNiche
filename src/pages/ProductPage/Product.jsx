@@ -31,8 +31,9 @@ export default function Product() {
     productName = product.title;
     productPrice = product.price;
     productDescription = product.description;
-    productImages = [product.url];
+    productImages = product.url;
     customisation=product.addCustomisation;
+    console.log(productImages);
   }
   const [mainimg, setMainimg] = useState(productImages[0]); 
   if (!product) {
@@ -127,15 +128,7 @@ export default function Product() {
 
   
 
-  const handleBuyNow = async () => {
-    try {
-      // Add logic to initiate purchase process
-      console.log('Buying product: ', product);
-    } catch (error) {
-      console.error('Error buying product: ', error);
-    }
-  };
-
+  
   return (
     <div>
     
