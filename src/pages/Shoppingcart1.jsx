@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { collection, doc, getDoc, setDoc,addDoc } from 'firebase/firestore';
+import { collection, doc, addDoc ,getDoc,setDoc} from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { FaTrash } from 'react-icons/fa';
-
-
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -12,6 +10,9 @@ const ShoppingCart = () => {
   const [fullName, setFullName] = useState('');
   const [contactNo, setContactNo] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCVV] = useState('');
   const [showForm, setShowForm] = useState(false);
   const shippingChargePercentage = 0.02;
 
@@ -83,19 +84,26 @@ const ShoppingCart = () => {
   };
 
   const handleBuy = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     try {
+      if (!cardNumber || !expiryDate || !cvv) {
+        alert("Please fill in all payment details.");
+        return;
+      }
+      // Perform additional validation for cardNumber, expiryDate, and cvv here if needed
+
       const userId = auth.currentUser.uid;
       const orderCollectionRef = collection(db, 'orders');
-    const orderData = {
-      userId,
-      fullName,
-      contactNo,
-      shippingAddress,
-      total,
-      products: cartItems,
-    };
-    await addDoc(orderCollectionRef, orderData);
+      const orderData = {
+        userId,
+        fullName,
+        contactNo,
+        shippingAddress,
+        total,
+        products: cartItems,
+        paymentDetails: { cardNumber, expiryDate, cvv }
+      };
+      await addDoc(orderCollectionRef, orderData);
 
       const cartDocRef = doc(db, 'cart', userId);
       await setDoc(cartDocRef, { products: [] });
@@ -105,8 +113,11 @@ const ShoppingCart = () => {
       setFullName('');
       setContactNo('');
       setShippingAddress('');
+      setCardNumber('');
+      setExpiryDate('');
+      setCVV('');
       setShowForm(false);
-      alert("Order placed")      
+      alert("Order placed");    
     } catch (error) {
       console.error('Error placing order:', error);
     }
@@ -176,7 +187,22 @@ const ShoppingCart = () => {
             <input type="text" value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)} />
           </label>
           <br />
-          <input type="submit" value="Submit" />
+          <label>
+            Card Number:
+            <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            Expiry Date:
+            <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+          </label>
+          <br />
+          <label>
+            CVV:
+            <input type="password" value={cvv} onChange={(e) => setCVV(e.target.value)} />
+          </label>
+          <br />
+          <input type="submit" value="Pay Now" />
         </form>
       ) : (
         <button onClick={() => setShowForm(true)}>Buy</button>

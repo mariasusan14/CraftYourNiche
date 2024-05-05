@@ -4,6 +4,7 @@ import { products } from "../../assets/products";
 
 export default function ProductCard({ product }) {
   const { title, url, price, rating } = product; 
+  
   return (
     <div className="product-card">
       <div className="product-image--container">
@@ -11,6 +12,7 @@ export default function ProductCard({ product }) {
       </div>
       <div className="product-dt">
         <span className="product-name">{title}</span>
+        
         <span className="product-price">${price}</span>
         <div className="product-rating">
           {Array.from({ length: rating }, (_, index) => (
