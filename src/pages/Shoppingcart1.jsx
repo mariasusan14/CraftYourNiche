@@ -83,7 +83,7 @@ const ShoppingCart = () => {
   };
 
   const handleBuy = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     try {
       const userId = auth.currentUser.uid;
       const orderCollectionRef = collection(db, 'orders');
