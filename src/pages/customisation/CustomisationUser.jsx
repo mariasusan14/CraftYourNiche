@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from 'react';
 import { auth, storage } from '../../config/firebase';
 import { db } from '../../config/firebase';
@@ -19,7 +16,7 @@ const CustomisationComponent = () => {
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const { shopId, productId } = useParams();
+  const { shopId, productId ,productName} = useParams();
   const userId = auth.currentUser.uid;
 
   const handleSubmit = async (e) => {
@@ -42,6 +39,7 @@ const CustomisationComponent = () => {
       await setDoc(customisationRef, {
         ...existingRequests,
         [productId]: {
+          productName,
           color,
           size,
           material,

@@ -93,7 +93,7 @@ const ShoppingCart = () => {
       contactNo,
       shippingAddress,
       total,
-      products: cartItems
+      products: cartItems,
     };
     await addDoc(orderCollectionRef, orderData);
 

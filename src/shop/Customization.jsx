@@ -67,6 +67,10 @@ const CustomizationShop = () => {
               width: "300px",
             }}
           >
+             <p>
+              <strong>Product :</strong> {request.productName}
+            </p>
+           
             <p>
               <strong>Request ID:</strong> {request.requestId}
             </p>
@@ -76,12 +80,7 @@ const CustomizationShop = () => {
             <p>
               <strong>Shop ID:</strong> {request.shopId}
             </p>
-            <p>
-              <strong>Product ID:</strong> {request.productId}
-            </p>
-            <p>
-              <strong>Status:</strong> {request.status}
-            </p>
+           
             <div>
               <Link
                 to={`/viewCustReq/${request.userId}/${request.shopId}/${request.requestId}`}

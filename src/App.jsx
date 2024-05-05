@@ -51,7 +51,7 @@ const App = () => {
           <Route path="/collabprofile" element={<CollabProfile />} />
           <Route path="/collabrequests" element={<CollabRequests />} />
           <Route path="/viewcollabrequests" element={<CollaborationRequests />} />
-          <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent />} />
+          <Route path="/customisation/:shopId/:productId/:productName" element={<CustomisationComponent />} />
           <Route path="/admin" element={<AdminPage />} /> {/* Add admin page route */}
         </Routes>
       </Data>

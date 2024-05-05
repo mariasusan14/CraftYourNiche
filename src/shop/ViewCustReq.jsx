@@ -104,9 +104,9 @@ const ViewCustomisationRequest = () => {
     <div>
       <Navbar/>
       <h2>Customisation Request</h2>
+      <p><strong>Product :</strong> {request.productName}</p>
       <p><strong>Request ID:</strong> {requestId}</p>
       <p><strong>User ID:</strong> {userId}</p>
-      <p><strong>Product ID:</strong> {request.productId}</p>
       <p><strong>Status:</strong> {request.status}</p>
       <p><strong>Color:</strong> {request.color}</p>
       <p><strong>Size:</strong> {request.size}</p>

@@ -194,7 +194,7 @@ export default function Product() {
             </Flex>
             {customisation === 'Yes' && (
              <Link
-                   to={`/customisation/${shopId}/${productId}`}
+                   to={`/customisation/${shopId}/${productId}/${productName}`}
                    className="product-customise--button">
                  <button className="customise-button">Customise</button>
              </Link>
