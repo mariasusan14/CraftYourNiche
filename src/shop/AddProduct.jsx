@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { storage, db, auth } from '../config/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, Timestamp, doc, setDoc } from 'firebase/firestore';
+import { collection, setDoc,doc, Timestamp } from 'firebase/firestore';
 import Navbar from './navbar';
 import './styles/AddProduct.css';
 
@@ -10,7 +10,7 @@ export const AddProducts = () => {
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
-    const [image, setImage] = useState(null);
+    const [images, setImages] = useState([]);
     const [category, setCategory] = useState('');
     const [otherCategory, setOtherCategory] = useState('');
     const [addCustomisation, setAddCustomisation] = useState('');
@@ -22,49 +22,64 @@ export const AddProducts = () => {
     const types = ['image/jpg', 'image/jpeg', 'image/png', 'image/PNG'];
 
     const handleProductImg = (e) => {
-        let selectedFile = e.target.files[0];
-        if (selectedFile) {
-            if (selectedFile && types.includes(selectedFile.type)) {
-                setImage(selectedFile);
-                setImageError('');
-            } else {
-                setImage(null);
-                setImageError('Please select a valid image file type (png or jpg)');
+        let selectedFiles = e.target.files;
+        let selectedImages = [];
+
+        if (selectedFiles) {
+            for (let i = 0; i < selectedFiles.length; i++) {
+                if (selectedFiles[i] && types.includes(selectedFiles[i].type)) {
+                    selectedImages.push(selectedFiles[i]);
+                } else {
+                    setImageError('Please select valid image file types (png or jpg)');
+                    return;
+                }
             }
+            setImages([...images, ...selectedImages]);
+            setImageError('');
         } else {
             console.log('Please select your file');
         }
     };
 
+    const removeImage = (index) => {
+        const newImages = [...images];
+        newImages.splice(index, 1);
+        setImages(newImages);
+    };
+
     const handleAddProducts = async (e) => {
         e.preventDefault();
 
-        if (!image) {
-            setImageError('Please select an image');
+        if (images.length === 0) {
+            setImageError('Please select at least one image');
             return;
         }
         const userId = auth.currentUser.uid;
-        const storageRef = ref(storage, `product-images/${userId}/${image.name}`);
-        
 
         try {
-            // Upload image to storage
-            await uploadBytes(storageRef, image);
-            const url = await getDownloadURL(storageRef);
+            const url = [];
+            for (let i = 0; i < images.length; i++) {
+                const image = images[i];
+                const storageRef = ref(storage, `product-images/${userId}/${image.name}`);
+                await uploadBytes(storageRef, image);
+                const imgurl = await getDownloadURL(storageRef);
+                url.push(imgurl);
+            }
 
             // Add product to Firestore
-            const productRef = doc(collection(db, `shops/${userId}/products`)); // Reference to new document
-            await setDoc(productRef, {
-                productId: productRef.id, // Assigning product ID as document ID
-                title,
+
+            const productRef =  doc(collection(db, `shops/${userId}/products`));
+               await setDoc(productRef,{ title,
+                productId: productRef.id,
                 description,
                 price: Number(price),
                 quantity: Number(quantity),
                 category: category === 'Other' ? otherCategory : category,
                 addCustomisation,
-                url
+                url,
+                createdAt: Timestamp.fromDate(new Date())
             });
-
+     
             setSuccessMsg('Product added successfully');
             setTitle('');
             setDescription('');
@@ -73,7 +88,7 @@ export const AddProducts = () => {
             setCategory('');
             setOtherCategory('');
             setAddCustomisation('');
-            document.getElementById('file').value = '';
+            setImages([]);
             setImageError('');
             setUploadError('');
             setTimeout(() => {
@@ -99,7 +114,7 @@ export const AddProducts = () => {
                     </>
                 )}
                 <form autoComplete="off" className="form-group" onSubmit={handleAddProducts}>
-                    <label>Product Title</label>
+                <label>Product Title</label>
                     <input type="text" className="form-control" required onChange={(e) => setTitle(e.target.value)} value={title} />
                     <br />
                     <label>Product Description</label>
@@ -179,14 +194,25 @@ export const AddProducts = () => {
                         <option value="No">No</option>
                     </select>
                     <br />
-                    <label>Upload Product Image</label>
-                    <input type="file" id="file" className="form-control" required onChange={handleProductImg} />
+
+                    <label>Upload Product Images</label>
+                    <input type="file" multiple className="form-control" required onChange={handleProductImg} />
                     {imageError && (
                         <>
                             <br />
                             <div className="error-msg">{imageError}</div>
                         </>
                     )}
+                    <div className="uploaded-images">
+                        {images.map((image, index) => (
+                            <div key={index} className="uploaded-image">
+                                <img src={URL.createObjectURL(image)} alt={`Image ${index}`} style={{ width: '100px', height: '100px', marginRight: '10px' }}/>
+                                <button type="button" onClick={() => removeImage(index)}>
+                                    Remove
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                     <br />
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <button type="submit" className="btn btn-success btn-md">

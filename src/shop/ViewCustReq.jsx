@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Link } from 'react-router-dom';
+import Navbar from './navbar';
 
 const ViewCustomisationRequest = () => {
   const { userId, shopId, requestId } = useParams();
@@ -101,6 +102,7 @@ const ViewCustomisationRequest = () => {
 
   return (
     <div>
+      <Navbar/>
       <h2>Customisation Request</h2>
       <p><strong>Request ID:</strong> {requestId}</p>
       <p><strong>User ID:</strong> {userId}</p>
