@@ -4,7 +4,7 @@ import {
   Text,
   Slider,
   Button,
-  DropdownMenu, 
+  DropdownMenu,
   RadioGroup,
 } from "@radix-ui/themes";
 import Navbar from "../../components/Navbar/Navbar";
@@ -28,12 +28,21 @@ export default function ProductListing() {
       const querySnapshot = await getDocs(collection(db, "shops"));
 
       for (const doc of querySnapshot.docs) {
-        const shopId = doc.id; 
+        const shopId = doc.id;
         const productsCollectionRef = collection(doc.ref, "products");
         const productsQuerySnapshot = await getDocs(productsCollectionRef);
         productsQuerySnapshot.forEach((productDoc) => {
-          const { title, url, price, category, description, productId } = productDoc.data();
-          productsData.push({ shopId, title, url, price, category, description, productId });
+          const { title, url, price, category, description, productId } =
+            productDoc.data();
+          productsData.push({
+            shopId,
+            title,
+            url,
+            price,
+            category,
+            description,
+            productId,
+          });
         });
       }
 
@@ -57,10 +66,9 @@ export default function ProductListing() {
     else if (a.price < b.price) return 1;
     return 0;
   };
-  
+
   return (
     <div>
-      
       <Flex direction="row">
         {/* Filters: */}
         <div className="productlisting-filters">
@@ -105,14 +113,6 @@ export default function ProductListing() {
                 >
                   Price Descending
                 </RadioGroup.Item>
-
-                <RadioGroup.Item color="indigo" value="3">
-                  Customer Rating
-                </RadioGroup.Item>
-
-                <RadioGroup.Item color="indigo" value="4">
-                  Purchases
-                </RadioGroup.Item>
               </RadioGroup.Root>
             </Box>
           </Flex>
@@ -136,7 +136,7 @@ export default function ProductListing() {
               </Text>
             </span>
           </div>
-          <div>
+          {/*<div>
             <Box pl={"5"} pb={"2"}>
               Rating
             </Box>
@@ -162,7 +162,7 @@ export default function ProductListing() {
                 </Button>
               </Box>
             </Flex>
-          </div>
+              </div>*/}
         </div>
 
         <div className="productlisting-filters--separator" />
@@ -187,7 +187,8 @@ export default function ProductListing() {
                       key={product.productId}
                     >
                       <ProductCard product={product} />
-                    </Link>);
+                    </Link>
+                  );
                 }
               })}
             </div>

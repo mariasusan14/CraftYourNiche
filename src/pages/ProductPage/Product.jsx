@@ -9,7 +9,7 @@ import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
 import Magnifier from "../../components/Magnifier/Magnifier";
 import { auth, db } from "../../config/firebase";
-import {  doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export default function Product() {
   const [magnifierOn, setMagnifierOn] = useState(false);
@@ -21,7 +21,6 @@ export default function Product() {
   console.log(products);
   const product = products.find((product) => product.productId === productId);
 
-  
   let productName = "";
   let productPrice = 0;
   let productDescription = "";
@@ -33,7 +32,6 @@ export default function Product() {
     productDescription = product.description;
     productImages = product.url;
     customisation = product.addCustomisation;
-    
   }
   const [mainimg, setMainimg] = useState(productImages[0]);
   if (!product) {
@@ -70,7 +68,7 @@ export default function Product() {
     });
     totRat = noOfRat.reduce((a, b) => a + b, 0);
 
-    let ratVals = [0, 1, 2, 3, 4]; 
+    let ratVals = [0, 1, 2, 3, 4];
     ratVals = ratVals.map((ratVal) => {
       return (noOfRat[ratVal] / totRat) * 100;
     });
@@ -139,25 +137,26 @@ export default function Product() {
                 onMouseLeave={() => setMagnifierOn(false)}
               />
             </div>
-            Magnifier
+
             {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
-              {Array.isArray(productImages) && productImages.map((img) => (
-                <div className="product-subimg--container" key={img}>
-                  <img
-                    src={img}
-                    className={
-                      img === mainimg
-                        ? "product-subimg--active"
-                        : "product-subimg"
-                    }
-                    onMouseEnter={() => {
-                      setMainimg(img);
-                    }}
-                    alt={`Product ${img}`}
-                  />
-                </div>
-              ))}
+              {Array.isArray(productImages) &&
+                productImages.map((img) => (
+                  <div className="product-subimg--container" key={img}>
+                    <img
+                      src={img}
+                      className={
+                        img === mainimg
+                          ? "product-subimg--active"
+                          : "product-subimg"
+                      }
+                      onMouseEnter={() => {
+                        setMainimg(img);
+                      }}
+                      alt={`Product ${img}`}
+                    />
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -214,19 +213,19 @@ export default function Product() {
         </div>
         <Flex className="product-reviewrating" direction={"row"}>
           {/* rating card for product */}
-          <Flex direction={"column"}>
+          {/*<Flex direction={"column"}>
             <span>Customer Rating</span>
             <RatingCardItem rating={5} ratSummary={ratSummary} />
             <RatingCardItem rating={4} ratSummary={ratSummary} />
             <RatingCardItem rating={3} ratSummary={ratSummary} />
             <RatingCardItem rating={2} ratSummary={ratSummary} />
             <RatingCardItem rating={1} ratSummary={ratSummary} />
-          </Flex>
+              </Flex>*/}
           {/* product review section */}
-          <div className="product-review--section">
+          {/*<div className="product-review--section">
             {hasPurchased && <Review />}
             <CustomerReviews reviews={reviews} />
-          </div>
+            </div>*/}
         </Flex>
       </div>
     </div>
