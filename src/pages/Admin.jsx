@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../config/firebase";
+import { db,auth } from "../config/firebase";
 import "./Admin.css";
+import { useNavigate } from "react-router-dom";
 
 function AdminPage() {
+  const navigate=useNavigate();
   const [shops, setShops] = useState([]);
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
