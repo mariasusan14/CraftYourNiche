@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import JobOpportunity from './JobOpportunity';
-import './styles/CollabDash.css';
-import Navbar from './navbar';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { db } from '../config/firebase'; 
-import './styles/CollabDash.css';
+import React, { useEffect, useState } from "react";
+import JobOpportunity from "./JobOpportunity";
+import "./styles/CollabDash.css";
+import Navbar from "./navbar";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../config/firebase";
+import "./styles/CollabDash.css";
 
 const CollabDash = () => {
   const [jobOpportunities, setJobOpportunities] = useState([]);
@@ -16,34 +16,35 @@ const CollabDash = () => {
   const fetchJobOpportunities = async () => {
     try {
       const jobData = [];
-      const collaborationRequestsQuerySnapshot = await getDocs(collection(db, 'collaborationRequests'));
-     
-      // Iterate over each document in the collaborationRequests collection
-      for (const collabDoc of collaborationRequestsQuerySnapshot.docs) {
-        const requestsCollectionRef = collection(collabDoc.ref, 'requests');
-        const requestsQuerySnapshot = await getDocs(query(requestsCollectionRef, where('status', '==', 'open')));
+      const collaborationRequestsQuerySnapshot = await getDocs(
+        collection(db, "collaborationRequests")
+      );
 
-        // Iterate over each document in the requests subcollection
+      for (const collabDoc of collaborationRequestsQuerySnapshot.docs) {
+        const requestsCollectionRef = collection(collabDoc.ref, "requests");
+        const requestsQuerySnapshot = await getDocs(
+          query(requestsCollectionRef, where("status", "==", "open"))
+        );
+
         requestsQuerySnapshot.forEach((requestDoc) => {
           const requestData = requestDoc.data();
-          // Extract required fields and add them to the jobData array
+
           const job = {
             requestid: requestData.requestid,
             shopid: requestData.shopid,
             title: requestData.projectTitle,
-            // company: requestData.companyName, // Add your company name if available
+
             description: requestData.projectDescription,
             skills: requestData.requiredSkills,
-            deadline: requestData.deadline // Convert Firebase Timestamp to JavaScript Date
+            deadline: requestData.deadline,
           };
           jobData.push(job);
         });
       }
-      
-      // Set the job opportunities array after fetching data
+
       setJobOpportunities(jobData);
     } catch (error) {
-      console.error('Error fetching job opportunities:', error);
+      console.error("Error fetching job opportunities:", error);
     }
   };
 

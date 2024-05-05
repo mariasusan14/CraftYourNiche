@@ -36,7 +36,7 @@ const Auth = () => {
   const submitUser = async () => {
     try {
       const existingAccount = await checkExistingAccount();
-      if(password.length<7){
+      if(password.length<6){
         alert("Password must contain atleast 6 characters")
       }
       if (existingAccount) {

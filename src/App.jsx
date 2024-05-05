@@ -1,29 +1,29 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Auth from './auth';
-import { UserDashboard } from './user/UserDashboard';
-import { Landing } from './landing';
-import Hero from './components/Hero/Hero';
-import InventoryManagement from './shop/InventoryManagement';
-import { ShopDashboard } from './shop/ShopDashboard';
-import { AddProducts } from './shop/AddProduct';
-import OrderManagement from './shop/OrderManagement';
-import ProfileCompletion from './shop/ProfileCompletion';
-import Product from './pages/ProductPage/Product';
-import CollabDash from './collab/collabdash';
-import ProductListing from './pages/ProductListing/ProductListing';
-import CustomerSupport from './pages/CustomerSupport/CustomerSupport';
-import CollaborationPlatform from './shop/CollaborationPlatform';
-import CollabDetails from './collab/collabDetails';
-import CollabProfile from './collab/CollabProfile';
-import CollabRequests from './collab/CollabRequests';
-import CustomizationShop from './shop/Customization';
-import CollaborationRequests from './shop/CollaborationRequests';
-import ShopPage from './pages/Shoppingcart1'; // Import ShopPage component
-import Data from './Context/Data';
-import CustomisationComponent from './pages/customisation/CustomisationUser';
-import Admin from "./pages/Admin"; // Import Admin component
-import ViewCustomisationRequest from './shop/ViewCustReq';
+import { UserDashboard } from "./user/UserDashboard";
+import { Landing } from "./landing";
+import Hero from "./components/Hero/Hero";
+import InventoryManagement from "./shop/InventoryManagement";
+import  ShopDashboard  from "./shop/ShopDashboard";
+import { AddProducts } from "./shop/AddProduct";
+import OrderManagement from "./shop/OrderManagement";
+import ProfileCompletion from "./shop/ProfileCompletion";
+import Product from "./pages/ProductPage/Product";
+import CollabDash from "./collab/collabdash";
+import ProductListing from "./pages/ProductListing/ProductListing";
+import CustomerSupport from "./pages/CustomerSupport/CustomerSupport";
+import CollaborationPlatform from "./shop/CollaborationPlatform";
+import CollabDetails from "./collab/collabDetails";
+import CollabProfile from "./collab/CollabProfile";
+import CollabRequests from "./collab/CollabRequests";
+import CustomizationShop from "./shop/Customization";
+import CollaborationRequests from "./shop/CollaborationRequests";
+import ShopPage from "./pages/Shoppingcart1"; // Import ShopPage component
+import Data from "./Context/Data";
+import CustomisationComponent from "./pages/customisation/CustomisationUser";
+import ViewCustomisationRequest from "./shop/ViewCustReq";
+import AdminPage from './pages/Admin';
 
 const App = () => {
   return (
@@ -52,7 +52,7 @@ const App = () => {
           <Route path="/collabrequests" element={<CollabRequests />} />
           <Route path="/viewcollabrequests" element={<CollaborationRequests />} />
           <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent />} />
-          <Route path="/admin" element={<Admin />} /> {/* Add admin page route */}
+          <Route path="/admin" element={<AdminPage />} /> {/* Add admin page route */}
         </Routes>
       </Data>
     </div>

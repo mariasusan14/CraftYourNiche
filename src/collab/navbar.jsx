@@ -2,7 +2,7 @@ import React from 'react';
 import { FaSignOutAlt,FaUser, FaEnvelope } from 'react-icons/fa';
 import { auth } from '../config/firebase';
 import { Link, useNavigate } from 'react-router-dom';
-import './styles/Navbar.css'; // Import CSS file for styling
+import './styles/Navbar.css'; 
 
 
 
@@ -11,7 +11,7 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate('/auth'); // Redirect to the authentication page after logout
+      navigate('/auth');
     } catch (error) {
       console.error('Error during logout:', error);
     }

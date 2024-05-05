@@ -18,25 +18,28 @@ const Navbar = () => {
     <nav className="navbar">
     <Header/>
     <br />
-      <ul>
-        <li><FaHome /> Dashboard</li>
+      <ul className='nav-ul'>
+        
+        <Link to="/shopdash" style={{textDecoration: 'none', color: 'white'}}>
+        <li className='nav-li'><FaHome /> Dashboard</li>
+        </Link>
         <Link to="/addproduct" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaShoppingBag /> Products</li>
+        <li className='nav-li'><FaShoppingBag /> Products</li>
         </Link>
         <Link to="/orders" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaClipboardList /> Orders</li>
+        <li className='nav-li'><FaClipboardList /> Orders</li>
         </Link>
         <Link to="/inventory" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaBoxOpen /> Inventory</li>
+        <li className='nav-li'><FaBoxOpen /> Inventory</li>
         </Link> 
         {/* <li><FaChartLine /> Analytics</li> */}
         <Link to="/collabdashshop" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaHandsHelping /> Collaborations</li>
+        <li className='nav-li'><FaHandsHelping /> Collaborations</li>
         </Link>
         <Link to="/customization" style={{textDecoration: 'none', color: 'white'}}>
-        <li><FaPaintBrush /> Customization</li>
+        <li className='nav-li'><FaPaintBrush /> Customization</li>
         </Link>
-        <li onClick={handleLogout}><FaSignOutAlt /> Logout</li>
+        <li className='nav-li' onClick={handleLogout}><FaSignOutAlt /> Logout</li>
       </ul>
     </nav>
   );

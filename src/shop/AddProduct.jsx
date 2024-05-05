@@ -94,6 +94,7 @@ export const AddProducts = () => {
             setTimeout(() => {
                 setSuccessMsg('');
             }, 3000);
+            alert('Product added successfully');
         } catch (error) {
             setUploadError(error.message);
         }

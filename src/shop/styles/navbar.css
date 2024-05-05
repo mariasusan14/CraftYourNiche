@@ -8,13 +8,13 @@
     overflow-y: auto;
 }
 
-ul {
+.nav-ul {
   list-style: none;
   padding: 0;
 }
 
 
-li {
+.nav-li {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -23,13 +23,13 @@ li {
 }
 
 
-li svg {
+.nav-li svg {
   margin-right: 10px;
   color:  #fff; 
 }
 
 
-li:hover {
+.nav-li:hover {
   background-color: #382006; 
   font-weight:550; 
 }
