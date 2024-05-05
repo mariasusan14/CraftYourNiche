@@ -4,7 +4,7 @@ import { UserDashboard } from "./user/UserDashboard";
 import { Landing } from "./landing";
 import Hero from "./components/Hero/Hero";
 import InventoryManagement from "./shop/InventoryManagement";
-import { ShopDashboard } from "./shop/ShopDashboard";
+import  ShopDashboard  from "./shop/ShopDashboard";
 import { AddProducts } from "./shop/AddProduct";
 import OrderManagement from "./shop/OrderManagement";
 import ProfileCompletion from "./shop/ProfileCompletion";

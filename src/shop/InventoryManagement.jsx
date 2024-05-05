@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import './styles/InventoryManagement.css'; 
 import Navbar from './navbar';
-import { db, auth } from '../config/firebase'; // Import your Firebase configuration
+import { db, auth } from '../config/firebase'; 
 import { getDocs, query, collection, where, doc, updateDoc } from 'firebase/firestore';
 
 const InventoryManagement = () => {
@@ -11,7 +11,7 @@ const InventoryManagement = () => {
   const [quantityToUpdate, setQuantityToUpdate] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(5); // Number of products per page
+  const [productsPerPage] = useState(5); 
 
   useEffect(() => {
     fetchStockData();
@@ -39,7 +39,7 @@ const InventoryManagement = () => {
       const userId = auth.currentUser.uid;
       const productRef = doc(db, `shops/${userId}/products`, selectedProductId);
       await updateDoc(productRef, { quantity: parseInt(quantityToUpdate) });
-      // Fetch updated stock data
+      
       fetchStockData();
       setSelectedProductId('');
       setQuantityToUpdate('');
@@ -51,7 +51,7 @@ const InventoryManagement = () => {
   const handleSearch = async () => {
     try {
       if (searchQuery.trim() === '') {
-        // If search query is empty, fetch all stock data
+        
         fetchStockData();
       } else {
         const userId = auth.currentUser.uid;
@@ -70,12 +70,12 @@ const InventoryManagement = () => {
     }
   };
 
-  // Calculate products to display based on current page
+  
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = stockData.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Function to handle pagination
+  
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (

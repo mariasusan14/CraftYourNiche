@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
-import { db , auth} from '../config/firebase'; // Import your Firebase instance
+import { db , auth} from '../config/firebase'; 
 import './styles/CollabProfile.css'
 
 const CollabProfile = () => {
@@ -11,7 +11,7 @@ const CollabProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    // Fetch user profile data from Firestore when the component mounts
+    
     const fetchUserProfile = async () => {
       try {
         const userId = auth.currentUser.uid; 

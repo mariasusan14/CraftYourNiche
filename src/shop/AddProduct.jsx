@@ -48,14 +48,14 @@ export const AddProducts = () => {
         
 
         try {
-            // Upload image to storage
+            
             await uploadBytes(storageRef, image);
             const url = await getDownloadURL(storageRef);
 
-            // Add product to Firestore
-            const productRef = doc(collection(db, `shops/${userId}/products`)); // Reference to new document
+            
+            const productRef = doc(collection(db, `shops/${userId}/products`)); 
             await setDoc(productRef, {
-                productId: productRef.id, // Assigning product ID as document ID
+                productId: productRef.id, 
                 title,
                 description,
                 price: Number(price),
@@ -79,6 +79,7 @@ export const AddProducts = () => {
             setTimeout(() => {
                 setSuccessMsg('');
             }, 3000);
+            alert('Product added successfully');
         } catch (error) {
             setUploadError(error.message);
         }

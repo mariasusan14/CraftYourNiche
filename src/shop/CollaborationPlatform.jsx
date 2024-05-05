@@ -45,10 +45,10 @@ const CollaborationPlatform = () => {
       };
 
       const userId = auth.currentUser.uid;
-      const userDocRef = doc(db, 'collaborationRequests', userId); // Correctly construct document reference
+      const userDocRef = doc(db, 'collaborationRequests', userId); 
       const userDocSnapshot = await getDoc(userDocRef);
       if (!userDocSnapshot.exists()) {
-        await setDoc(userDocRef, { shopid: userId }); // Create user document if it doesn't exist
+        await setDoc(userDocRef, { shopid: userId }); 
       }
 
       const requestsCollectionRef = collection(userDocRef, 'requests');

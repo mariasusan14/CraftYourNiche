@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles/JobOpportunities.css'; // Import CSS file for styling
+import './styles/JobOpportunities.css'; 
 
 const JobOpportunity = ({ job }) => {
   return (
@@ -12,7 +12,7 @@ const JobOpportunity = ({ job }) => {
       <p>{job.description}</p>
       <p><strong>Skills Required:</strong> {job.skills}</p>
       <p><strong>Deadline:</strong> {job.deadline}</p>
-      <Link to={`/details/${job.shopid}/${job.requestid}/${job.title}`}> {/* Link to CollabDetails with shopId */}
+      <Link to={`/details/${job.shopid}/${job.requestid}/${job.title}`}>
         <button className="apply-button">Apply</button>
       </Link>
     </div>
