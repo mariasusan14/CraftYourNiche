@@ -88,14 +88,15 @@ const Auth = () => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
       const userId = userCredential.user.uid;
-  
+      
       // Get user data to determine userType
       const userDoc = await getDoc(doc(collection(db, 'user'), userId));
       const userData = userDoc.data();
       const userType = userData.userType;
-  
+      console.log(userType);
+      
       // Navigation based on userType
-      const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/shopdash':'/collabdash');
+      const destination = userType === 'customer' ? '/userdash' : (userType === 'shop' ? '/shopdash':(userType === 'collab' ? '/collabdash':'/admin'));
       navigate(destination);
   
       console.log('User logged in successfully!');
