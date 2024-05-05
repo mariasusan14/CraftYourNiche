@@ -4,6 +4,7 @@ import { products } from "../../assets/products";
 
 export default function ProductCard({ product }) {
   const { title, url, price, rating } = product; 
+  
   return (
     <div className="product-card">
       <div className="product-image--container">

@@ -198,7 +198,9 @@ export default function ProductListing() {
           <Flex direction={"column"}>
             <div>items</div>
             <div className="productlisting-grid">
+              
               {products.map((product) => {
+                
                 if (
                   product.price >= (sliderValueInitial / 100) * 1500 &&
                   product.price <= (sliderValueFinal / 100) * 1500

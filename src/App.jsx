@@ -24,6 +24,7 @@ import Data from "./Context/Data";
 import CustomisationComponent from "./pages/customisation/CustomisationUser";
 import ViewCustomisationRequest from "./shop/ViewCustReq";
 import AdminPage from './pages/Admin';
+import Payment from './pages/Payment';
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/viewcollabrequests" element={<CollaborationRequests />} />
           <Route path="/customisation/:shopId/:productId/:productName" element={<CustomisationComponent />} />
           <Route path="/admin" element={<AdminPage />} /> {/* Add admin page route */}
+          <Route path="payment" element={<Payment/>}/>
         </Routes>
       </Data>
     </div>

@@ -108,7 +108,7 @@ export default function Product() {
         quantity: quantity,
         status: "order placed",
       };
-      ay;
+      
 
       updatedProductArray.push(productWithQuantity);
 
