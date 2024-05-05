@@ -49,7 +49,7 @@ function AdminPage() {
         <tbody>
           {shops.map((shop) => (
             <tr key={shop.id}>
-              <td><img src={shop.logo} alt="Shop Logo" /></td>
+              <td><img src={shop.logoUrl} alt="Shop Logo" /></td>
               <td>{shop.shopName}</td>
               <td>{shop.shopAddress}</td>
               <td>{shop.tagline}</td>
