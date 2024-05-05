@@ -222,10 +222,10 @@ export default function Product() {
             <RatingCardItem rating={1} ratSummary={ratSummary} />
               </Flex>*/}
           {/* product review section */}
-          <div className="product-review--section">
+          {/*<div className="product-review--section">
             {hasPurchased && <Review />}
             <CustomerReviews reviews={reviews} />
-          </div>
+            </div>*/}
         </Flex>
       </div>
     </div>
