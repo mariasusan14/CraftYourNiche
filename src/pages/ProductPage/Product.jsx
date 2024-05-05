@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Text, Flex, Progress, DataList } from "@radix-ui/themes";
 
@@ -8,34 +8,34 @@ import "./Product.css";
 import "./CustomerReview.css";
 import Review from "../../components/Review/Review";
 import Magnifier from "../../components/Magnifier/Magnifier";
-import { auth, db } from "../../config/firebase"; // Import your Firestore instance
-import { collection, doc,setDoc,getDoc } from "firebase/firestore";
+import { auth, db } from "../../config/firebase";
+import {  doc, setDoc, getDoc } from "firebase/firestore";
 
 export default function Product() {
   const [magnifierOn, setMagnifierOn] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hasPurchased, setPurchased] = useState(true);
-  const [quantity, setQuantity] = useState(0); // Unconditionally initialized
+  const [quantity, setQuantity] = useState(0);
   const { shopId, productId } = useParams();
   const products = useContext(Context);
   console.log(products);
   const product = products.find((product) => product.productId === productId);
 
-  // Initialize product details
+  
   let productName = "";
   let productPrice = 0;
   let productDescription = "";
   let productImages = [];
-  let customisation='';
+  let customisation = "";
   if (product) {
     productName = product.title;
     productPrice = product.price;
     productDescription = product.description;
     productImages = product.url;
-    customisation=product.addCustomisation;
-    console.log(productImages);
+    customisation = product.addCustomisation;
+    
   }
-  const [mainimg, setMainimg] = useState(productImages[0]); 
+  const [mainimg, setMainimg] = useState(productImages[0]);
   if (!product) {
     return <div>Loading...</div>;
   }
@@ -70,7 +70,7 @@ export default function Product() {
     });
     totRat = noOfRat.reduce((a, b) => a + b, 0);
 
-    let ratVals = [0, 1, 2, 3, 4]; //percentages rating
+    let ratVals = [0, 1, 2, 3, 4]; 
     ratVals = ratVals.map((ratVal) => {
       return (noOfRat[ratVal] / totRat) * 100;
     });
@@ -86,53 +86,44 @@ export default function Product() {
 
   const handleAddToCart = async (product, quantity) => {
     try {
-        // Ensure product, quantity, and currentUser are defined
-        const userId = auth.currentUser.uid;
-        if (!product || !quantity || !userId) {
-            console.error('Product, quantity, or current user is undefined');
-            return;
-        }
+      const userId = auth.currentUser.uid;
+      if (!product || !quantity || !userId) {
+        console.error("Product, quantity, or current user is undefined");
+        return;
+      }
 
-        // Get a reference to the cart document for the current user
-        const cartDocRef = doc(db, 'cart', userId);
+      const cartDocRef = doc(db, "cart", userId);
+      const cartDocSnapshot = await getDoc(cartDocRef);
+      if (!cartDocSnapshot.exists()) {
+        await setDoc(cartDocRef, {});
+      }
 
-        // Check if the cart collection exists
-        const cartDocSnapshot = await getDoc(cartDocRef);
-        if (!cartDocSnapshot.exists()) {
-            // If the cart collection doesn't exist, create it
-            await setDoc(cartDocRef, {});
-        }
+      const cartSnapshot = await getDoc(cartDocRef);
+      const currentCartData = cartSnapshot.data();
+      const updatedProductArray =
+        currentCartData && currentCartData.products
+          ? [...currentCartData.products]
+          : [];
 
-        // Get the current cart data
-        const cartSnapshot = await getDoc(cartDocRef);
-        const currentCartData = cartSnapshot.data();
-        const updatedProductArray = currentCartData && currentCartData.products ? [...currentCartData.products] : [];
+      const productWithQuantity = {
+        product: product,
+        quantity: quantity,
+        status: "order placed",
+      };
+      ay;
 
-        // Create an object with the product and its quantity
-        const productWithQuantity = { product: product, quantity: quantity,status:"order placed" };
+      updatedProductArray.push(productWithQuantity);
 
-        // Push the productWithQuantity object into the updatedProductArray
-        
-            updatedProductArray.push(productWithQuantity);
-       
+      await setDoc(cartDocRef, { products: updatedProductArray });
 
-        // Update the cart document with the new product array
-        await setDoc(cartDocRef, { products: updatedProductArray });
-
-        alert('Product added to cart successfully!');
+      alert("Product added to cart successfully!");
     } catch (error) {
-        console.error('Error adding product to cart: ', error);
+      console.error("Error adding product to cart: ", error);
     }
-};
+  };
 
-
-  
-
-  
   return (
     <div>
-    
-      
       <div className="product-container">
         <div className="product-details">
           <div className="product-images">
@@ -179,33 +170,34 @@ export default function Product() {
               onChange={(e) => setQuantity(parseInt(e.target.value))}
             />
             <Flex direction={"row"} align={"center"} gap={"7"} pt={"5"}>
-            <button className="product-atc--button" onClick={() => handleAddToCart(product, quantity)}>
-              Add to cart
-            </button>
-
-              
+              <button
+                className="product-atc--button"
+                onClick={() => handleAddToCart(product, quantity)}
+              >
+                Add to cart
+              </button>
             </Flex>
-            {customisation === 'Yes' && (
-             <Link
-                   to={`/customisation/${shopId}/${productId}/${productName}`}
-                   className="product-customise--button">
-                 <button className="customise-button">Customise</button>
-             </Link>
+            {customisation === "Yes" && (
+              <Link
+                to={`/customisation/${shopId}/${productId}/${productName}`}
+                className="product-customise--button"
+              >
+                <button className="customise-button">Customise</button>
+              </Link>
             )}
-  
+
             <Box width={"700px"} pt={"8"}>
               <Text as="p" wrap={"pretty"}>
                 {productDescription}
               </Text>
             </Box>
 
-
             <Box pt={"7"}>
               <DataList.Root>
                 <DataList.Item align="center">
-                <Link to="/userdash">
-                  <button className="back-btn">Back</button>
-                </Link>
+                  <Link to="/userdash">
+                    <button className="back-btn">Back</button>
+                  </Link>
                 </DataList.Item>
 
                 {/* <DataList.Item align="center">
@@ -269,7 +261,11 @@ function CustomerReviews({ reviews }) {
         <div className="creview-container" key={index}>
           <div className="creview-cdetails">
             <div className="creview-avatar--container">
-              <img src={review.avatar} className="creview-avatar" alt={`Avatar of ${review.username}`} />
+              <img
+                src={review.avatar}
+                className="creview-avatar"
+                alt={`Avatar of ${review.username}`}
+              />
             </div>
             <span className="creview-username">{review.username}</span>
           </div>
@@ -279,4 +275,3 @@ function CustomerReviews({ reviews }) {
     </div>
   );
 }
-
