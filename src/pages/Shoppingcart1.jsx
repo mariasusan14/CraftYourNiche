@@ -101,7 +101,7 @@ const ShoppingCart = () => {
         shippingAddress,
         total,
         products: cartItems,
-        paymentDetails: { cardNumber, expiryDate, cvv }
+        paymentStatus:'paid'
       };
       await addDoc(orderCollectionRef, orderData);
 

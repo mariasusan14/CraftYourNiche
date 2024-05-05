@@ -186,6 +186,7 @@ const OrderManagement = () => {
                 <p>Reply Description: {selectedRequest.replyDescription}</p>
                 <p>Cost: {selectedRequest.cost}</p>
                 <p>Cost Breakup: {selectedRequest.costBreakupDescription}</p>
+                
                 <button style={{ width: "auto" }}>Pay Now</button>
               </>
             )}
