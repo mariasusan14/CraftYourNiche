@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Link } from 'react-router-dom';
-import Navbar from './navbar';
+import { auth } from '../config/firebase';
 
 // import './styles/Customization.css'
 const CustomizationShop = () => {
@@ -27,6 +27,7 @@ const CustomizationShop = () => {
           getDocs(customisationRequestsRef).then(
             (customisationRequestsSnapshot) => {
               customisationRequestsSnapshot.forEach((requestDoc) => {
+                if(auth.currentUser.uid===requestDoc.id){
                 const shopId = requestDoc.id;
                 const requestData = requestDoc.data();
 
@@ -38,6 +39,7 @@ const CustomizationShop = () => {
                     ...requestData[requestId],
                   });
                 });
+              }
               });
             }
           )
@@ -54,7 +56,7 @@ const CustomizationShop = () => {
 
   return (
     <div>
-      <Navbar/>
+      
       <h2>Customisation Requests</h2>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {customisationRequests.map((request) => (
