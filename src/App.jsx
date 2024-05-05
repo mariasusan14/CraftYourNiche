@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Auth from './auth';
 import { UserDashboard } from "./user/UserDashboard";
 import { Landing } from "./landing";
@@ -31,7 +32,7 @@ const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/hero" element={<Hero />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/shoppingcart" element={<ShopPage />} /> {/* Changed route for ShopPage */}
+          <Route path="/shoppingcart" element={<ShopPage />} />
           <Route path="/shopdash" element={<ShopDashboard />} />
           <Route path="/userdash" element={<UserDashboard />} />
           <Route path="/inventory" element={<InventoryManagement />} />
@@ -39,22 +40,19 @@ const App = () => {
           <Route path="/addproduct" element={<AddProducts />} />
           <Route path="/verification" element={<ProfileCompletion />} />
           <Route path="/customization" element={<CustomizationShop />} />
-          <Route path="/viewCustReq/:userId/:shopId/:requestId" element={<ViewCustomisationRequest/>}/>
           <Route path="/product/:shopId/:productId" element={<Product />} />
           <Route path="/productlisting" element={<ProductListing />} />
           <Route path="/collabdash" element={<CollabDash />} />
-          <Route path="/customersupport" element={<CustomerSupport />} />  
-          <Route path="/collabdashshop" element={<CollaborationPlatform/>}/>
-          <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails/>}/>
-          <Route path="/collabprofile" element={<CollabProfile/>}/>
-          <Route path="/collabrequests" element={<CollabRequests/>}/>
-          <Route path="/viewcollabrequests" element={<CollaborationRequests/>}/>
-          <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent/>}/>
-        </Routes> 
+          <Route path="/customersupport" element={<CustomerSupport />} />
+          <Route path="/collabdashshop" element={<CollaborationPlatform />} />
+          <Route path="/details/:shopId/:requestId/:title" element={<CollabDetails />} />
+          <Route path="/collabprofile" element={<CollabProfile />} />
+          <Route path="/collabrequests" element={<CollabRequests />} />
+          <Route path="/viewcollabrequests" element={<CollaborationRequests />} />
+          <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent />} />
+          <Route path="/admin" element={<Admin />} /> {/* Add admin page route */}
+        </Routes>
       </Data>
-    
-      
-      
     </div>
   );
 };
