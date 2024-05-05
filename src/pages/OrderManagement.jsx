@@ -6,6 +6,13 @@ const OrderManagement = () => {
   const [customisationRequests, setCustomisationRequests] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+
+  // Pagination states
+  const [customisationPage, setCustomisationPage] = useState(1);
+  const [cartPage, setCartPage] = useState(1);
+  const customisationPerPage = 5;
+  const cartPerPage = 5;
 
   useEffect(() => {
     const fetchCustomisationRequests = async () => {
@@ -28,7 +35,11 @@ const OrderManagement = () => {
               requestId,
               image,
               name: requestData.productName,
-              status: requestData.status
+              status: requestData.status,
+              replyDescription: requestData.replyDescription,
+              cost: requestData.cost,
+              costBreakupDescription: requestData.costBreakupDescription,
+              rejectionReason: requestData.rejectionReason
             });
           });
         });
@@ -65,6 +76,30 @@ const OrderManagement = () => {
     fetchCartItems();
   }, []);
 
+  const handleViewReply = (request) => {
+    setSelectedRequest(request);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRequest(null);
+  };
+
+  const indexOfLastCustomisation = customisationPage * customisationPerPage;
+  const indexOfFirstCustomisation = indexOfLastCustomisation - customisationPerPage;
+  const currentCustomisationRequests = customisationRequests.slice(indexOfFirstCustomisation, indexOfLastCustomisation);
+
+  const indexOfLastCart = cartPage * cartPerPage;
+  const indexOfFirstCart = indexOfLastCart - cartPerPage;
+  const currentCartItems = cartItems.slice(indexOfFirstCart, indexOfLastCart);
+
+  const paginateCustomisation = (pageNumber) => {
+    setCustomisationPage(pageNumber);
+  };
+
+  const paginateCart = (pageNumber) => {
+    setCartPage(pageNumber);
+  };
+
   return (
     <div>
       <h2>Order Management</h2>
@@ -76,21 +111,59 @@ const OrderManagement = () => {
               <th>Image</th>
               <th>Product Name</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {customisationRequests.map((request, index) => (
+            {currentCustomisationRequests.map((request, index) => (
               <tr key={`customisation-${index}`}>
                 <td>
                   <img src={request.image} alt={`Customisation ${index}`} style={{ width: '50px', height: '50px' }} />
                 </td>
                 <td>{request.name}</td>
                 <td>{request.status}</td>
+                <td>
+                  {(request.status === 'accepted' || request.status === 'rejected') && (
+                    <button onClick={() => handleViewReply(request)}>View Reply</button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <div>
+          {customisationRequests.length > customisationPerPage && (
+            <ul>
+              {Array(Math.ceil(customisationRequests.length / customisationPerPage)).fill().map((_, index) => (
+                <li key={index} style={{ display: 'inline' }}>
+                  <button onClick={() => paginateCustomisation(index + 1)} style={{ width: 'auto' }}>{index + 1}</button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
+
+      {selectedRequest && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>&times;</span>
+            <h3>Reply Details</h3>
+            {selectedRequest.status === 'accepted' && (
+              <>
+                <p>Reply Description: {selectedRequest.replyDescription}</p>
+                <p>Cost: {selectedRequest.cost}</p>
+                <p>Cost Breakup: {selectedRequest.costBreakupDescription}</p>
+                <button style={{width:'auto'}}>Pay Now</button>
+              </>
+            )}
+            {selectedRequest.status === 'rejected' && (
+              <p>Rejection Reason: {selectedRequest.rejectionReason}</p>
+            )}
+            <button onClick={handleCloseModal} style={{width:'auto', marginLeft:'10px'}}>Close</button>
+          </div>
+        </div>
+      )}
 
       <div>
         <h3>Shopping Cart Items</h3>
@@ -103,7 +176,7 @@ const OrderManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {cartItems.map((order, index) => (
+            {currentCartItems.map((order, index) => (
               <tr key={`cart-item-${index}`}>
                 <td>
                   <img src={order.product.url} alt={order.product.title} style={{ width: '50px', height: '50px' }} />
@@ -114,6 +187,17 @@ const OrderManagement = () => {
             ))}
           </tbody>
         </table>
+        <div>
+          {cartItems.length > cartPerPage && (
+            <ul>
+              {Array(Math.ceil(cartItems.length / cartPerPage)).fill().map((_, index) => (
+                <li key={index} style={{ display: 'inline' }}>
+                  <button onClick={() => paginateCart(index + 1)} style={{ width: 'auto' }}>{index + 1}</button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

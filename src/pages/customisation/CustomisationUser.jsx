@@ -48,6 +48,7 @@ const CustomisationComponent = () => {
           addOns,
           customizationInstructions,
           images,
+          status:'pending'
         },
       });
 

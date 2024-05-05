@@ -55,7 +55,7 @@ const ViewCustomisationRequest = () => {
     try {
       const updatedData = {
         status: 'rejected',
-        replyDescription: rejectionReason
+        rejectionReason: rejectionReason
       };
       await updateCustomisationRequest(updatedData);
       console.log('Customisation request rejected successfully!');
