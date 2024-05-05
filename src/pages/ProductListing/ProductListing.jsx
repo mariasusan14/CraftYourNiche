@@ -14,9 +14,11 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import "./ProductListing.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
 
 export default function ProductListing() {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -66,9 +68,34 @@ export default function ProductListing() {
     else if (a.price < b.price) return 1;
     return 0;
   };
+  const handleSearch = async () => {
+    
+    if (!searchQuery.trim()) {
+      await fetchProducts();
+      return;
+    }
 
+    
+    const filteredProducts = products.filter(product =>
+      product.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setProducts(filteredProducts);
+    setSearchQuery('')
+  };
   return (
     <div>
+    <div className="search">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{width:'auto',height:'auto'}}
+          />
+          <button onClick={handleSearch}>
+            <FaSearch />
+          </button>
+        </div>
       <Flex direction="row">
         {/* Filters: */}
         <div className="productlisting-filters">
@@ -164,9 +191,9 @@ export default function ProductListing() {
             </Flex>
               </div>*/}
         </div>
-
+        
         <div className="productlisting-filters--separator" />
-
+        
         <div>
           <Flex direction={"column"}>
             <div>items</div>
@@ -179,15 +206,19 @@ export default function ProductListing() {
                   product.price <= (sliderValueFinal / 100) * 1500
                 ) {
                   return (
-                    <Link
-                      to={{
-                        pathname: `/product/${product.shopId}/${product.productId}`, // Use index or product ID as a unique identifier for the product
-                        state: { product }, // Pass product data as state
-                      }}
-                      key={product.productId}
-                    >
-                      <ProductCard product={product} />
-                    </Link>
+                    <div>
+                      <div>
+                        <Link
+                          to={{
+                            pathname: `/product/${product.shopId}/${product.productId}`, // Use index or product ID as a unique identifier for the product
+                            state: { product }, // Pass product data as state
+                          }}
+                          key={product.productId}
+                        >
+                          <ProductCard product={product} />
+                        </Link>
+                      </div>
+                    </div>
                   );
                 }
               })}
