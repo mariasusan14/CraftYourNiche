@@ -23,6 +23,7 @@ import ShopPage from "./pages/Shoppingcart1"; // Import ShopPage component
 import Data from "./Context/Data";
 import CustomisationComponent from "./pages/customisation/CustomisationUser";
 import ViewCustomisationRequest from "./shop/ViewCustReq";
+import AdminPage from './pages/Admin';
 
 const App = () => {
   return (
@@ -50,7 +51,7 @@ const App = () => {
           <Route path="/collabrequests" element={<CollabRequests />} />
           <Route path="/viewcollabrequests" element={<CollaborationRequests />} />
           <Route path="/customisation/:shopId/:productId" element={<CustomisationComponent />} />
-          <Route path="/admin" element={<Admin />} /> {/* Add admin page route */}
+          <Route path="/admin" element={<AdminPage />} /> {/* Add admin page route */}
         </Routes>
       </Data>
     </div>
