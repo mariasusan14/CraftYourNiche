@@ -98,7 +98,7 @@ const ShoppingCart = () => {
         alert("Please fill in all payment details.");
         return;
       }
-      // Perform additional validation for cardNumber, expiryDate, and cvv here if needed
+      
 
       const userId = auth.currentUser.uid;
       const orderCollectionRef = collection(db, "orders");
