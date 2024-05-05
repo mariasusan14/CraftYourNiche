@@ -139,6 +139,44 @@ const ShoppingCart = () => {
     ));
   };
 
+  const handleCardNumberChange = (e) => {
+    // Remove non-numeric characters from input
+    const formattedInput = e.target.value.replace(/\D/g, '');
+
+    // Insert a space after every 4 digits and limit to 19 characters
+    const formattedCardNumber = formattedInput
+      .replace(/(.{4})/g, '$1 ')
+      .substr(0, 19)
+      .trim();
+
+    // Update state with formatted card number
+    setCardNumber(formattedCardNumber);
+  };
+
+  const handleExpiryDateChange = (e) => {
+    // Remove non-numeric characters from input
+    const formattedInput = e.target.value.replace(/\D/g, '');
+
+    // Format expiry date as MM/YY and limit to 5 characters
+    const formattedExpiryDate = formattedInput
+      .replace(/^(\d{2})/, '$1/')
+      .substr(0, 5);
+
+    // Update state with formatted expiry date
+    setExpiryDate(formattedExpiryDate);
+  };
+
+  const handleCvvChange = (e) => {
+    // Remove non-numeric characters from input
+    const formattedInput = e.target.value.replace(/\D/g, '');
+
+    // Limit to 3 characters
+    const formattedCvv = formattedInput.substr(0, 3);
+
+    // Update state with formatted CVV
+    setCVV(formattedCvv);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -189,17 +227,20 @@ const ShoppingCart = () => {
           <br />
           <label>
             Card Number:
-            <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
+            <input type="text" placeholder="XXXX XXXX XXXX XXXX"
+            maxLength="19" value={cardNumber} onChange={handleCardNumberChange} />
           </label>
           <br />
           <label>
             Expiry Date:
-            <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+            <input type="text" placeholder="MM/YY"
+            maxLength="5" value={expiryDate} onChange={handleExpiryDateChange} />
           </label>
           <br />
           <label>
             CVV:
-            <input type="password" value={cvv} onChange={(e) => setCVV(e.target.value)} />
+            <input type="password" placeholder="***"
+            maxLength="3" value={cvv} onChange={handleCvvChange} />
           </label>
           <br />
           <input type="submit" value="Pay Now" />
