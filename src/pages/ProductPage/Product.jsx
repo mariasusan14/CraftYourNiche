@@ -142,7 +142,7 @@ export default function Product() {
             Magnifier
             {magnifierOn && <Magnifier imgSrc={mainimg} mousepos={position} />}
             <div className="product-subimg--list">
-              {productImages.map((img) => (
+              {Array.isArray(productImages) && productImages.map((img) => (
                 <div className="product-subimg--container" key={img}>
                   <img
                     src={img}
