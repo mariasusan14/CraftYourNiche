@@ -18,7 +18,8 @@ const CollaborationRequests = () => {
       const userDocRef = doc(collection(db, 'collaborationRequests'), userId);
       const requestsSnapshot = await getDocs(collection(userDocRef, 'requests'));
       const userRequests = requestsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data(), showResponses: false }));
-      setCollaborationRequests(userRequests);
+      const filteredRequests = userRequests.filter(request => request.status !== 'closed'); // Filter closed requests
+      setCollaborationRequests(filteredRequests);
     } catch (error) {
       console.error('Error fetching collaboration requests:', error);
     }
