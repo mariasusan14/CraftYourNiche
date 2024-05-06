@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { doc, getDocs, collection, query, where, getDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDocs,
+  collection,
+  query,
+  where,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 
 const OrderManagement = () => {
@@ -15,13 +23,13 @@ const OrderManagement = () => {
   const cartPerPage = 5;
 
   // Payment form fields
-  const [fullName, setFullName] = useState('');
-  const [contactNo, setContactNo] = useState('');
-  const [shippingAddress, setShippingAddress] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCVV] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [contactNo, setContactNo] = useState("");
+  const [shippingAddress, setShippingAddress] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCVV] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
 
   useEffect(() => {
     const fetchCustomisationRequests = async () => {
@@ -39,8 +47,8 @@ const OrderManagement = () => {
         const fetchedCustomisationRequests = [];
 
         customisationSnapshot.forEach((doc) => {
-          const shopId=doc.id;
-          console.log(shopId)
+          const shopId = doc.id;
+          console.log(shopId);
           const customisationData = doc.data();
           const requestIdMap = customisationData;
 
@@ -108,7 +116,7 @@ const OrderManagement = () => {
       const userId = auth.currentUser.uid;
       const requestId = selectedRequest.requestId;
       const shopId = selectedRequest.shopId;
-  
+
       // Update payment status to 'paid' in the requestId map
       const customisationRef = doc(
         db,
@@ -117,44 +125,63 @@ const OrderManagement = () => {
         "customisationRequests",
         shopId
       );
-  
+
       const customisationDoc = await getDoc(customisationRef);
       const customisationData = customisationDoc.data();
-  
+
       if (!customisationData) {
         throw new Error("Customisation data not found");
       }
-  
+
       const requestMap = customisationData[requestId];
-  
+
       if (!requestMap) {
         throw new Error("Request ID not found in customisation data");
       }
-  
+
       // Update the payment status for the specific request ID
-      requestMap.paymentStatus = 'paid';
-  
+      requestMap.paymentStatus = "paid";
+
       // Update the document with the modified data
       await setDoc(customisationRef, customisationData);
-  
+
       // Reset payment form fields
-      setFullName('');
-      setContactNo('');
-      setShippingAddress('');
-      setCardNumber('');
-      setExpiryDate('');
-      setCVV('');
-      setPaymentStatus('paid');
-  
+      setFullName("");
+      setContactNo("");
+      setShippingAddress("");
+      setCardNumber("");
+      setExpiryDate("");
+      setCVV("");
+      setPaymentStatus("paid");
+
       alert("Payment successful");
     } catch (error) {
       console.error("Error updating payment status:", error);
     }
   };
-  
-  
 
-     
+  const handleCardNumberChange = (e) => {
+    const formattedInput = e.target.value.replace(/\D/g, "");
+    const formattedCardNumber = formattedInput
+      .replace(/(.{4})/g, "$1 ")
+      .substr(0, 19)
+      .trim();
+    setCardNumber(formattedCardNumber);
+  };
+
+  const handleExpiryDateChange = (e) => {
+    const formattedInput = e.target.value.replace(/\D/g, "");
+    const formattedExpiryDate = formattedInput
+      .replace(/^(\d{2})/, "$1/")
+      .substr(0, 5);
+    setExpiryDate(formattedExpiryDate);
+  };
+
+  const handleCvvChange = (e) => {
+    const formattedInput = e.target.value.replace(/\D/g, "");
+    const formattedCvv = formattedInput.substr(0, 3);
+    setCVV(formattedCvv);
+  };
 
   const indexOfLastCustomisation = customisationPage * customisationPerPage;
   const indexOfFirstCustomisation =
@@ -180,42 +207,44 @@ const OrderManagement = () => {
     <div>
       <h2>Order Management</h2>
       <div>
-        {currentCustomisationRequests.length>0 && <div>
-          <h3>Customisation Requests</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentCustomisationRequests.map((request, index) => (
-                <tr key={`customisation-${index}`}>
-                  <td>
-                    <img
-                      src={request.image}
-                      alt={`Customisation ${index}`}
-                      style={{ width: "50px", height: "50px" }}
-                    />
-                  </td>
-                  <td>{request.name}</td>
-                  <td>{request.status}</td>
-                  <td>
-                    {(request.status === "accepted" ||
-                      request.status === "rejected") && (
-                      <button onClick={() => handleViewReply(request)}>
-                        View Reply
-                      </button>
-                    )}
-                  </td>
+        {currentCustomisationRequests.length > 0 && (
+          <div>
+            <h3>Customisation Requests</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Status</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>}
+              </thead>
+              <tbody>
+                {currentCustomisationRequests.map((request, index) => (
+                  <tr key={`customisation-${index}`}>
+                    <td>
+                      <img
+                        src={request.image}
+                        alt={`Customisation ${index}`}
+                        style={{ width: "50px", height: "50px" }}
+                      />
+                    </td>
+                    <td>{request.name}</td>
+                    <td>{request.status}</td>
+                    <td>
+                      {(request.status === "accepted" ||
+                        request.status === "rejected") && (
+                        <button onClick={() => handleViewReply(request)}>
+                          View Reply
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div>
           {customisationRequests.length > customisationPerPage && (
@@ -254,32 +283,62 @@ const OrderManagement = () => {
                 <div>
                   <label>
                     Full Name:
-                    <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                    />
                   </label>
                   <br />
                   <label>
                     Contact Number:
-                    <input type="text" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+                    <input
+                      type="text"
+                      value={contactNo}
+                      onChange={(e) => setContactNo(e.target.value)}
+                    />
                   </label>
                   <br />
                   <label>
                     Shipping Address:
-                    <input type="text" value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)} />
+                    <input
+                      type="text"
+                      value={shippingAddress}
+                      onChange={(e) => setShippingAddress(e.target.value)}
+                    />
                   </label>
                   <br />
                   <label>
                     Card Number:
-                    <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
+                    <input
+                      type="text"
+                      placeholder="XXXX XXXX XXXX XXXX"
+                      maxLength="19"
+                      value={cardNumber}
+                      onChange={handleCardNumberChange}
+                    />
                   </label>
                   <br />
                   <label>
                     Expiry Date:
-                    <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+                    <input
+                      type="text"
+                      placeholder="MM/YY"
+                      maxLength="5"
+                      value={expiryDate}
+                      onChange={handleExpiryDateChange}
+                    />
                   </label>
                   <br />
                   <label>
                     CVV:
-                    <input type="text" value={cvv} onChange={(e) => setCVV(e.target.value)} />
+                    <input
+                      type="password"
+                      placeholder="***"
+                      maxLength="3"
+                      value={cvv}
+                      onChange={handleCvvChange}
+                    />
                   </label>
                   <br />
                   <button onClick={handlePaymentSubmit}>Pay Now</button>
