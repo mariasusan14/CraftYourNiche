@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { doc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, getDocs, collection, query, where, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 
 const OrderManagement = () => {
@@ -13,6 +13,15 @@ const OrderManagement = () => {
   const [cartPage, setCartPage] = useState(1);
   const customisationPerPage = 5;
   const cartPerPage = 5;
+
+  // Payment form fields
+  const [fullName, setFullName] = useState('');
+  const [contactNo, setContactNo] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiryDate, setExpiryDate] = useState('');
+  const [cvv, setCVV] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
 
   useEffect(() => {
     const fetchCustomisationRequests = async () => {
@@ -30,6 +39,8 @@ const OrderManagement = () => {
         const fetchedCustomisationRequests = [];
 
         customisationSnapshot.forEach((doc) => {
+          const shopId=doc.id;
+          console.log(shopId)
           const customisationData = doc.data();
           const requestIdMap = customisationData;
 
@@ -39,6 +50,7 @@ const OrderManagement = () => {
               requestData.images[0] ||
               "https://creativepaint.com/cdn/shop/products/oc-9-balletwhite_2000x_97180483-e3a9-4c57-a40a-384f63156f4f_400x.png";
             fetchedCustomisationRequests.push({
+              shopId,
               requestId,
               image,
               name: requestData.productName,
@@ -90,6 +102,59 @@ const OrderManagement = () => {
   const handleCloseModal = () => {
     setSelectedRequest(null);
   };
+
+  const handlePaymentSubmit = async () => {
+    try {
+      const userId = auth.currentUser.uid;
+      const requestId = selectedRequest.requestId;
+      const shopId = selectedRequest.shopId;
+  
+      // Update payment status to 'paid' in the requestId map
+      const customisationRef = doc(
+        db,
+        "customisation",
+        userId,
+        "customisationRequests",
+        shopId
+      );
+  
+      const customisationDoc = await getDoc(customisationRef);
+      const customisationData = customisationDoc.data();
+  
+      if (!customisationData) {
+        throw new Error("Customisation data not found");
+      }
+  
+      const requestMap = customisationData[requestId];
+  
+      if (!requestMap) {
+        throw new Error("Request ID not found in customisation data");
+      }
+  
+      // Update the payment status for the specific request ID
+      requestMap.paymentStatus = 'paid';
+  
+      // Update the document with the modified data
+      await setDoc(customisationRef, customisationData);
+  
+      // Reset payment form fields
+      setFullName('');
+      setContactNo('');
+      setShippingAddress('');
+      setCardNumber('');
+      setExpiryDate('');
+      setCVV('');
+      setPaymentStatus('paid');
+  
+      alert("Payment successful");
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+    }
+  };
+  
+  
+
+     
 
   const indexOfLastCustomisation = customisationPage * customisationPerPage;
   const indexOfFirstCustomisation =
@@ -186,8 +251,39 @@ const OrderManagement = () => {
                 <p>Reply Description: {selectedRequest.replyDescription}</p>
                 <p>Cost: {selectedRequest.cost}</p>
                 <p>Cost Breakup: {selectedRequest.costBreakupDescription}</p>
-                
-                <button style={{ width: "auto" }}>Pay Now</button>
+                <div>
+                  <label>
+                    Full Name:
+                    <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                  </label>
+                  <br />
+                  <label>
+                    Contact Number:
+                    <input type="text" value={contactNo} onChange={(e) => setContactNo(e.target.value)} />
+                  </label>
+                  <br />
+                  <label>
+                    Shipping Address:
+                    <input type="text" value={shippingAddress} onChange={(e) => setShippingAddress(e.target.value)} />
+                  </label>
+                  <br />
+                  <label>
+                    Card Number:
+                    <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
+                  </label>
+                  <br />
+                  <label>
+                    Expiry Date:
+                    <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} />
+                  </label>
+                  <br />
+                  <label>
+                    CVV:
+                    <input type="text" value={cvv} onChange={(e) => setCVV(e.target.value)} />
+                  </label>
+                  <br />
+                  <button onClick={handlePaymentSubmit}>Pay Now</button>
+                </div>
               </>
             )}
             {selectedRequest.status === "rejected" && (

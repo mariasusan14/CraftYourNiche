@@ -82,7 +82,7 @@ const CustomizationShop = () => {
                 <strong>User ID:</strong> {request.userId}
               </p>
               <p>
-                <strong>Shop ID:</strong> {request.shopId}
+                <strong>Payment Status:</strong> {request.paymentStatus}
               </p>
 
               <div>
